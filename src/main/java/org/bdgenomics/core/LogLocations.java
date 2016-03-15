@@ -1,6 +1,6 @@
 package org.bdgenomics.core;
 
-class LogLocations {
+public class LogLocations {
 
     public String stdout, stderr;
 

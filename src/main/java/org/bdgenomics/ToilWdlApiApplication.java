@@ -3,6 +3,7 @@ package org.bdgenomics;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.bdgenomics.api.ToilService;
 import org.bdgenomics.resources.WorkflowResource;
 import org.bdgenomics.resources.WorkflowsResource;
 
@@ -26,7 +27,9 @@ public class ToilWdlApiApplication extends Application<ToilWdlApiConfiguration> 
     public void run(final ToilWdlApiConfiguration configuration,
                     final Environment environment) {
 
-        environment.jersey().register(new WorkflowResource());
+        ToilService service = configuration.service();
+
+        environment.jersey().register(new WorkflowResource(service));
         environment.jersey().register(new WorkflowsResource());
     }
 

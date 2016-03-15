@@ -15,11 +15,16 @@ public class Logs {
         this.id = id;
     }
 
-    public void addLogLocation(String call, String stdOut, String stdErr) {
+    public void addLogLocation(String call, LogLocations locs) {
         if(logs == null) { logs = new HashMap<>(); }
         if(!logs.containsKey(call)) { logs.put(call, new ArrayList<LogLocations>()); }
-        logs.get(call).add(new LogLocations(stdOut, stdErr));
+        logs.get(call).add(locs);
     }
+
+    public void addLogLocation(String call, String stdOut, String stdErr) {
+        addLogLocation(call, new LogLocations(stdOut, stdErr));
+    }
+
 
 }
 
