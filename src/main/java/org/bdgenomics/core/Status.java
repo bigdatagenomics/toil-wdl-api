@@ -1,8 +1,11 @@
 package org.bdgenomics.core;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import static org.bdgenomics.utils.HashUtils.hash;
 import static org.bdgenomics.utils.EqualityUtils.*;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Status {
 
     private String id;

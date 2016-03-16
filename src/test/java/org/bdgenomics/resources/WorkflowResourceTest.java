@@ -12,6 +12,8 @@ import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 
+import java.util.Map;
+
 import static org.junit.Assert.*;
 
 public class WorkflowResourceTest {
@@ -34,8 +36,23 @@ public class WorkflowResourceTest {
             return new WorkflowService() {
 
                 @Override
+                public String[] calls(String workflowId) {
+                    return new String[0];
+                }
+
+                @Override
                 public String status(String workflowId) {
                     return "complete";
+                }
+
+                @Override
+                public String output(String workflowId, String callId) {
+                    return null;
+                }
+
+                @Override
+                public Map<String, Object> outputs(String workflowId) {
+                    return null;
                 }
             };
         }
