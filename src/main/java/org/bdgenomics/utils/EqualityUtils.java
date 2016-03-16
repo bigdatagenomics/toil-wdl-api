@@ -1,5 +1,8 @@
 package org.bdgenomics.utils;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class EqualityUtils {
 
     public static boolean eq(Object v1, Object v2) {
@@ -16,6 +19,8 @@ public class EqualityUtils {
         if(!cls.isAssignableFrom(v.getClass())) { return null; }
         return cls.cast(v);
     }
+
+    public static String[] from(String... vs) { return vs; }
 
     public static Object[] of(Object... vs) { return vs; }
 
@@ -34,5 +39,20 @@ public class EqualityUtils {
             }
         }
         return true;
+    }
+
+    public static Map<String,Object> map(String[] keys, Object[] vals) {
+        if(keys == null || vals == null || keys.length != vals.length) {
+            throw new IllegalArgumentException("Both keys and vals must be non-null and of equal length");
+        }
+
+        LinkedHashMap<String,Object> map = new LinkedHashMap<>();
+        for(int i = 0; i < keys.length; i++) {
+            if(keys[i] == null) {
+                throw new IllegalArgumentException(String.format("Key %d was null", i));
+            }
+            map.put(keys[i], vals[i]);
+        }
+        return map;
     }
 }
