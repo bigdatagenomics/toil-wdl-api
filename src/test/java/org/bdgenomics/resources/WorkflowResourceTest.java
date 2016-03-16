@@ -3,8 +3,10 @@ package org.bdgenomics.resources;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.bdgenomics.api.LogService;
 import org.bdgenomics.api.ToilService;
+import org.bdgenomics.api.WorkflowService;
 import org.bdgenomics.core.LogLocations;
 import org.bdgenomics.core.Logs;
+import org.bdgenomics.core.Status;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -15,6 +17,7 @@ import static org.junit.Assert.*;
 public class WorkflowResourceTest {
 
     public static final ToilService service = new ToilService() {
+
         @Override
         public LogService logService() {
             return new LogService() {
@@ -22,6 +25,17 @@ public class WorkflowResourceTest {
                 @Override
                 public LogLocations getLogLocations(String workflowId) {
                     return new LogLocations("foo", "bar");
+                }
+            };
+        }
+
+        @Override
+        public WorkflowService workflowService() {
+            return new WorkflowService() {
+
+                @Override
+                public String status(String workflowId) {
+                    return "complete";
                 }
             };
         }
@@ -60,5 +74,17 @@ public class WorkflowResourceTest {
         assertNotNull("response.logs was null", response.logs);
         assertFalse(response.logs.isEmpty());
         assertNotNull(response.logs.get(workflowId));
+    }
+
+    @Test
+    public void testStatusIsComplete() {
+        Status response = RULE.getJerseyTest()
+                .target("/api/workflows/v1/" + workflowId + "/status")
+                .request(MediaType.APPLICATION_JSON)
+                .get(Status.class);
+
+        assertNotNull(response);
+        assertEquals(workflowId, response.getId());
+        assertEquals("complete", response.getStatus());
     }
 }

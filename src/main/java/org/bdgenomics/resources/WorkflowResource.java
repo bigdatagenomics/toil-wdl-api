@@ -3,6 +3,7 @@ package org.bdgenomics.resources;
 import io.dropwizard.jersey.params.UUIDParam;
 import org.bdgenomics.api.ToilService;
 import org.bdgenomics.core.Logs;
+import org.bdgenomics.core.Status;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -34,6 +35,13 @@ public class WorkflowResource {
     @Path("logs/{callId}")
     public Logs callLogs(@PathParam("id") UUIDParam workflowId, @PathParam("callId") String callId) {
         return null;
+    }
+
+    @GET
+    @Path("status")
+    public Status status(@PathParam("id") UUIDParam workflowUUID) {
+        String workflowId = workflowUUID.toString();
+        return new Status(workflowId, service.workflowService().status(workflowId));
     }
 
 }
