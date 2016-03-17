@@ -1,62 +1,23 @@
 package org.bdgenomics.resources;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
-import org.bdgenomics.api.LogService;
 import org.bdgenomics.api.ToilService;
 import org.bdgenomics.api.WorkflowService;
 import org.bdgenomics.core.LogLocations;
 import org.bdgenomics.core.Logs;
 import org.bdgenomics.core.Status;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
 import javax.ws.rs.core.MediaType;
 
-import java.util.Map;
-
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class WorkflowResourceTest {
 
-    public static final ToilService service = new ToilService() {
-
-        @Override
-        public LogService logService() {
-            return new LogService() {
-
-                @Override
-                public LogLocations getLogLocations(String workflowId) {
-                    return new LogLocations("foo", "bar");
-                }
-            };
-        }
-
-        @Override
-        public WorkflowService workflowService() {
-            return new WorkflowService() {
-
-                @Override
-                public String[] calls(String workflowId) {
-                    return new String[0];
-                }
-
-                @Override
-                public String status(String workflowId) {
-                    return "complete";
-                }
-
-                @Override
-                public String output(String workflowId, String callId) {
-                    return null;
-                }
-
-                @Override
-                public Map<String, Object> outputs(String workflowId) {
-                    return null;
-                }
-            };
-        }
-    };
+    public static final ToilService service = mock(ToilService.class);
 
     @ClassRule
     public static final ResourceTestRule RULE = ResourceTestRule.builder()
@@ -64,8 +25,18 @@ public class WorkflowResourceTest {
             .build();
 
     public final String workflowId = "de305d54-75b4-431b-adb2-eb6b9e546014";
+    public final String callId = "callid";
     public final String workflowStdout = "foo";
     public final String workflowStderr = "bar";
+
+    @BeforeClass
+    public void initMocks() {
+        WorkflowService workflowMock = mock(WorkflowService.class);
+        when(workflowMock.calls(workflowId)).thenReturn(new String[] { callId });
+        when(workflowMock.callLogs(workflowId, callId)).thenReturn(new LogLocations[] { new LogLocations(workflowStdout, workflowStderr) });
+
+        when(service.workflowService()).thenReturn(workflowMock);
+    }
 
     @Test
     public void testLogsIdIsCorrect() {

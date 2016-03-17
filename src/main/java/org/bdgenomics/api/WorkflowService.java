@@ -1,5 +1,8 @@
 package org.bdgenomics.api;
 
+import org.bdgenomics.core.CallMetadata;
+import org.bdgenomics.core.LogLocations;
+
 import java.util.Map;
 
 public interface WorkflowService {
@@ -8,8 +11,12 @@ public interface WorkflowService {
 
     String status(String workflowId);
 
-    String output(String workflowId, String callId);
+    String callOutputs(String workflowId, String callId);
 
     Map<String,Object> outputs(String workflowId);
+
+    CallMetadata callMetadata(String workflowId, String callId);
+
+    LogLocations[] callLogs(String workflowId, String callId);
 
 }
