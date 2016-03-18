@@ -24,14 +24,15 @@ public class WorkflowResourceTest {
             .addResource(new WorkflowResource(service))
             .build();
 
-    public final String workflowId = "de305d54-75b4-431b-adb2-eb6b9e546014";
-    public final String callId = "callid";
-    public final String workflowStdout = "foo";
-    public final String workflowStderr = "bar";
+    public final static String workflowId = "de305d54-75b4-431b-adb2-eb6b9e546014";
+    public final static String callId = "callid";
+    public final static String workflowStdout = "foo";
+    public final static String workflowStderr = "bar";
 
     @BeforeClass
-    public void initMocks() {
+    public static void initMocks() {
         WorkflowService workflowMock = mock(WorkflowService.class);
+        when(workflowMock.status(workflowId)).thenReturn("complete");
         when(workflowMock.calls(workflowId)).thenReturn(new String[] { callId });
         when(workflowMock.callLogs(workflowId, callId)).thenReturn(new LogLocations[] { new LogLocations(workflowStdout, workflowStderr) });
 

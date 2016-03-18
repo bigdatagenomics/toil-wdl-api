@@ -25,6 +25,13 @@ public class Logs {
         addLogLocation(call, new LogLocations(stdOut, stdErr));
     }
 
+    public void addLogLocations(String call, Iterable<LogLocations> logLocs) {
+        for(LogLocations ll : logLocs) {
+            addLogLocation(call, ll);
+        }
+    }
+
+
 
 }
 
