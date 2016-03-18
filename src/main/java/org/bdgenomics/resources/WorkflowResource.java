@@ -4,6 +4,7 @@ import io.dropwizard.jersey.params.UUIDParam;
 import org.bdgenomics.api.ToilService;
 import org.bdgenomics.core.Logs;
 import org.bdgenomics.core.Status;
+import org.bdgenomics.core.WorkflowMetadata;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -22,6 +23,27 @@ public class WorkflowResource {
         this.service = service;
     }
 
+    @GET
+    @Path("status")
+    public Status status(@PathParam("id") UUIDParam workflowUUID) {
+        String workflowId = workflowUUID.toString();
+        return new Status(workflowId, service.workflowService().status(workflowId));
+    }
+
+    @GET
+    @Path("outputs")
+    public Status outputs(@PathParam("id") UUIDParam workflowUUID) {
+        String workflowId = workflowUUID.toString();
+        return new Status(workflowId, service.workflowService().status(workflowId));
+    }
+
+    @GET
+    @Path("timing")
+    public Status timing(@PathParam("id") UUIDParam workflowUUID) {
+        String workflowId = workflowUUID.toString();
+        return new Status(workflowId, service.workflowService().status(workflowId));
+    }
+
 
     @GET
     @Path("logs")
@@ -36,16 +58,22 @@ public class WorkflowResource {
     }
 
     @GET
+    @Path("metadata")
+    public WorkflowMetadata metadata(@PathParam("id") UUIDParam workflowUUID) {
+        return null;
+    }
+
+    @GET
     @Path("logs/{callId}")
     public Logs callLogs(@PathParam("id") UUIDParam workflowId, @PathParam("callId") String callId) {
         return null;
     }
 
     @GET
-    @Path("status")
-    public Status status(@PathParam("id") UUIDParam workflowUUID) {
-        String workflowId = workflowUUID.toString();
-        return new Status(workflowId, service.workflowService().status(workflowId));
+    @Path("outputs/{callId}")
+    public Logs callOutputs(@PathParam("id") UUIDParam workflowId, @PathParam("callId") String callId) {
+        return null;
     }
+
 
 }

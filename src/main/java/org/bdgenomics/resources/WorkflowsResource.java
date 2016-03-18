@@ -12,6 +12,10 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class WorkflowsResource {
 
+    @POST
+    public void create() {
+    }
+
     @GET
     @Path("query")
     public WorkflowsQueryResponse query() {
@@ -19,13 +23,27 @@ public class WorkflowsResource {
     }
 
     @POST
-    public void createWorkflow() {
+    @Path("validate")
+    public void validate() {
 
     }
 
     @POST
-    @Path("validate")
-    public void validateWorkflow() {
+    @Path("abort")
+    public void abort() {
 
     }
+
+    @POST
+    @Path("call-caching/{callId}")
+    public void callCaching() {
+
+    }
+
+    @POST
+    @Path("call-caching")
+    public void caching() {
+
+    }
+
 }
