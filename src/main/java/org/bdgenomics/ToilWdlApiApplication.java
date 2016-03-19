@@ -4,6 +4,7 @@ import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.bdgenomics.api.ToilService;
+import org.bdgenomics.health.WorkflowServiceHealthCheck;
 import org.bdgenomics.resources.WorkflowResource;
 import org.bdgenomics.resources.WorkflowsResource;
 
@@ -31,6 +32,8 @@ public class ToilWdlApiApplication extends Application<ToilWdlApiConfiguration> 
 
         environment.jersey().register(new WorkflowResource(service));
         environment.jersey().register(new WorkflowsResource());
+
+        environment.healthChecks().register("workflow-service", new WorkflowServiceHealthCheck());
     }
 
 }
