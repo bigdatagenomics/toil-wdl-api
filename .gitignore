@@ -1,5 +1,6 @@
 *.iml
 .idea/
 target/
+gen/
 dependency-reduced-pom.xml
 
