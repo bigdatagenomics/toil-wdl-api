@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.9.1</dropwizard.version>
+	<antlr.version>4.5.1</antlr.version>
         <mainClass>org.bdgenomics.ToilWdlApiApplication</mainClass>
     </properties>
 
@@ -52,6 +53,11 @@
             <version>${dropwizard.version}</version>
             <scope>test</scope>
         </dependency>
+	<dependency>
+		<groupId>org.antlr</groupId>
+		<artifactId>antlr4-runtime</artifactId>
+		<version>${antlr.version}</version>
+	</dependency>
     </dependencies>
 
     <build>
