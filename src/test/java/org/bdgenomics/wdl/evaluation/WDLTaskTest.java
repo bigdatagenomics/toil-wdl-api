@@ -7,6 +7,22 @@ import org.junit.Test;
 public class WDLTaskTest {
 
   @Test
+  public void testTaskParsing() throws IOException {
+    WDLTask task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { }");
+    assertThat(task).isNotNull().withFailMessage("task was null");
+    assertThat(task.taskName).isEqualTo("foo");
+    assertThat(task.commands).isEmpty();
+    assertThat(task.outputs).isEmpty();
+
+    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { output { String temp = \"x\"} }");
+    assertThat(task).isNotNull().withFailMessage("task was null");
+    assertThat(task.taskName).isEqualTo("foo");
+    assertThat(task.commands).isEmpty();
+    assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
+    assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", "\"x\""));
+  }
+
+  @Test
   public void testCommandParsing() throws IOException {
     WDLTask.Command command = WDLEvaluator.parse(new WDLTask.Command.Builder(), "command { }");
     assertThat(command).isNotNull().withFailMessage("command was null");

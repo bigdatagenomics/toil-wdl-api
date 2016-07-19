@@ -6,10 +6,16 @@ wdlimport : 'import' import_location ('as' import_name)? ;
 import_location : STRING ;
 import_name : IDENTIFIER ;
 
-task : 'task' task_name '{' declaration* task_sections '}' ;
+task : 'task' task_name '{' declaration* task_section* '}' ;
 task_name : IDENTIFIER ;
 declaration: type IDENTIFIER ('=' expression)? ;
-task_sections: (command | runtime | task_output | parameter_meta | meta)+;
+task_section
+  : command   // taskCommand
+  | runtime    // taskRuntime
+  | task_output   // taskOutput
+  | parameter_meta   // taskParameterMeta
+  | meta              // taskMeta
+  ;
 
 // task.command
 command

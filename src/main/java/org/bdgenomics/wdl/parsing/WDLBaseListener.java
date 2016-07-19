@@ -100,13 +100,13 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTask_sections(WDLParser.Task_sectionsContext ctx) { }
+	@Override public void enterTask_section(WDLParser.Task_sectionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTask_sections(WDLParser.Task_sectionsContext ctx) { }
+	@Override public void exitTask_section(WDLParser.Task_sectionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

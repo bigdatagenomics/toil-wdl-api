@@ -66,7 +66,7 @@ public class WDLBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements WD
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTask_sections(WDLParser.Task_sectionsContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTask_section(WDLParser.Task_sectionContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *

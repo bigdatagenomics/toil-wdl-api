@@ -2,6 +2,9 @@ package org.bdgenomics.wdl.evaluation;
 
 import static java.util.stream.Collectors.joining;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
@@ -10,7 +13,72 @@ import org.bdgenomics.wdl.parsing.WDLVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WDLTask {
+public class WDLTask implements WDLComponent<WDLTask> {
+
+  public final String taskName;
+  public final List<Command> commands;
+  public final List<Runtime> runtimes;
+  public final List<Output> outputs;
+
+  public WDLTask(final String name,
+                 final Collection<Command> commands,
+                 final Collection<Runtime> runtimes,
+                 final Collection<Output> outputs) {
+
+    this.taskName = name;
+    this.commands = new ArrayList<>(commands);
+    this.runtimes = new ArrayList<>(runtimes);
+    this.outputs = new ArrayList<>(outputs);
+  }
+
+  @Override
+  public WDLVisitor<WDLTask> visitor() {
+    return new Builder();
+  }
+
+  private static class TaskComponentBuilder extends WDLBaseVisitor<Object> {
+
+    @Override
+    public Object visitCommand(WDLParser.CommandContext ctx) {
+      return new Command.Builder().visitCommand(ctx);
+    }
+    @Override
+    public Object visitRuntime(WDLParser.RuntimeContext ctx) {
+      return null;
+    }
+    @Override
+    public Object visitTask_output(WDLParser.Task_outputContext ctx) {
+      return new Output.Builder().visitTask_output(ctx);
+    }
+  }
+
+  public static class Builder extends WDLBaseVisitor<WDLTask> implements WDLBuilder<WDLTask> {
+
+    @Override
+    public WDLTask visitTask(WDLParser.TaskContext ctx) {
+      final String name = ctx.task_name().getText();
+      final LinkedList<Output> outputs = new LinkedList<>();
+      final LinkedList<Command> commands = new LinkedList<>();
+      final LinkedList<Runtime> runtimes = new LinkedList<>();
+
+      TaskComponentBuilder componentBuilder = new TaskComponentBuilder();
+
+      for(WDLParser.Task_sectionContext sectionCtx : ctx.task_section()) {
+
+        Object component = componentBuilder.visit(sectionCtx);
+
+        if(component instanceof Output) { outputs.add((Output)component); }
+        if(component instanceof Command) { commands.add((Command)component); }
+      }
+
+      return new WDLTask(name, commands, runtimes, outputs);
+    }
+
+    @Override
+    public ParseTree parse(WDLParser parser) {
+      return parser.task();
+    }
+  }
 
   public static class Command implements WDLComponent<Command> {
 

@@ -53,11 +53,11 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(WDLParser.DeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WDLParser#task_sections}.
+	 * Visit a parse tree produced by {@link WDLParser#task_section}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTask_sections(WDLParser.Task_sectionsContext ctx);
+	T visitTask_section(WDLParser.Task_sectionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#command}.
 	 * @param ctx the parse tree

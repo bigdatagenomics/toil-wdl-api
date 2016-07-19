@@ -78,15 +78,15 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitDeclaration(WDLParser.DeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#task_sections}.
+	 * Enter a parse tree produced by {@link WDLParser#task_section}.
 	 * @param ctx the parse tree
 	 */
-	void enterTask_sections(WDLParser.Task_sectionsContext ctx);
+	void enterTask_section(WDLParser.Task_sectionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#task_sections}.
+	 * Exit a parse tree produced by {@link WDLParser#task_section}.
 	 * @param ctx the parse tree
 	 */
-	void exitTask_sections(WDLParser.Task_sectionsContext ctx);
+	void exitTask_section(WDLParser.Task_sectionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#command}.
 	 * @param ctx the parse tree
