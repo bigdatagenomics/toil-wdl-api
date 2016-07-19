@@ -10,20 +10,25 @@ import org.bdgenomics.wdl.parsing.*;
 
 public class WDLEvaluator {
 
-
-  public static Object parse(String schemeString) throws IOException {
-    StringReader reader = new StringReader(schemeString);
+  public static <T extends WDLComponent> T parse(WDLBuilder<T> builder, String unparsed) throws IOException {
+    StringReader reader = new StringReader(unparsed);
     ANTLRInputStream input = new ANTLRInputStream(reader);
 
     WDLLexer lexer = new WDLLexer(input);
     CommonTokenStream tokens = new CommonTokenStream(lexer);
-    SchemeParser parser = new SchemeParser(tokens);
-    ParseTree tree = parser.expr();
+    WDLParser parser = new WDLParser(tokens);
+    ParseTree tree = builder.parse(parser);
 
-    ExprBuilder visitor = new ExprBuilder();
-    Object expr = visitor.visit(tree);
-
-    return expr;
+    T value = builder.visit(tree);
+    return value;
   }
-
 }
+
+class DocumentBuilder extends WDLBaseVisitor<WDLDocument> {
+
+  @Override
+  public WDLDocument visitDocument(WDLParser.DocumentContext ctx) {
+    return null;
+  }
+}
+

@@ -17,10 +17,11 @@
     <name>ToilWdlApi</name>
 
     <properties>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>0.9.1</dropwizard.version>
-	<antlr.version>4.5.1</antlr.version>
+        <antlr.version>4.5.1</antlr.version>
         <mainClass>org.bdgenomics.ToilWdlApiApplication</mainClass>
     </properties>
 
@@ -110,8 +111,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>
