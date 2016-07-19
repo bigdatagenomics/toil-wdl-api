@@ -23,6 +23,12 @@ public class WDLTaskTest {
   }
 
   @Test
+  public void testRuntimeParsing() throws IOException {
+    WDLTask.Runtime runtime = WDLEvaluator.parse(new WDLTask.Runtime.Builder(), "runtime { }");
+    assertThat(runtime).isNotNull().withFailMessage("runtime was null");
+  }
+
+  @Test
   public void testCommandParsing() throws IOException {
     WDLTask.Command command = WDLEvaluator.parse(new WDLTask.Command.Builder(), "command { }");
     assertThat(command).isNotNull().withFailMessage("command was null");

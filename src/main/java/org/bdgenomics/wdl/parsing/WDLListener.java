@@ -208,6 +208,26 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitRuntime(WDLParser.RuntimeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link WDLParser#runtime_assignment}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuntime_assignment(WDLParser.Runtime_assignmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#runtime_assignment}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuntime_assignment(WDLParser.Runtime_assignmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#runtime_key}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuntime_key(WDLParser.Runtime_keyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#runtime_key}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuntime_key(WDLParser.Runtime_keyContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link WDLParser#parameter_meta}.
 	 * @param ctx the parse tree
 	 */
@@ -308,13 +328,315 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitBool(WDLParser.BoolContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#expression}.
+	 * Enter a parse tree produced by the {@code Add}
+	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(WDLParser.ExpressionContext ctx);
+	void enterAdd(WDLParser.AddContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#expression}.
+	 * Exit a parse tree produced by the {@code Add}
+	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(WDLParser.ExpressionContext ctx);
+	void exitAdd(WDLParser.AddContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterOr(WDLParser.OrContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitOr(WDLParser.OrContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code FunctionApplication}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunctionApplication(WDLParser.FunctionApplicationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code FunctionApplication}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunctionApplication(WDLParser.FunctionApplicationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code String}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterString(WDLParser.StringContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitString(WDLParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Divide}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDivide(WDLParser.DivideContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Divide}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDivide(WDLParser.DivideContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LessThan}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLessThan(WDLParser.LessThanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LessThan}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLessThan(WDLParser.LessThanContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(WDLParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(WDLParser.IdentifierContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Negative}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNegative(WDLParser.NegativeContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Negative}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNegative(WDLParser.NegativeContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code GreaterThan}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGreaterThan(WDLParser.GreaterThanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code GreaterThan}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGreaterThan(WDLParser.GreaterThanContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Multiply}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiply(WDLParser.MultiplyContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Multiply}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiply(WDLParser.MultiplyContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code List}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterList(WDLParser.ListContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code List}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitList(WDLParser.ListContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code GreaterThanOrEquals}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGreaterThanOrEquals(WDLParser.GreaterThanOrEqualsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code GreaterThanOrEquals}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGreaterThanOrEquals(WDLParser.GreaterThanOrEqualsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterEquality(WDLParser.EqualityContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitEquality(WDLParser.EqualityContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolean(WDLParser.BooleanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolean(WDLParser.BooleanContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ArrayReference}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayReference(WDLParser.ArrayReferenceContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ArrayReference}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayReference(WDLParser.ArrayReferenceContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Modulo}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterModulo(WDLParser.ModuloContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Modulo}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitModulo(WDLParser.ModuloContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LessThanOrEquals}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLessThanOrEquals(WDLParser.LessThanOrEqualsContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LessThanOrEquals}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLessThanOrEquals(WDLParser.LessThanOrEqualsContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Grouping}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterGrouping(WDLParser.GroupingContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Grouping}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitGrouping(WDLParser.GroupingContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Integer}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterInteger(WDLParser.IntegerContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Integer}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitInteger(WDLParser.IntegerContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Float}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloat(WDLParser.FloatContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Float}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloat(WDLParser.FloatContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterNot(WDLParser.NotContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitNot(WDLParser.NotContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Positive}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPositive(WDLParser.PositiveContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Positive}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPositive(WDLParser.PositiveContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code And}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterAnd(WDLParser.AndContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitAnd(WDLParser.AndContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Subtract}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSubtract(WDLParser.SubtractContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Subtract}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSubtract(WDLParser.SubtractContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Map}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterMap(WDLParser.MapContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Map}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitMap(WDLParser.MapContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Inequality}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterInequality(WDLParser.InequalityContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Inequality}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitInequality(WDLParser.InequalityContext ctx);
 }

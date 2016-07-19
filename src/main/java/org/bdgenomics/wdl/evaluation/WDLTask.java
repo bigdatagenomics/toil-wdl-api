@@ -42,10 +42,12 @@ public class WDLTask implements WDLComponent<WDLTask> {
     public Object visitCommand(WDLParser.CommandContext ctx) {
       return new Command.Builder().visitCommand(ctx);
     }
+
     @Override
     public Object visitRuntime(WDLParser.RuntimeContext ctx) {
-      return null;
+      return new Runtime.Builder().visitRuntime(ctx);
     }
+
     @Override
     public Object visitTask_output(WDLParser.Task_outputContext ctx) {
       return new Output.Builder().visitTask_output(ctx);
@@ -179,8 +181,59 @@ public class WDLTask implements WDLComponent<WDLTask> {
     }
   }
 
-  public static class Runtime {
+  public static class Runtime implements WDLComponent<Runtime> {
 
+    public final List<RuntimeAssignment> assignments;
+
+    public Runtime(final Collection<RuntimeAssignment> assignments) {
+      this.assignments = new ArrayList<>(assignments);
+    }
+
+    @Override
+    public WDLVisitor<Runtime> visitor() {
+      return new Builder();
+    }
+
+    public static class Builder extends WDLBaseVisitor<Runtime> implements WDLBuilder<Runtime> {
+      @Override
+      public ParseTree parse(WDLParser parser) {
+        return parser.runtime();
+      }
+
+      @Override
+      public Runtime visitRuntime(WDLParser.RuntimeContext ctx) {
+        List<RuntimeAssignment> assignments = new LinkedList<>();
+        for(WDLParser.Runtime_assignmentContext assignCtx : ctx.runtime_assignment()) {
+          String name = assignCtx.runtime_key().getText();
+          WDLExpression exp = new WDLExpression.Builder().visit(assignCtx.expression());
+          assignments.add(new RuntimeAssignment(name, exp));
+        }
+        return new Runtime(assignments);
+      }
+    }
+  }
+
+  public static class RuntimeAssignment {
+    public final String identifier;
+    public final WDLExpression value;
+
+    public RuntimeAssignment(String identifier, WDLExpression assignment) {
+      this.identifier = identifier;
+      this.value = assignment;
+    }
+
+    public int hashCode() {
+      int code = 17;
+      code += identifier.hashCode(); code *= 37;
+      code += value.hashCode(); code *= 37;
+      return code;
+    }
+
+    public boolean equals(Object o) {
+      if(!(o instanceof OutputAssignment)) { return false; }
+      OutputAssignment a = (OutputAssignment)o;
+      return identifier.equals(a.identifier) && value.equals(a.value);
+    }
   }
 
 }

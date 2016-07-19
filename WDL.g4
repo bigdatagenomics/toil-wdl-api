@@ -39,8 +39,10 @@ output_name: IDENTIFIER;
 output_value: STRING;
 
 // task.runtime
+runtime : 'runtime' '{' runtime_assignment* '}';
+runtime_assignment: runtime_key ':' expression ;
+runtime_key: IDENTIFIER ;
 
-runtime : STRING;
 parameter_meta : STRING;
 meta : STRING;
 
@@ -69,33 +71,32 @@ type_postfix_quantifier:  '!' | '?' ;
 bool : 'true' | 'false' ;
 
 expression
-  : STRING
-  | bool
-  | INTEGER
-  | FLOAT
-  | IDENTIFIER
-  | expression '.' expression
-  | expression '[' expression ']'
-  | expression '(' ( expression (',' expression)* )? ')'
-  | '!' expression
-  | '+' expression
-  | '-' expression
-  | expression '*' expression
-  | expression '%' expression
-  | expression '/' expression
-  | expression '+' expression
-  | expression '-' expression
-  | expression '<' expression
-  | expression '<=' expression
-  | expression '>' expression
-  | expression '>=' expression
-  | expression '==' expression
-  | expression '!=' expression
-  | expression '&&' expression
-  | expression '||' expression
-  | '{' ( expression ':' expression)* '}'
-  | '[' expression* ']'
-  | '(' expression ')'
+  : STRING    # String
+  | bool      # Boolean
+  | INTEGER   # Integer
+  | FLOAT     # Float
+  | IDENTIFIER    # Identifier
+  | expression '[' expression ']'   # ArrayReference
+  | expression '(' ( expression (',' expression)* )? ')'  # FunctionApplication
+  | '!' expression   # Not
+  | '+' expression   # Positive
+  | '-' expression   # Negative
+  | expression '*' expression   # Multiply
+  | expression '%' expression   # Modulo
+  | expression '/' expression   # Divide
+  | expression '+' expression   # Add
+  | expression '-' expression   # Subtract
+  | expression '<' expression   # LessThan
+  | expression '<=' expression  # LessThanOrEquals
+  | expression '>' expression   # GreaterThan
+  | expression '>=' expression  # GreaterThanOrEquals
+  | expression '==' expression  # Equality
+  | expression '!=' expression  # Inequality
+  | expression '&&' expression  # And
+  | expression '||' expression  # Or
+  | '{' ( expression ':' expression)* '}'   # Map
+  | '[' expression* ']'    # List
+  | '(' expression ')'     # Grouping
   ;
 
 WS: [ \t\n\r]+ -> skip ;
