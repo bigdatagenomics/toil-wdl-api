@@ -16,16 +16,19 @@ import org.slf4j.LoggerFactory;
 public class WDLTask implements WDLComponent<WDLTask> {
 
   public final String taskName;
+  public final List<WDLDeclaration> declarations;
   public final List<Command> commands;
   public final List<Runtime> runtimes;
   public final List<Output> outputs;
 
   public WDLTask(final String name,
+                 final Collection<WDLDeclaration> decls,
                  final Collection<Command> commands,
                  final Collection<Runtime> runtimes,
                  final Collection<Output> outputs) {
 
     this.taskName = name;
+    this.declarations = new ArrayList<>(decls);
     this.commands = new ArrayList<>(commands);
     this.runtimes = new ArrayList<>(runtimes);
     this.outputs = new ArrayList<>(outputs);
@@ -63,6 +66,11 @@ public class WDLTask implements WDLComponent<WDLTask> {
       final LinkedList<Command> commands = new LinkedList<>();
       final LinkedList<Runtime> runtimes = new LinkedList<>();
 
+      final LinkedList<WDLDeclaration> decls = new LinkedList<>();
+      for(WDLParser.DeclarationContext dctx : ctx.declaration()) {
+        decls.add(new WDLDeclaration.Builder().visit(dctx));
+      }
+
       TaskComponentBuilder componentBuilder = new TaskComponentBuilder();
 
       for(WDLParser.Task_sectionContext sectionCtx : ctx.task_section()) {
@@ -73,7 +81,7 @@ public class WDLTask implements WDLComponent<WDLTask> {
         if(component instanceof Command) { commands.add((Command)component); }
       }
 
-      return new WDLTask(name, commands, runtimes, outputs);
+      return new WDLTask(name, decls, commands, runtimes, outputs);
     }
 
     @Override

@@ -9,6 +9,7 @@ import_name : IDENTIFIER ;
 task : 'task' task_name '{' declaration* task_section* '}' ;
 task_name : IDENTIFIER ;
 declaration: type IDENTIFIER ('=' expression)? ;
+
 task_section
   : command   // taskCommand
   | runtime    // taskRuntime

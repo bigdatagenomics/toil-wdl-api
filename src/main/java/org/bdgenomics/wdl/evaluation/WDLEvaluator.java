@@ -24,11 +24,4 @@ public class WDLEvaluator {
   }
 }
 
-class DocumentBuilder extends WDLBaseVisitor<WDLDocument> {
-
-  @Override
-  public WDLDocument visitDocument(WDLParser.DocumentContext ctx) {
-    return null;
-  }
-}
 

@@ -14,6 +14,13 @@ public class WDLTaskTest {
     assertThat(task.commands).isEmpty();
     assertThat(task.outputs).isEmpty();
 
+    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { File in }");
+    assertThat(task).isNotNull().withFailMessage("task was null");
+    assertThat(task.taskName).isEqualTo("foo");
+    assertThat(task.commands).isEmpty();
+    assertThat(task.outputs).isEmpty();
+    assertThat(task.declarations).containsExactly(new WDLDeclaration("File", "in", null));
+
     task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { output { String temp = \"x\"} }");
     assertThat(task).isNotNull().withFailMessage("task was null");
     assertThat(task.taskName).isEqualTo("foo");
