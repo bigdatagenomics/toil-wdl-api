@@ -53,19 +53,20 @@ meta : STRING;
 workflow: STRING ;
 
 // types
-type
-  : primitive_type type_postfix_quantifier? // primitiveType
-  | array_type type_postfix_quantifier?     // arrayType
-  | map_type type_postfix_quantifier?       // mapType
-  | object_type type_postfix_quantifier?    // objectType
-  ;
+type : (primitive_type | array_type | map_type | object_type) type_postfix_quantifier? ;
+type_postfix_quantifier:  '+' | '?' ;
 
 primitive_type : 'Boolean' | 'Int' | 'Float' | 'File' | 'String' ;
 
-array_type:  'Array' '[' (primitive_type | object_type | array_type) ']';
+array_type:  'Array' '[' array_component_type ']';
+array_component_type : primitive_type | object_type | array_type ;
+
 object_type:  'Object' ;
-map_type: 'Map' '[' primitive_type ',' (primitive_type | array_type | map_type | object_type) ']' ;
-type_postfix_quantifier:  '!' | '?' ;
+
+map_type: 'Map' '[' map_key_type ':' map_value_type ']' ;
+map_key_type: primitive_type;
+map_value_type: primitive_type | array_type | map_type | object_type ;
+
 
 // expressions
 

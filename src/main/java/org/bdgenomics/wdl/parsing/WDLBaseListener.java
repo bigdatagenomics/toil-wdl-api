@@ -328,6 +328,18 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrimitive_type(WDLParser.Primitive_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -347,6 +359,18 @@ public class WDLBaseListener implements WDLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArray_type(WDLParser.Array_typeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArray_component_type(WDLParser.Array_component_typeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArray_component_type(WDLParser.Array_component_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -376,13 +400,25 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx) { }
+	@Override public void enterMap_key_type(WDLParser.Map_key_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx) { }
+	@Override public void exitMap_key_type(WDLParser.Map_key_typeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMap_value_type(WDLParser.Map_value_typeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMap_value_type(WDLParser.Map_value_typeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

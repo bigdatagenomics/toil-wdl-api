@@ -167,6 +167,12 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitType(WDLParser.TypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WDLParser#primitive_type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -178,6 +184,12 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArray_type(WDLParser.Array_typeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#array_component_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray_component_type(WDLParser.Array_component_typeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#object_type}.
 	 * @param ctx the parse tree
@@ -191,11 +203,17 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMap_type(WDLParser.Map_typeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * Visit a parse tree produced by {@link WDLParser#map_key_type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	T visitMap_key_type(WDLParser.Map_key_typeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#map_value_type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMap_value_type(WDLParser.Map_value_typeContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#bool}.
 	 * @param ctx the parse tree

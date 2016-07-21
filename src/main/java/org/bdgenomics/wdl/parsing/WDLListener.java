@@ -268,6 +268,16 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitType(WDLParser.TypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link WDLParser#primitive_type}.
 	 * @param ctx the parse tree
 	 */
@@ -287,6 +297,16 @@ public interface WDLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArray_type(WDLParser.Array_typeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#array_component_type}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray_component_type(WDLParser.Array_component_typeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#array_component_type}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray_component_type(WDLParser.Array_component_typeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#object_type}.
 	 * @param ctx the parse tree
@@ -308,15 +328,25 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitMap_type(WDLParser.Map_typeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * Enter a parse tree produced by {@link WDLParser#map_key_type}.
 	 * @param ctx the parse tree
 	 */
-	void enterType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	void enterMap_key_type(WDLParser.Map_key_typeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#type_postfix_quantifier}.
+	 * Exit a parse tree produced by {@link WDLParser#map_key_type}.
 	 * @param ctx the parse tree
 	 */
-	void exitType_postfix_quantifier(WDLParser.Type_postfix_quantifierContext ctx);
+	void exitMap_key_type(WDLParser.Map_key_typeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#map_value_type}.
+	 * @param ctx the parse tree
+	 */
+	void enterMap_value_type(WDLParser.Map_value_typeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#map_value_type}.
+	 * @param ctx the parse tree
+	 */
+	void exitMap_value_type(WDLParser.Map_value_typeContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#bool}.
 	 * @param ctx the parse tree
