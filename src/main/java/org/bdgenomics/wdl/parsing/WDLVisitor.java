@@ -161,6 +161,60 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWorkflow(WDLParser.WorkflowContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WDLParser#workflow_element}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWorkflow_element(WDLParser.Workflow_elementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#call}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCall(WDLParser.CallContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#call_body}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCall_body(WDLParser.Call_bodyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#call_inputs}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCall_inputs(WDLParser.Call_inputsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#variable_mappings}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable_mappings(WDLParser.Variable_mappingsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#variable_mapping_kv}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#loop}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLoop(WDLParser.LoopContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#conditional}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitConditional(WDLParser.ConditionalContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#scatter}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScatter(WDLParser.ScatterContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WDLParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

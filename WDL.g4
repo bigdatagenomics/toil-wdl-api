@@ -50,7 +50,18 @@ meta : STRING;
 //$task_sections = ($command | $runtime | $task_output | $parameter_meta | $meta)+
 //task_sections : (command | runtime | task_output | parameter_meta | meta)+ ;
 
-workflow: STRING ;
+workflow: 'workflow' '{' workflow_element* '}' ;
+workflow_element: call | loop | conditional | declaration | scatter ;
+
+call: 'call' IDENTIFIER ('as' IDENTIFIER)? call_body? ;
+call_body: '{' call_inputs? '}' ;
+call_inputs: 'input' ':' variable_mappings ;
+variable_mappings: variable_mapping_kv (',' variable_mapping_kv)* ;
+variable_mapping_kv: IDENTIFIER '=' expression ;
+
+loop: 'loop' '{' '}' ;
+conditional: 'if' '{' '}' ;
+scatter: 'scatter' '{' '}' ;
 
 // types
 type : (primitive_type | array_type | map_type | object_type) type_postfix_quantifier? ;

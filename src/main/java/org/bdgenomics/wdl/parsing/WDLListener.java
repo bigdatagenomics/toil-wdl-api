@@ -258,6 +258,96 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitWorkflow(WDLParser.WorkflowContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link WDLParser#workflow_element}.
+	 * @param ctx the parse tree
+	 */
+	void enterWorkflow_element(WDLParser.Workflow_elementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#workflow_element}.
+	 * @param ctx the parse tree
+	 */
+	void exitWorkflow_element(WDLParser.Workflow_elementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall(WDLParser.CallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#call}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall(WDLParser.CallContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#call_body}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall_body(WDLParser.Call_bodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#call_body}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall_body(WDLParser.Call_bodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#call_inputs}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall_inputs(WDLParser.Call_inputsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#call_inputs}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall_inputs(WDLParser.Call_inputsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#variable_mappings}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable_mappings(WDLParser.Variable_mappingsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#variable_mappings}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable_mappings(WDLParser.Variable_mappingsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#variable_mapping_kv}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#variable_mapping_kv}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void enterLoop(WDLParser.LoopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#loop}.
+	 * @param ctx the parse tree
+	 */
+	void exitLoop(WDLParser.LoopContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#conditional}.
+	 * @param ctx the parse tree
+	 */
+	void enterConditional(WDLParser.ConditionalContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#conditional}.
+	 * @param ctx the parse tree
+	 */
+	void exitConditional(WDLParser.ConditionalContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#scatter}.
+	 * @param ctx the parse tree
+	 */
+	void enterScatter(WDLParser.ScatterContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#scatter}.
+	 * @param ctx the parse tree
+	 */
+	void exitScatter(WDLParser.ScatterContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link WDLParser#type}.
 	 * @param ctx the parse tree
 	 */
