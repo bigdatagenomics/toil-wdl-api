@@ -173,12 +173,6 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCall(WDLParser.CallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WDLParser#call_body}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCall_body(WDLParser.Call_bodyContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link WDLParser#call_inputs}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -196,6 +190,12 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link WDLParser#variable_mapping_key}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#loop}.
 	 * @param ctx the parse tree

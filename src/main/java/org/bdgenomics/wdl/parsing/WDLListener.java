@@ -278,16 +278,6 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitCall(WDLParser.CallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#call_body}.
-	 * @param ctx the parse tree
-	 */
-	void enterCall_body(WDLParser.Call_bodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link WDLParser#call_body}.
-	 * @param ctx the parse tree
-	 */
-	void exitCall_body(WDLParser.Call_bodyContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link WDLParser#call_inputs}.
 	 * @param ctx the parse tree
 	 */
@@ -317,6 +307,16 @@ public interface WDLListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link WDLParser#variable_mapping_key}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#variable_mapping_key}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#loop}.
 	 * @param ctx the parse tree

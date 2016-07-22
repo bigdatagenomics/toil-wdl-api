@@ -340,18 +340,6 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCall_body(WDLParser.Call_bodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCall_body(WDLParser.Call_bodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterCall_inputs(WDLParser.Call_inputsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -383,6 +371,18 @@ public class WDLBaseListener implements WDLListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

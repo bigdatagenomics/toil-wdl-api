@@ -1,10 +1,12 @@
 package org.bdgenomics.wdl.evaluation;
 
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 import static org.bdgenomics.utils.EqualityUtils.*;
 import static org.bdgenomics.utils.HashUtils.hash;
 import static org.bdgenomics.utils.HashUtils.hashAdd;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
@@ -12,6 +14,10 @@ import org.bdgenomics.wdl.parsing.WDLParser;
 import org.bdgenomics.wdl.parsing.WDLVisitor;
 import com.google.common.base.Preconditions;
 
+/**
+ * A `call NAME { ... }` block inside of a workflow.
+ *
+ */
 public class WDLCall implements WDLComponent<WDLCall> {
 
   public final String callName;
@@ -48,6 +54,7 @@ public class WDLCall implements WDLComponent<WDLCall> {
   }
 
   public static class CallInput {
+
     public final String key;
     public final WDLExpression value;
 
@@ -74,23 +81,27 @@ public class WDLCall implements WDLComponent<WDLCall> {
     @Override
     public WDLCall visitCall(WDLParser.CallContext ctx) {
       final String callName = ctx.IDENTIFIER(0).getSymbol().getText();
-      final CallInput[] inputs = parseInputs(ctx.call_body().call_inputs());
+      final CallInput[] inputs = parseInputs(ctx.call_inputs());
       return new WDLCall(callName, inputs);
     }
 
     private CallInput[] parseInputs(WDLParser.Call_inputsContext ctx) {
       ArrayList<CallInput> inputs = new ArrayList<>();
       if(ctx != null) {
-        for (WDLParser.Variable_mapping_kvContext kvctx : ctx.variable_mappings().variable_mapping_kv()) {
-          inputs.add(visit_variable_mapping_kv(kvctx));
-        }
+        inputs.addAll(parseMapping(ctx.variable_mappings()));
       }
 
       return inputs.toArray(new CallInput[inputs.size()]);
     }
 
-    private CallInput visit_variable_mapping_kv(WDLParser.Variable_mapping_kvContext ctx) {
-      final String key = ctx.IDENTIFIER().getSymbol().getText();
+    private List<CallInput> parseMapping(WDLParser.Variable_mappingsContext ctx) {
+
+      System.out.println(String.format("Variable_Mappings: \"%s\"", ctx.getText()));
+      return ctx.variable_mapping_kv().stream().map(this::parseKV).collect(toList());
+    }
+
+    private CallInput parseKV(WDLParser.Variable_mapping_kvContext ctx) {
+      final String key = ctx.variable_mapping_key().getText();
       final WDLExpression value = new WDLExpression.Builder().visit(ctx.expression());
       return new CallInput(key, value);
     }
