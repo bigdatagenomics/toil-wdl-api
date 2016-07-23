@@ -23,6 +23,10 @@ public class WDLCall implements WDLComponent<WDLCall> {
   public final String callName;
   public final CallInput[] inputs;
 
+  public WDLCall(final String name) {
+    this(name, new CallInput[0]);
+  }
+
   public WDLCall(final String name, final CallInput[] inputs) {
     Preconditions.checkNotNull(name);
     Preconditions.checkNotNull(inputs);

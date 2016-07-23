@@ -258,6 +258,16 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitWorkflow(WDLParser.WorkflowContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link WDLParser#workflow_name}.
+	 * @param ctx the parse tree
+	 */
+	void enterWorkflow_name(WDLParser.Workflow_nameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link WDLParser#workflow_name}.
+	 * @param ctx the parse tree
+	 */
+	void exitWorkflow_name(WDLParser.Workflow_nameContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link WDLParser#workflow_element}.
 	 * @param ctx the parse tree
 	 */

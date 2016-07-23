@@ -161,6 +161,12 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWorkflow(WDLParser.WorkflowContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link WDLParser#workflow_name}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWorkflow_name(WDLParser.Workflow_nameContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link WDLParser#workflow_element}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

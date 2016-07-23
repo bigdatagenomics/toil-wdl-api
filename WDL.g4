@@ -50,7 +50,8 @@ meta : STRING;
 //$task_sections = ($command | $runtime | $task_output | $parameter_meta | $meta)+
 //task_sections : (command | runtime | task_output | parameter_meta | meta)+ ;
 
-workflow: 'workflow' '{' workflow_element* '}' ;
+workflow: 'workflow' workflow_name '{' workflow_element* '}' ;
+workflow_name : IDENTIFIER ;
 workflow_element: call | loop | conditional | declaration | scatter ;
 
 call: 'call' IDENTIFIER ('as' IDENTIFIER)? ( '{' call_inputs? '}' )? ;

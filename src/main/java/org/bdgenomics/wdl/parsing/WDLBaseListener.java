@@ -316,6 +316,18 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterWorkflow_name(WDLParser.Workflow_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWorkflow_name(WDLParser.Workflow_nameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWorkflow_element(WDLParser.Workflow_elementContext ctx) { }
 	/**
 	 * {@inheritDoc}
