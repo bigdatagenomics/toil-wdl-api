@@ -53,7 +53,7 @@ meta : STRING;
 workflow: 'workflow' '{' workflow_element* '}' ;
 workflow_element: call | loop | conditional | declaration | scatter ;
 
-call: 'call' IDENTIFIER ('as' IDENTIFIER)? '{' call_inputs? '}';
+call: 'call' IDENTIFIER ('as' IDENTIFIER)? ( '{' call_inputs? '}' )? ;
 call_inputs: 'input' ':' variable_mappings ;
 variable_mappings: variable_mapping_kv (',' variable_mapping_kv)* ;
 variable_mapping_kv: variable_mapping_key '=' expression ;

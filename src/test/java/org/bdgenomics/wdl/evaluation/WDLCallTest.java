@@ -12,6 +12,11 @@ public class WDLCallTest {
     assertThat(call).isNotNull();
     assertThat(call.callName).isEqualTo("foo");
     assertThat(call.inputs).isEmpty();
+
+    call = WDLEvaluator.parse(new WDLCall.Builder(), "call foo");
+    assertThat(call).isNotNull();
+    assertThat(call.callName).isEqualTo("foo");
+    assertThat(call.inputs).isEmpty();
   }
 
   @Test
