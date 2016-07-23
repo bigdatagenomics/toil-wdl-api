@@ -35,13 +35,13 @@ import org.bdgenomics.wdl.parsing.WDLVisitor;
  | expression '/' expression   # Divide
  | expression '+' expression   # Add
  | expression '-' expression   # Subtract
- | expression '<' expression   # LessThan
- | expression '<=' expression  # LessThanOrEquals
- | expression '>' expression   # GreaterThan
- | expression '>=' expression  # GreaterThanOrEquals
+ | expression '&lt;' expression   # LessThan
+ | expression '&lt;=' expression  # LessThanOrEquals
+ | expression '&gt;' expression   # GreaterThan
+ | expression '&gt;=' expression  # GreaterThanOrEquals
  | expression '==' expression  # Equality
  | expression '!=' expression  # Inequality
- | expression '&&' expression  # And
+ | expression '&amp;&amp;' expression  # And
  | expression '||' expression  # Or
  | '{' ( expression ':' expression)* '}'   # Map
  | '[' expression* ']'    # List
