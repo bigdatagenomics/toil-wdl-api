@@ -11,11 +11,11 @@ task_name : IDENTIFIER ;
 declaration: type IDENTIFIER ('=' expression)? ;
 
 task_section
-  : command   // taskCommand
-  | runtime    // taskRuntime
-  | task_output   // taskOutput
-  | parameter_meta   // taskParameterMeta
-  | meta              // taskMeta
+  : command
+  | runtime
+  | task_output
+  | parameter_meta
+  | meta
   ;
 
 // task.command

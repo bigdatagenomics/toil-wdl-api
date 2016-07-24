@@ -11,6 +11,9 @@ import static org.bdgenomics.utils.HashUtils.hashOrNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -48,7 +51,7 @@ import org.bdgenomics.wdl.parsing.WDLVisitor;
  | '(' expression ')'     # Grouping
  ;
  */
-public class WDLExpression implements WDLComponent<WDLExpression> {
+public abstract class WDLExpression implements WDLComponent<WDLExpression> {
 
   private final String exprType;
   private final WDLExpression[] subExprs;
@@ -69,6 +72,8 @@ public class WDLExpression implements WDLComponent<WDLExpression> {
       eq(of(exprType), to(e.exprType)) &&
       eq(of(subExprs), to(e.subExprs));
   }
+
+  public abstract <T> T evaluate(final Environment env);
 
   @Override
   public WDLVisitor<WDLExpression> visitor() {
@@ -247,6 +252,13 @@ class ExprArrayReference extends WDLExpression {
   }
 
   public String toString() { return String.format("%s[%s]", arrayExpr.toString(), index.toString()); }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object[] array = arrayExpr.evaluate(env);
+    Integer i = index.evaluate(env);
+    return (T)array[i];
+  }
 }
 
 class ExprFunctionApplication extends WDLExpression {
@@ -263,6 +275,16 @@ class ExprFunctionApplication extends WDLExpression {
     return String.format("%s(%s)", function.toString(),
       Stream.of(arguments).map(WDLExpression::toString).collect(joining(",")));
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Function f = function.evaluate(env);
+    Object[] args = new Object[arguments.length];
+    for(int i = 0; i < args.length; i++) {
+      args[i] = arguments[i].evaluate(env);
+    }
+    return (T)f.apply(args);
+  }
 }
 
 class ExprList extends WDLExpression {
@@ -276,6 +298,11 @@ class ExprList extends WDLExpression {
   public String toString() {
     return String.format("[%s]",
       Stream.of(arguments).map(WDLExpression::toString).collect(joining(", ")));
+  }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return (T)Stream.of(arguments).map(arg -> arg.evaluate(env)).collect(toList());
   }
 }
 
@@ -303,6 +330,17 @@ class ExprMap extends WDLExpression {
         .mapToObj(i -> String.format("%s : %s", keys[i].toString(), values[i].toString()))
         .collect(joining(", ")));
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Map<String, Object> vals = new TreeMap<>();
+    for(int i = 0; i < keys.length; i++) {
+      String key = keys[i].evaluate(env);
+      Object value = values[i].evaluate(env);
+      vals.put(key, value);
+    }
+    return (T)vals;
+  }
 }
 
 /*
@@ -314,30 +352,55 @@ class ExprString extends WDLExpression {
   public ExprString(final String value) { this.value = value; }
 
   public String toString() { return value; }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return (T)value;
+  }
 }
 
 class ExprInteger extends WDLExpression {
   public final Integer value;
   public ExprInteger(final Integer value) { this.value = value; }
   public String toString() { return String.valueOf(value); }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return (T)value;
+  }
 }
 
 class ExprFloat extends WDLExpression {
   public final Double value;
   public ExprFloat(final Double value) { this.value = value; }
   public String toString() { return String.valueOf(value); }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return (T)value;
+  }
 }
 
 class ExprIdentifier extends WDLExpression {
   public final String value;
   public ExprIdentifier(final String value) { this.value = value; }
   public String toString() { return String.valueOf(value); }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return env.lookup(value);
+  }
 }
 
 class ExprBoolean extends WDLExpression {
   public final Boolean value;
   public ExprBoolean(final Boolean value) { this.value = value; }
   public String toString() { return String.valueOf(value); }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    return (T)value;
+  }
 }
 
 
@@ -356,6 +419,18 @@ class ExprNegative extends WDLExpression {
   public String toString() {
     return String.format("-%s", inner.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Number n = (Number)inner.evaluate(env);
+    if(n instanceof Integer) {
+      return (T)(Integer)( -(Integer)n );
+    } else if(n instanceof Double) {
+      return (T)(Double)( -(Double)n );
+    } else {
+      return (T) n;
+    }
+  }
 }
 
 class ExprPositive extends WDLExpression {
@@ -368,6 +443,18 @@ class ExprPositive extends WDLExpression {
   public String toString() {
     return String.format("+%s", inner.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Number n = (Number)inner.evaluate(env);
+    if(n instanceof Integer) {
+      return (T)(Integer)( +(Integer)n );
+    } else if(n instanceof Double) {
+      return (T)(Double)( +(Double)n );
+    } else {
+      return (T) n;
+    }
+  }
 }
 
 class ExprNot extends WDLExpression {
@@ -379,6 +466,13 @@ class ExprNot extends WDLExpression {
   }
   public String toString() {
     return String.format("!%s", inner.toString());
+  }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Boolean n = (Boolean)inner.evaluate(env);
+    Boolean notN = !n;
+    return (T)notN;
   }
 }
 
@@ -397,6 +491,18 @@ class ExprAddition extends WDLExpression {
   public String toString() {
     return String.format("%s+%s", left.toString(), right.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Double)(leftd + rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Integer)(leftd + rightd));
+    }
+  }
 }
 
 class ExprSubtraction extends WDLExpression {
@@ -409,6 +515,18 @@ class ExprSubtraction extends WDLExpression {
   }
   public String toString() {
     return String.format("%s-%s", left.toString(), right.toString());
+  }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Double)(leftd - rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Integer)(leftd - rightd));
+    }
   }
 }
 
@@ -423,6 +541,17 @@ class ExprMultiplication extends WDLExpression {
   public String toString() {
     return String.format("%s*%s", left.toString(), right.toString());
   }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Double)(leftd * rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Integer)(leftd * rightd));
+    }
+  }
 }
 
 class ExprDivision extends WDLExpression {
@@ -435,6 +564,17 @@ class ExprDivision extends WDLExpression {
   }
   public String toString() {
     return String.format("%s/%s", left.toString(), right.toString());
+  }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Double)(leftd / rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Integer)(leftd / rightd));
+    }
   }
 }
 
@@ -449,6 +589,17 @@ class ExprModulo extends WDLExpression {
   public String toString() {
     return String.format("%s%%%s", left.toString(), right.toString());
   }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Double)(leftd % rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Integer)(leftd % rightd));
+    }
+  }
 }
 
 class ExprEquality extends WDLExpression {
@@ -462,6 +613,16 @@ class ExprEquality extends WDLExpression {
   public String toString() {
     return String.format("%s==%s", left.toString(), right.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object lv = left.evaluate(env), rv = right.evaluate(env);
+    if(lv == null || rv == null) {
+      return (T)((Boolean)(lv == rv));
+    } else {
+      return (T)((Boolean)lv.equals(rv));
+    }
+  }
 }
 
 class ExprInequality extends WDLExpression {
@@ -473,7 +634,17 @@ class ExprInequality extends WDLExpression {
     this.right = right;
   }
   public String toString() {
+
     return String.format("%s!=%s", left.toString(), right.toString());
+  }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object lv = left.evaluate(env), rv = right.evaluate(env);
+    if(lv == null || rv == null) {
+      return (T)((Boolean)(lv != rv));
+    } else {
+      return (T)((Boolean)!lv.equals(rv));
+    }
   }
 }
 
@@ -488,6 +659,12 @@ class ExprConjunction extends WDLExpression {
   public String toString() {
     return String.format("%s&&%s", left.toString(), right.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Boolean leftv = left.evaluate(env), rightv = right.evaluate(env);
+    return (T)((Boolean)(leftv && rightv));
+  }
 }
 
 class ExprDisjunction extends WDLExpression {
@@ -499,7 +676,13 @@ class ExprDisjunction extends WDLExpression {
     this.right = right;
   }
   public String toString() {
+
     return String.format("%s||%s", left.toString(), right.toString());
+  }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Boolean leftv = left.evaluate(env), rightv = right.evaluate(env);
+    return (T)((Boolean)(leftv || rightv));
   }
 }
 
@@ -514,6 +697,18 @@ class ExprLessThan extends WDLExpression {
   public String toString() {
     return String.format("%s<%s", left.toString(), right.toString());
   }
+
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Boolean)(leftd < rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Boolean)(leftd < rightd));
+    }
+  }
 }
 
 class ExprLessThanOrEquals extends WDLExpression {
@@ -526,6 +721,17 @@ class ExprLessThanOrEquals extends WDLExpression {
   }
   public String toString() {
     return String.format("%s<=%s", left.toString(), right.toString());
+  }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Boolean)(leftd <= rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Boolean)(leftd <= rightd));
+    }
   }
 }
 
@@ -540,6 +746,17 @@ class ExprGreaterThan extends WDLExpression {
   public String toString() {
     return String.format("%s>%s", left.toString(), right.toString());
   }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Boolean)(leftd > rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Boolean)(leftd > rightd));
+    }
+  }
 }
 
 class ExprGreaterThanOrEquals extends WDLExpression {
@@ -552,6 +769,17 @@ class ExprGreaterThanOrEquals extends WDLExpression {
   }
   public String toString() {
     return String.format("%s>=%s", left.toString(), right.toString());
+  }
+  @Override
+  public <T> T evaluate(Environment env) {
+    Object leftval = left.evaluate(env), rightval = right.evaluate(env);
+    if(leftval instanceof Double || rightval instanceof Double) {
+      Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
+      return (T)((Boolean)(leftd >= rightd));
+    } else {
+      Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
+      return (T)((Boolean)(leftd >= rightd));
+    }
   }
 }
 
