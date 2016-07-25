@@ -1,87 +1,59 @@
 package org.bdgenomics.cwl;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.common.base.Preconditions;
 
-/**
- cwlVersion: v1.0
- class: Workflow
- inputs:
-   inp: File
-   ex: string
-
- outputs:
-   classout:
-     type: File
-     outputSource: compile/classfile
-
- steps:
-   untar:
-     run: tar-param.cwl
-     in:
-       tarfile: inp
-       extractfile: ex
-     out: [example_out]
-
-   compile:
-     run: arguments.cwl
-     in:
-       src: untar/example_out
-     out: [classfile]
- */
+@JsonInclude(Include.NON_NULL)
 @JsonPropertyOrder({"cwlVersion", "class", "inputs", "outputs", "steps"})
 public class Workflow extends CWLTool {
 
-  public final Map<String, String> inputs;
+  public String id;
 
-  public final Map<String, WorkflowOutput> outputs;
+  public List<InputParameter> inputs;
 
-  public final Map<String, Step> steps;
+  public List<WorkflowOutputParameter> outputs;
 
-  public Workflow(final Map<String, String> inputs,
-                  final Map<String, WorkflowOutput> outputs,
-                  final Map<String, Step> steps) {
+  public List<WorkflowStep> steps;
+
+  public Workflow() {
+    this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+  }
+
+  public Workflow(final List<InputParameter> inputs,
+                  final List<WorkflowOutputParameter> outputs,
+                  final List<WorkflowStep> steps) {
+
     super("Workflow");
-    this.inputs = new LinkedHashMap<>(inputs);
-    this.outputs = new LinkedHashMap<>(outputs);
-    this.steps = new LinkedHashMap<>(steps);
+
+    Preconditions.checkNotNull(inputs);
+    Preconditions.checkNotNull(outputs);
+    Preconditions.checkNotNull(steps);
+    this.inputs = inputs;
+    this.outputs = outputs;
+    this.steps = steps;
   }
 
-  public static class WorkflowOutput {
-
-    public final String type;
-
-    public final String outputSource;
-
-    public WorkflowOutput(final String type, final String outputSource) {
-      this.type = type;
-      this.outputSource = outputSource;
-    }
+  public Workflow withId(final String id) {
+    this.id = id;
+    return this;
   }
 
-  /**
-   untar:
-     run: tar-param.cwl
-     in:
-       tarfile: inp
-       extractfile: ex
-     outputs: [example_out]
-   */
-  public static class Step {
+  public Workflow withInput(final InputParameter param) {
+    this.inputs.add(param);
+    return this;
+  }
 
-    public final String run;
+  public Workflow withOutput(final WorkflowOutputParameter param) {
+    this.outputs.add(param);
+    return this;
+  }
 
-    public final Map<String, String> in;
-
-    public final List<String> out;
-
-    public Step(final String run, final Map<String, String> in, final List<String> out) {
-      this.run = run;
-      this.in = new LinkedHashMap<>(in);
-      this.out = new ArrayList<>(out);
-    }
+  public Workflow withStep(final WorkflowStep step) {
+    this.steps.add(step);
+    return this;
   }
 }

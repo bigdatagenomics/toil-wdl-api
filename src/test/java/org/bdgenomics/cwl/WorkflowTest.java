@@ -10,53 +10,39 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WorkflowTest extends BaseTest {
 
-  /*
-  cwlVersion: v1.0
-class: Workflow
-inputs:
-  inp: File
-  ex: string
-
-outputs:
-  classout:
-    type: File
-    outputSource: compile/classfile
-
-steps:
-  untar:
-    run: tar-param.cwl
-    in:
-      tarfile: inp
-      extractfile: ex
-    out: [example_out]
-
-  compile:
-    run: arguments.cwl
-    in:
-      src: untar/example_out
-    out: [classfile]
+  /**
+   cwlVersion: cwl:draft-3
+   class: Workflow
+   inputs:
+   - id: voice
+   type: string
+   outputs:
+   - id: said
+   type: File
+   source: "#echo/output"
+   steps:
+   - id: echo
+   run: echo.cwl
+   inputs:
+   - id: voice
+   source: "#voice"
+   outputs:
+   - id: output
    */
   @Test
   public void testWorkflowSerializationTest1() throws IOException {
     Workflow workflow = new Workflow(
-      // inputs
-      map(v("inp", "ex"), v("File", "string")),
-      // outputs
-      map(v("classout"), v(new Workflow.WorkflowOutput("File", "compile/classfile"))),
-      // steps
-      map(v("untar", "compile"), v(
-        new Workflow.Step("tar-param.cwl",
-          map(v("tarfile", "extractfile"), v("inp", "ex")),
-          list("example_out")),
-        new Workflow.Step("arguments.cwl",
-          map(v("src"), v("untar/example_out")),
-          list("classfile")))));
+      list(new InputParameter("voice", "string", null)),
+      list(new WorkflowOutputParameter("said", "File", null).withSource("#echo/output")),
+      list(new WorkflowStep("echo", "echo.cwl",
+        list(new WorkflowStepInput("voice", "#voice")),
+        list(new WorkflowStepOutput("output")))));
 
     ObjectMapper mapper = getMapper();
 
     String yaml = mapper.writeValueAsString(workflow);
 
-    String fixture = fixture("cwl_workflow_test1.yml");
+    String fixture = fixture("workflow.cwl");
 
     assertThat(yaml).isEqualTo(fixture);
   }

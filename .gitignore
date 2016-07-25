@@ -3,4 +3,6 @@
 target/
 gen/
 dependency-reduced-pom.xml
+.vagrant/
+echo_output*.txt
 

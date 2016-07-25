@@ -5,6 +5,6 @@ package org.bdgenomics.cwl;
  */
 public class CWLComponent {
 
-  public final String cwlVersion = "v1.0";
+  public final String cwlVersion = "cwl:draft-3";
 }
 
