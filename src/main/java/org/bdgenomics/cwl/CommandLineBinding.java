@@ -22,4 +22,23 @@ public class CommandLineBinding {
     this.prefix = prefix;
   }
 
+  public CommandLineBinding withPosition(Integer position) {
+    this.position = position;
+    return this;
+  }
+
+  public CommandLineBinding withPrefix(String prefix) {
+    this.prefix = prefix;
+    return this;
+  }
+
+  public CommandLineBinding withSeparate(Boolean separate) {
+    this.separate = separate;
+    return this;
+  }
+
+  public CommandLineBinding withValueFrom(String valueFrom) {
+    this.valueFrom = valueFrom;
+    return this;
+  }
 }

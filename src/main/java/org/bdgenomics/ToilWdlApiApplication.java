@@ -31,7 +31,7 @@ public class ToilWdlApiApplication extends Application<ToilWdlApiConfiguration> 
         ToilService service = configuration.service();
 
         environment.jersey().register(new WorkflowResource(service));
-        environment.jersey().register(new WorkflowsResource());
+        environment.jersey().register(new WorkflowsResource(service));
 
         environment.healthChecks().register("workflow-service", new WorkflowServiceHealthCheck());
     }

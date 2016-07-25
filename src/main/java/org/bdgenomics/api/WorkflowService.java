@@ -1,22 +1,24 @@
 package org.bdgenomics.api;
 
-import org.bdgenomics.core.CallMetadata;
-import org.bdgenomics.core.LogLocations;
+import org.bdgenomics.core.Logs;
+import org.bdgenomics.core.Status;
+import org.bdgenomics.cwl.Workflow;
 
+import java.io.IOException;
 import java.util.Map;
 
 public interface WorkflowService {
 
-    String[] calls(String workflowId);
+    String create(Workflow workflow, Map<String, Object> inputs) throws IOException;
+
+    String abort(String workflowId);
 
     String status(String workflowId);
 
-    String callOutputs(String workflowId, String callId);
+    String metadata(String workflowId);
 
     Map<String,Object> outputs(String workflowId);
 
-    CallMetadata callMetadata(String workflowId, String callId);
-
-    LogLocations[] callLogs(String workflowId, String callId);
+    Logs logs(String workflowId);
 
 }

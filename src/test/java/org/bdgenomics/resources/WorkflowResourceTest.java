@@ -33,8 +33,6 @@ public class WorkflowResourceTest {
     public static void initMocks() {
         WorkflowService workflowMock = mock(WorkflowService.class);
         when(workflowMock.status(workflowId)).thenReturn("complete");
-        when(workflowMock.calls(workflowId)).thenReturn(new String[] { callId });
-        when(workflowMock.callLogs(workflowId, callId)).thenReturn(new LogLocations[] { new LogLocations(workflowStdout, workflowStderr) });
 
         when(service.workflowService()).thenReturn(workflowMock);
     }
@@ -60,9 +58,6 @@ public class WorkflowResourceTest {
                 .get(Logs.class);
 
         assertNotNull(response);
-        assertNotNull("response.logs was null", response.logs);
-        assertFalse(response.logs.isEmpty());
-        assertNotNull(response.logs.get(workflowId));
     }
 
     @Test
