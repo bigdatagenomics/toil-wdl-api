@@ -2,25 +2,43 @@ package org.bdgenomics.cwl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.junit.Test;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 
 public class CommandLineToolTest {
 
+  public ObjectMapper getMapper() {
+    YAMLFactory factory = new YAMLFactory();
+    factory.configure(YAMLGenerator.Feature.WRITE_DOC_START_MARKER, false);
+    factory.configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true);
+    factory.configure(YAMLGenerator.Feature.SPLIT_LINES, false);
+    ObjectMapper mapper = new ObjectMapper(factory);
+    mapper.enable(SerializationFeature.WRITE_SINGLE_ELEM_ARRAYS_UNWRAPPED);
+    mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+
+    return mapper;
+  }
+
   @Test
   public void testSimpleCommandLineToolSerialization() throws IOException {
-    CommandLineTool tool = new CommandLineTool("echo",
+    CommandLineTool tool = new CommandLineTool(
+      "echo",
       map(
         v("example_flag"),
         v(new Input("boolean", new Input.InputBinding(1, "-f")))),
       map(new String[0], new Output[0]));
 
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    ObjectMapper mapper = getMapper();
 
     String yaml = mapper.writeValueAsString(tool);
 
@@ -29,7 +47,8 @@ public class CommandLineToolTest {
 
   @Test
   public void testCommandLineToolSerializationWithNonemptyOutput() throws IOException {
-    CommandLineTool tool = new CommandLineTool("echo",
+    CommandLineTool tool = new CommandLineTool(
+      "echo",
       map(
         v("example_flag"),
         v(new Input("boolean", new Input.InputBinding(1, "-f")))),
@@ -37,12 +56,29 @@ public class CommandLineToolTest {
         v("example_output"),
         v(new Output("File", new Output.OutputBinding("hello.txt")))));
 
-    ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    ObjectMapper mapper = getMapper();
 
     String yaml = mapper.writeValueAsString(tool);
 
     assertThat(yaml).isEqualTo(fixture("cwl_commandlinetool_test2.yml"));
   }
+
+  @Test
+  public void testCommandWithMultipleBaseArgs() throws IOException {
+    CommandLineTool tool = new CommandLineTool(
+      new String[] { "tar", "xf" },
+      map(
+        v("example_flag"),
+        v(new Input("boolean", new Input.InputBinding(1, "-f")))),
+      map(new String[0], new Output[0]));
+
+    ObjectMapper mapper = getMapper();
+
+    String yaml = mapper.writeValueAsString(tool);
+
+    assertThat(yaml).isEqualTo(fixture("cwl_commandlinetool_test3.yml"));
+  }
+
 
   public static <T> T[] v(T... array) { return array; }
 
