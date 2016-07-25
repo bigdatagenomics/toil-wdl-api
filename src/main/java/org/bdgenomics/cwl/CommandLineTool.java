@@ -19,6 +19,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonPropertyOrder({"cwlVersion", "class", "baseCommand", "inputs", "outputs"})
 public class CommandLineTool extends CWLTool {
 
+  // You'd think: "Why are you using a special serializer here, you could just
+  // enable the Jackson option to write single-element collections as solitary values!"
+  // But you'd be wrong, because in *other* objects (notably: Workflow) we don't use
+  // that convention at all.  So this serializer amounts to turning on this option
+  // for _this one particular field_ only.  ARRRGH.
+  @JsonSerialize(using=BaseCommandsSerializer.class)
   public final String[] baseCommand;
 
   // Gotta use a custom serializer because, while this is an object (and when it is non-empty, it is
@@ -45,6 +51,23 @@ public class CommandLineTool extends CWLTool {
     this.baseCommand = baseCommand;
     this.inputs = new LinkedHashMap<>(inputs);
     this.outputs = new LinkedHashMap<>(outputs);
+  }
+
+  public static class BaseCommandsSerializer extends JsonSerializer<String[]> {
+
+    @Override
+    public void serialize(String[] commands,
+                          JsonGenerator jsonGenerator,
+                          SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+      if(commands == null || commands.length == 0) {
+        jsonGenerator.writeStartArray();
+        jsonGenerator.writeEndArray();
+      } else if(commands.length == 1) {
+        jsonGenerator.writeString(commands[0]);
+      } else {
+        jsonGenerator.writeObject(commands);
+      }
+    }
   }
 
   public static class InputsSerializer extends JsonSerializer<Map<String, Input>> {
