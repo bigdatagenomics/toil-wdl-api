@@ -2,6 +2,7 @@ package org.bdgenomics.cwl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.bdgenomics.wdl.evaluation.WDLCall;
 import org.bdgenomics.wdl.evaluation.WDLTask;
 import org.bdgenomics.wdl.evaluation.WDLWorkflow;
 
@@ -28,7 +29,9 @@ public class WDL2CWLConverter {
     }
 
     for(WDLTask.Output out : task.outputs) {
-
+      for(WDLTask.OutputAssignment assign : out.assignments) {
+        outputs.add(new CommandOutputParameter(assign.identifier, assign.type, null));
+      }
     }
 
     CommandLineTool tool = new CommandLineTool(baseCommand, inputs, outputs, arguments);
@@ -37,6 +40,14 @@ public class WDL2CWLConverter {
   }
 
   public static Workflow convertWorkflow(WDLWorkflow wdlWorkflow) {
-    return null;
+    Workflow workflow = new Workflow().withId(wdlWorkflow.name);
+
+    WDLCall call = wdlWorkflow.calls().get(0);
+
+    for(WDLCall.CallInput input : call.inputs) {
+      workflow = workflow.withInput(new InputParameter(input.key));
+    }
+
+    return workflow;
   }
 }
