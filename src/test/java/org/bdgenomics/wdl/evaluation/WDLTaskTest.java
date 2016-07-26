@@ -3,9 +3,25 @@ package org.bdgenomics.wdl.evaluation;
 import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.util.Optional;
+import org.bdgenomics.BaseTest;
 import org.junit.Test;
 
-public class WDLTaskTest {
+public class WDLTaskTest extends BaseTest {
+
+  @Test
+  public void testEchoWDLParsing() throws IOException {
+    String echoWDLString = fixture("echo.wdl");
+    WDLTask task = WDLEvaluator.parse(new WDLTask.Builder(), echoWDLString);
+
+    WDLTask target = new WDLTask("echo",
+      list(new WDLDeclaration(WDLType.STRING, "voice", Optional.empty())),
+      list(new WDLTask.Command("echo", "${voice}", ">echo_output.txt")),
+      list(),
+      list(new WDLTask.Output(new WDLTask.OutputAssignment("File", "output", expression("\"echo_output.txt\""))))
+    );
+
+    assertThat(task).isEqualTo(target);
+  }
 
   @Test
   public void testTaskParsing() throws IOException {
@@ -28,7 +44,7 @@ public class WDLTaskTest {
     assertThat(task.taskName).isEqualTo("foo");
     assertThat(task.commands).isEmpty();
     assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
-    assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", "\"x\""));
+    assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
   }
 
   @Test
@@ -58,13 +74,17 @@ public class WDLTaskTest {
 
     output = WDLEvaluator.parse(new WDLTask.Output.Builder(), "output { File foo = 'bar' }");
     assertThat(output).isNotNull().withFailMessage("output was null");
-    assertThat(output.assignments).containsExactly(new WDLTask.OutputAssignment("File", "foo", "'bar'"));
+    assertThat(output.assignments).containsExactly(new WDLTask.OutputAssignment("File", "foo", expression("'bar'")));
 
     output = WDLEvaluator.parse(new WDLTask.Output.Builder(), "output { File foo = 'bar'\nString bar = \"grok\"\n }");
     assertThat(output).isNotNull().withFailMessage("output was null");
     assertThat(output.assignments).containsExactly(
-      new WDLTask.OutputAssignment("File", "foo", "'bar'"),
-      new WDLTask.OutputAssignment("String", "bar", "\"grok\"")
+      new WDLTask.OutputAssignment("File", "foo", expression("'bar'")),
+      new WDLTask.OutputAssignment("String", "bar", expression("\"grok\""))
     );
+  }
+
+  public static WDLExpression expression(String exprValue) throws IOException {
+    return WDLEvaluator.parse(new WDLExpression.Builder(), exprValue);
   }
 }

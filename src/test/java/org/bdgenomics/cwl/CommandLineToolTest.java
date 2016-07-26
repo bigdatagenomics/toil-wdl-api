@@ -12,7 +12,7 @@ public class CommandLineToolTest extends BaseTest {
   public void testEchoCommandSerialization() throws IOException {
     CommandLineTool tool = new CommandLineTool("echo")
       .withInput(new CommandInputParameter("voice", "string", new CommandInputBinding(1)))
-      .withOutput(new CommandOutputParameter("output", "File", new CommandOutputBinding("echo_output*.txt")))
+      .withOutput(new CommandOutputParameter("output", "File", new CommandOutputBinding("echo_output.txt")))
       .withStdout("echo_output.txt");
 
     ObjectMapper mapper = getMapper();

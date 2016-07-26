@@ -24,6 +24,15 @@ import com.google.common.base.Preconditions;
  */
 public abstract class WDLType implements WDLComponent<WDLType> {
 
+  public static final Set<String> PRIMITIVE_NAMES =
+    new TreeSet<>(Arrays.asList("String", "Int", "Float", "Boolean", "File"));
+
+  public static final WDLType STRING = new PrimitiveType("String");
+  public static final WDLType BOOLEAN = new PrimitiveType("Boolean");
+  public static final WDLType INT = new PrimitiveType("Int");
+  public static final WDLType FLOAT = new PrimitiveType("Float");
+  public static final WDLType FILE = new PrimitiveType("File");
+
   @Override
   public WDLVisitor<WDLType> visitor() {
     return new Builder();
@@ -137,12 +146,10 @@ class PrimitiveType extends WDLType {
 
   public final String typeName;
 
-  public static final Set<String> PRIMITIVE_NAMES =
-    new TreeSet<>(Arrays.asList("String", "Int", "Float", "Boolean", "File"));
 
   public PrimitiveType(final String name) {
     Preconditions.checkNotNull(name);
-    Preconditions.checkArgument(PRIMITIVE_NAMES.contains(name));
+    Preconditions.checkArgument(WDLType.PRIMITIVE_NAMES.contains(name));
     this.typeName = name;
   }
 

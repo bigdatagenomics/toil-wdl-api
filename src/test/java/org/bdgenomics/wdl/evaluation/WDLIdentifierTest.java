@@ -10,6 +10,14 @@ import org.junit.Test;
 public class WDLIdentifierTest {
 
   @Test
+  public void testParseIdentifierWithUnderscore() throws IOException {
+    ExprIdentifier id = WDLEvaluator.parse(new Builder(), "output_name");
+    assertThat(id).isNotNull();
+    assertThat(id.value).isEqualTo("output_name");
+  }
+
+
+  @Test
   public void testParseIdentifier() throws IOException {
     ExprIdentifier id = WDLEvaluator.parse(new Builder(), "x");
     assertThat(id).isNotNull();

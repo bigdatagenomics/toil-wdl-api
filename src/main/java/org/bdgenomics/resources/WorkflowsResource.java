@@ -3,7 +3,7 @@ package org.bdgenomics.resources;
 import java.io.IOException;
 import java.util.Map;
 import org.bdgenomics.api.ToilService;
-import org.bdgenomics.cwl.WDL2CWLConverter;
+import org.bdgenomics.cwl.WDLTranspiler;
 import org.bdgenomics.cwl.Workflow;
 import org.bdgenomics.wdl.evaluation.WDLEvaluator;
 import org.bdgenomics.wdl.evaluation.WDLWorkflow;
@@ -37,7 +37,7 @@ public class WorkflowsResource {
     try {
       WDLWorkflow wdlWorkflow = WDLEvaluator.parse(new WDLWorkflow.Builder(), wdlSource);
 
-      Workflow cwlWorkflow = WDL2CWLConverter.convertWorkflow(wdlWorkflow);
+      Workflow cwlWorkflow = new WDLTranspiler().convertWorkflow(wdlWorkflow);
 
       ObjectMapper mapper = new ObjectMapper();
 

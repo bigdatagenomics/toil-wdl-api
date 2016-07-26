@@ -12,7 +12,23 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonInclude(Include.NON_NULL)
+/**
+ * A tool which can be run from the command line.
+ *
+ * Each CommandLineTool value is (ultimately) encoded as a block with the line
+ *
+ * <blockquote>
+  class: ComamandLineTool
+ </blockquote>
+ *
+ * in a CWL document.
+ *
+ * <p>This is derived from the "draft-3" draft of CWL, full documentation available
+ * <a href="http://www.commonwl.org/draft-3/CommandLineTool.html" target="_blank">here</a>.
+ * </p>
+ *
+ */
+@JsonInclude(Include.NON_EMPTY)
 @JsonPropertyOrder({"cwlVersion", "class", "baseCommand", "stdout", "inputs", "outputs", "arguments"})
 public class CommandLineTool extends CWLTool {
 
@@ -22,7 +38,6 @@ public class CommandLineTool extends CWLTool {
   // that convention at all.  So this serializer amounts to turning on this option
   // for _this one particular field_ only.  ARRRGH.
   @JsonSerialize(using=BaseCommandsSerializer.class)
-
   public final String[] baseCommand;
 
   @JsonInclude(Include.ALWAYS)
@@ -31,6 +46,7 @@ public class CommandLineTool extends CWLTool {
   @JsonInclude(Include.ALWAYS)
   public List<CommandOutputParameter> outputs;
 
+  @JsonInclude(Include.NON_EMPTY)
   public List<CommandLineBinding> arguments;
 
   public String stdout;

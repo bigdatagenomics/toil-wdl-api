@@ -35,9 +35,8 @@ var_option_value: expression ;
 
 // task.output
 task_output: 'output' '{' output_assignment* '}';
-output_assignment: type output_name '=' output_value ;
-output_name: IDENTIFIER;
-output_value: STRING;
+output_assignment: type output_name '=' expression ;
+output_name: IDENTIFIER | 'output';
 
 // task.runtime
 runtime : 'runtime' '{' runtime_assignment* '}';

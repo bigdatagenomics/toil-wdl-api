@@ -30,9 +30,14 @@ public class BaseTest {
     return map;
   }
 
-  public static String fixture(String resourceName) throws IOException {
+  public static File findFixture(String resourceName) {
     String filename = ClassLoader.getSystemClassLoader().getResource("fixtures/" + resourceName).getFile();
     File f = new File(filename);
+    return f;
+  }
+
+  public static String fixture(String resourceName) throws IOException {
+    File f = findFixture(resourceName);
     StringBuilder builder = new StringBuilder();
     try (FileReader br = new FileReader(f)) {
       char[] buffer = new char[1024];

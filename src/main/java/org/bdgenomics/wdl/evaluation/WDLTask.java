@@ -1,6 +1,10 @@
 package org.bdgenomics.wdl.evaluation;
 
 import static java.util.stream.Collectors.joining;
+import static org.bdgenomics.utils.EqualityUtils.eq;
+import static org.bdgenomics.utils.EqualityUtils.of;
+import static org.bdgenomics.utils.EqualityUtils.to;
+import static org.bdgenomics.utils.HashUtils.hash;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -12,7 +16,13 @@ import org.bdgenomics.wdl.parsing.WDLParser;
 import org.bdgenomics.wdl.parsing.WDLVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
 
+@JsonInclude(Include.NON_EMPTY)
 public class WDLTask implements WDLComponent<WDLTask> {
 
   public final String taskName;
@@ -32,6 +42,30 @@ public class WDLTask implements WDLComponent<WDLTask> {
     this.commands = new ArrayList<>(commands);
     this.runtimes = new ArrayList<>(runtimes);
     this.outputs = new ArrayList<>(outputs);
+  }
+
+  public int hashCode() {
+    return hash(taskName, declarations, commands, runtimes, outputs);
+  }
+
+  public boolean equals(Object o) {
+    if(!(o instanceof WDLTask)) { return false; }
+    WDLTask t = (WDLTask)o;
+    if(!eq(of(taskName), to(t.taskName))) { return false; }
+    if(!eq(of(declarations.toArray()), to(t.declarations.toArray()))) { return false; }
+    if(!eq(of(commands.toArray()), to(t.commands.toArray()))) { return false; }
+    if(!eq(of(runtimes.toArray()), to(t.runtimes.toArray()))) { return false; }
+    if(!eq(of(outputs.toArray()), to(t.outputs.toArray()))) { return false; }
+    return true;
+  }
+
+  public String toString() {
+    try {
+      return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(this);
+    } catch (JsonProcessingException e) {
+      e.printStackTrace(System.err);
+      return super.toString();
+    }
   }
 
   @Override
@@ -102,6 +136,16 @@ public class WDLTask implements WDLComponent<WDLTask> {
       this.all = Stream.of(this.contents).collect(joining(" "));
     }
 
+    public int hashCode() {
+      return hash(contents);
+    }
+
+    public boolean equals(Object o) {
+      if(!( o instanceof Command)) { return false; }
+      Command c = (Command)o;
+      return eq(of(contents), to(c.contents));
+    }
+
     @Override
     public WDLVisitor<Command> visitor() {
       return new Builder();
@@ -134,6 +178,16 @@ public class WDLTask implements WDLComponent<WDLTask> {
       this.assignments = assignments.clone();
     }
 
+    public int hashCode() {
+      return hash(assignments);
+    }
+
+    public boolean equals(Object o) {
+      if(!(o instanceof Output)) { return false; }
+      Output ot = (Output)o;
+      return eq(of(assignments), to(ot.assignments));
+    }
+
     @Override
     public WDLVisitor<Output> visitor() {
       return new Builder();
@@ -147,11 +201,11 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
         for(WDLParser.Output_assignmentContext assign_ctx : ctx.output_assignment()) {
 
-          assignments.add(new OutputAssignment(
-            assign_ctx.type().getText(),
-            assign_ctx.output_name().getText(),
-            assign_ctx.output_value().getText()
-            ));
+          final String type = assign_ctx.type().getText();
+          final String name = assign_ctx.output_name().getText();
+          final WDLExpression value = new WDLExpression.Builder().visit(assign_ctx.expression());
+
+          assignments.add(new OutputAssignment(type, name, value));
         }
         return new Output(assignments.toArray(new OutputAssignment[assignments.size()]));
       }
@@ -166,9 +220,17 @@ public class WDLTask implements WDLComponent<WDLTask> {
   public static class OutputAssignment {
     public final String type;
     public final String identifier;
-    public final String value;
+    public final WDLExpression value;
 
-    public OutputAssignment(String type, String identifier, String assignment) {
+    public OutputAssignment(String type, String identifier, WDLExpression assignment) {
+
+      Preconditions.checkNotNull(type);
+      Preconditions.checkNotNull(identifier);
+      Preconditions.checkNotNull(assignment);
+
+      Preconditions.checkArgument(type.length() > 0);
+      Preconditions.checkArgument(identifier.length() > 0);
+
       this.type = type;
       this.identifier = identifier;
       this.value = assignment;

@@ -188,16 +188,6 @@ public interface WDLListener extends ParseTreeListener {
 	 */
 	void exitOutput_name(WDLParser.Output_nameContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#output_value}.
-	 * @param ctx the parse tree
-	 */
-	void enterOutput_value(WDLParser.Output_valueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link WDLParser#output_value}.
-	 * @param ctx the parse tree
-	 */
-	void exitOutput_value(WDLParser.Output_valueContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link WDLParser#runtime}.
 	 * @param ctx the parse tree
 	 */

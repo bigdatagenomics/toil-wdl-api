@@ -119,12 +119,6 @@ public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitOutput_name(WDLParser.Output_nameContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WDLParser#output_value}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOutput_value(WDLParser.Output_valueContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link WDLParser#runtime}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

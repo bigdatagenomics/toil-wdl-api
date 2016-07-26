@@ -232,18 +232,6 @@ public class WDLBaseListener implements WDLListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOutput_value(WDLParser.Output_valueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitOutput_value(WDLParser.Output_valueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterRuntime(WDLParser.RuntimeContext ctx) { }
 	/**
 	 * {@inheritDoc}
