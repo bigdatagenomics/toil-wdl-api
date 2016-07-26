@@ -26,7 +26,7 @@ command
 command_part
   :  command_part_string  // commandPart
   | command_part_var ;    // commandVar
-command_part_string : (~'${')+;
+command_part_string : (~( '${' | '}'))+;
 command_part_var: '${' var_option? expression '}' ;
 
 var_option: var_option_key '=' var_option_value ;
