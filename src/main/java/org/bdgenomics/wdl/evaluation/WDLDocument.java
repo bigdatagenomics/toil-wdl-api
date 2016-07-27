@@ -2,6 +2,8 @@ package org.bdgenomics.wdl.evaluation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -20,6 +22,15 @@ public class WDLDocument implements WDLComponent<WDLDocument> {
     this.imports = imports.toArray(new WDLImport[imports.size()]);
     this.workflow = workflow;
     this.tasks = tasks.toArray(new WDLTask[tasks.size()]);
+  }
+
+  public Map<String, WDLTask> taskMap() {
+    Map<String, WDLTask> taskMap = new LinkedHashMap<>();
+    for(WDLTask task : tasks) {
+      taskMap.put(task.taskName, task);
+    }
+
+    return taskMap;
   }
 
   @Override

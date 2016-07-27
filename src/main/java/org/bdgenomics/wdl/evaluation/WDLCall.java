@@ -99,7 +99,6 @@ public class WDLCall implements WDLComponent<WDLCall> {
     }
 
     private List<CallInput> parseMapping(WDLParser.Variable_mappingsContext ctx) {
-
       System.out.println(String.format("Variable_Mappings: \"%s\"", ctx.getText()));
       return ctx.variable_mapping_kv().stream().map(this::parseKV).collect(toList());
     }

@@ -3,7 +3,9 @@ package org.bdgenomics.wdl.evaluation;
 import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
@@ -22,6 +24,18 @@ public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
     this.workflowSteps = steps.toArray(new WDLComponent[steps.size()]);
   }
 
+  public Map<String, WDLDeclaration> declarationMap() {
+    LinkedHashMap<String, WDLDeclaration> decls = new LinkedHashMap<>();
+    for(WDLDeclaration decl : declarations()) {
+      decls.put(decl.identifier, decl);
+    }
+    return decls;
+  }
+
+  public List<WDLDeclaration> declarations() {
+    return Stream.of(workflowSteps).filter(i -> i instanceof WDLDeclaration).map(i -> (WDLDeclaration)i).collect(toList());
+  }
+
   public List<WDLCall> calls() {
     return Stream.of(workflowSteps).filter(i -> i instanceof WDLCall).map(i -> (WDLCall) i).collect(toList());
   }
@@ -36,6 +50,11 @@ public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
     @Override
     public WDLComponent visitCall(WDLParser.CallContext ctx) {
       return new WDLCall.Builder().visit(ctx);
+    }
+
+    @Override
+    public WDLComponent visitDeclaration(WDLParser.DeclarationContext ctx) {
+      return new WDLDeclaration.Builder().visit(ctx);
     }
 
     @Override

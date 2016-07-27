@@ -1,13 +1,14 @@
 workflow wf {
 
-call CollectWgsMetrics {
-  input:
-    input_bam='test.bam',
-    input_bam_index='test.bai',
-    metrics_filename='metrics.txt',
-    ref_fasta='hg19.fa',
-    ref_fasta_index='hg19.fai',
-    disk_size= 1024 * 1024 * 1024 * 30
+	call CollectWgsMetrics {
+	  input:
+	    input_bam='test.bam',
+	    input_bam_index='test.bai',
+	    metrics_filename='metrics.txt',
+	    ref_fasta='hg19.fa',
+	    ref_fasta_index='hg19.fai',
+	    disk_size= 1024 * 1024 * 1024 * 30
+	}
 }
 
 task CollectWgsMetrics {
@@ -36,6 +37,4 @@ task CollectWgsMetrics {
   output {
   File metrics = "${metrics_filename}"
   }
-}
-
 }

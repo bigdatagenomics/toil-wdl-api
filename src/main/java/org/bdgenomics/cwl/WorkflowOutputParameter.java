@@ -11,7 +11,7 @@ public class WorkflowOutputParameter {
 
   public String type;
 
-  public CommandLineBinding inputBinding;
+  public CommandOutputBinding outputBinding;
 
   public String source;
 
@@ -20,10 +20,10 @@ public class WorkflowOutputParameter {
     this.id = id;
   }
 
-  public WorkflowOutputParameter(final String id, String type, CommandLineBinding binding) {
+  public WorkflowOutputParameter(final String id, String type, CommandOutputBinding binding) {
     this(id);
     this.type = type;
-    this.inputBinding = binding;
+    this.outputBinding = binding;
   }
 
   public WorkflowOutputParameter withType(final String type) {
@@ -31,8 +31,8 @@ public class WorkflowOutputParameter {
     return this;
   }
 
-  public WorkflowOutputParameter withInputBinding(final CommandLineBinding binding) {
-    this.inputBinding = binding;
+  public WorkflowOutputParameter withOutputBinding(final CommandOutputBinding binding) {
+    this.outputBinding = binding;
     return this;
   }
 

@@ -1,10 +1,10 @@
 cwlVersion: cwl:draft-3
 class: Workflow
 inputs:
-- id: voice
+- id: inputValue
   type: string
 outputs:
-- id: said
+- id: output
   type: File
   source: '#echo/output'
 steps:
@@ -12,6 +12,6 @@ steps:
   run: echo.cwl
   inputs:
   - id: voice
-    source: '#voice'
+    source: '#inputValue'
   outputs:
   - id: output

@@ -495,9 +495,15 @@ class ExprAddition extends WDLExpression {
   @Override
   public <T> T evaluate(Environment env) {
     Object leftval = left.evaluate(env), rightval = right.evaluate(env);
-    if(leftval instanceof Double || rightval instanceof Double) {
+
+    if(leftval instanceof String || rightval instanceof String) {
+      String lefts = ((String)leftval), rights = (String)rightval;
+      return (T)(lefts + rights);
+
+    } else  if(leftval instanceof Double || rightval instanceof Double) {
       Double leftd = ((Number)leftval).doubleValue(), rightd = ((Number)rightval).doubleValue();
       return (T)((Double)(leftd + rightd));
+
     } else {
       Integer leftd = ((Number)leftval).intValue(), rightd = ((Number)rightval).intValue();
       return (T)((Integer)(leftd + rightd));
