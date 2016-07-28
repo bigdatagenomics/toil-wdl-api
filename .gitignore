@@ -6,3 +6,5 @@ dependency-reduced-pom.xml
 .vagrant/
 echo_output*.txt
 
+test-cwl/
+broad_test.wdl
