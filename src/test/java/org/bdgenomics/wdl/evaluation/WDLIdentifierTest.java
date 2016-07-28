@@ -3,6 +3,7 @@ package org.bdgenomics.wdl.evaluation;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
 import org.junit.Test;

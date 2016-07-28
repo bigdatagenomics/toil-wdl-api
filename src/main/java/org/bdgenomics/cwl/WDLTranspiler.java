@@ -5,8 +5,8 @@ import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.bdgenomics.wdl.evaluation.Environment;
+import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
 import org.bdgenomics.wdl.evaluation.WDLCall;
 import org.bdgenomics.wdl.evaluation.WDLDeclaration;
 import org.bdgenomics.wdl.evaluation.WDLDocument;
@@ -68,6 +69,22 @@ public class WDLTranspiler {
     return transpileType(type.toString());
   }
 
+  public String inferType(Object value) {
+    if(value instanceof String) {
+      return "string";
+    } else if(value instanceof Boolean) {
+      return "boolean";
+    } else if(value instanceof Integer) {
+      return "int";
+    } else if(value instanceof Double) {
+      return "double";
+    } else if(value instanceof File) {
+      return "File";
+    } else {
+      throw new IllegalArgumentException(String.format("Unknown primitive value class %s", value.getClass().getSimpleName()));
+    }
+  }
+
   /**
    * This is the type-conversion system, which only works for primitive types at the moment.
    *
@@ -82,7 +99,6 @@ public class WDLTranspiler {
       throw new IllegalArgumentException(type);
     }
   }
-
 
   /**
    * Converts a WDL {@code task} into a CWL {@code CommandLineTool}.
@@ -122,7 +138,7 @@ public class WDLTranspiler {
         WDLExpression expr = assign.value;
         CommandOutputBinding binding = null;
         if(expr != null) {
-          String glob = stripQuotes(expr.evaluate(new Environment()));
+          String glob = stripQuotes(String.valueOf(expr.evaluate(new Environment())));
           binding = new CommandOutputBinding(glob);
         }
         outputs.add(new CommandOutputParameter(assign.identifier, assign.type, binding));
@@ -150,12 +166,26 @@ public class WDLTranspiler {
 
     for(WDLCall.CallInput input : call.inputs) {
       String name = input.key;
-      String value = input.value.toString();
-      if(!decls.containsKey(value)) {
-        throw new IllegalArgumentException(String.format("WDL Workflow didn't contain declaration for \"%s\" (%s)",
-          value, decls.keySet().toString()));
+      String value = null;
+      String link = null;
+      String type = null;
+
+      if(input.value instanceof ExprIdentifier) {
+        link = ((ExprIdentifier)input.value).value;
+
+        if(!decls.containsKey(link)) {
+          throw new IllegalArgumentException(String.format("WDL Workflow didn't contain declaration for \"%s\" (%s)",
+            link, decls.keySet().toString()));
+        }
+
+        type = transpileType(decls.get(link).type);
+
+      } else {
+        Object evaluated = input.value.evaluate(new Environment());
+        value = evaluated.toString();
+        type = inferType(value);
       }
-      String type = transpileType(decls.get(value).type);
+
       String inputName = input.value.toString();
 
       workflow = workflow.withInput(new InputParameter(inputName, type, null));
@@ -189,14 +219,17 @@ public class WDLTranspiler {
 
     Map<String, String> inputAssignments = new LinkedHashMap<>();
     for(WDLCall.CallInput ci : call.inputs) {
-      inputAssignments.put(ci.key, ci.value.toString());
+
+      String assignment = ci.value instanceof ExprIdentifier ?
+        '#' + ci.value.toString() : String.valueOf(ci.value.evaluate(new Environment()));
+      inputAssignments.put(ci.key, assignment);
     }
 
     ArrayList<WorkflowStepInput> inputs = new ArrayList<>();
     ArrayList<WorkflowStepOutput> outputs = new ArrayList<>();
 
     for(WDLDeclaration decl : task.declarations) {
-      String assignment = "#" + inputAssignments.get(decl.identifier);
+      String assignment = inputAssignments.get(decl.identifier);
       inputs.add(new WorkflowStepInput(decl.identifier, assignment));
     }
 

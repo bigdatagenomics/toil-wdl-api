@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
 import java.util.Optional;
 import org.bdgenomics.BaseTest;
+import org.bdgenomics.wdl.evaluation.types.PrimitiveType;
 import org.junit.Test;
 
 public class WDLTaskTest extends BaseTest {
@@ -36,8 +37,7 @@ public class WDLTaskTest extends BaseTest {
     assertThat(task.taskName).isEqualTo("foo");
     assertThat(task.commands).isEmpty();
     assertThat(task.outputs).isEmpty();
-    assertThat(task.declarations).containsExactly(new WDLDeclaration(
-      new PrimitiveType("File"), "in", Optional.empty()));
+    assertThat(task.declarations).containsExactly(new WDLDeclaration(WDLType.FILE, "in", Optional.empty()));
 
     task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { output { String temp = \"x\"} }");
     assertThat(task).isNotNull().withFailMessage("task was null");

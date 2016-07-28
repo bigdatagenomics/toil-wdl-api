@@ -2,9 +2,19 @@ package org.bdgenomics.wdl.evaluation;
 
 import static org.assertj.core.api.Assertions.*;
 import java.io.IOException;
+import org.bdgenomics.wdl.evaluation.expressions.ExprAddition;
+import org.bdgenomics.wdl.evaluation.expressions.ExprInteger;
+import org.bdgenomics.wdl.evaluation.expressions.ExprMultiplication;
 import org.junit.Test;
 
 public class WDLExpressionTest {
+
+  @Test
+  public void testExprMultiplication() throws IOException {
+    WDLExpression expr = WDLEvaluator.parse(new WDLExpression.Builder(), "1024*1024*1024*3");
+    assertThat(expr).isInstanceOf(ExprMultiplication.class);
+    assertThat(expr.evaluate(new Environment())).isEqualTo(1024L*1024*1024*3);
+  }
 
   @Test
   public void testExprAdditionParsing() throws IOException {

@@ -2,6 +2,8 @@ package org.bdgenomics.wdl.evaluation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
+import org.bdgenomics.wdl.evaluation.expressions.ExprAddition;
+import org.bdgenomics.wdl.evaluation.expressions.ExprInteger;
 import org.junit.Test;
 
 public class WDLCallTest {

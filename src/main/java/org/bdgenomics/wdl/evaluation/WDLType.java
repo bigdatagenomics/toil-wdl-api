@@ -1,18 +1,14 @@
 package org.bdgenomics.wdl.evaluation;
 
-import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.EqualityUtils.eq;
-import static org.bdgenomics.utils.EqualityUtils.of;
-import static org.bdgenomics.utils.HashUtils.hash;
-import static org.bdgenomics.utils.HashUtils.hashAdd;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.bdgenomics.wdl.evaluation.types.*;
 import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
 import org.bdgenomics.wdl.parsing.WDLVisitor;
-import com.google.common.base.Preconditions;
 
 /**
  primitive_type : 'Boolean' | 'Int' | 'Float' | 'File' | 'String' ;
@@ -27,11 +23,22 @@ public abstract class WDLType implements WDLComponent<WDLType> {
   public static final Set<String> PRIMITIVE_NAMES =
     new TreeSet<>(Arrays.asList("String", "Int", "Float", "Boolean", "File"));
 
-  public static final WDLType STRING = new PrimitiveType("String");
-  public static final WDLType BOOLEAN = new PrimitiveType("Boolean");
-  public static final WDLType INT = new PrimitiveType("Int");
-  public static final WDLType FLOAT = new PrimitiveType("Float");
-  public static final WDLType FILE = new PrimitiveType("File");
+  public static final PrimitiveType STRING = new StringType();
+  public static final PrimitiveType BOOLEAN = new BooleanType();
+  public static final PrimitiveType INT = new IntType();
+  public static final PrimitiveType FLOAT = new FloatType();
+  public static final PrimitiveType FILE = new FileType();
+
+  public static final WDLType TOP = new TopType();
+
+  public static PrimitiveType parsePrimitiveType(String name) {
+    if(name.equals("String")) { return STRING; }
+    if(name.equals("Boolean")) { return BOOLEAN; }
+    if(name.equals("Int")) { return INT; }
+    if(name.equals("Float")) { return FLOAT; }
+    if(name.equals("File")) { return FILE; }
+    throw new IllegalArgumentException(name);
+  }
 
   @Override
   public WDLVisitor<WDLType> visitor() {
@@ -91,7 +98,7 @@ public abstract class WDLType implements WDLComponent<WDLType> {
     @Override
     public WDLType visitPrimitive_type(WDLParser.Primitive_typeContext ctx) {
       String name = ctx.getText();
-      return new PrimitiveType(name);
+      return parsePrimitiveType(name);
     }
 
     @Override
@@ -101,124 +108,4 @@ public abstract class WDLType implements WDLComponent<WDLType> {
   }
 }
 
-class NonEmptyType extends WDLType {
 
-  public final ArrayType innerType;
-
-  public NonEmptyType(final ArrayType inner) {
-    Preconditions.checkNotNull(inner);
-    this.innerType = inner;
-  }
-
-  public int hashCode() { return hashAdd("+".hashCode(), innerType.hashCode()); }
-
-  public boolean equals(Object o) {
-    if(!(o instanceof NonEmptyType)) { return false; }
-    NonEmptyType t = (NonEmptyType)o;
-    return innerType.equals(t.innerType);
-  }
-
-  public String toString() { return innerType.toString() + "+"; }
-}
-
-class OptionalType extends WDLType {
-
-  public final WDLType innerType;
-
-  public OptionalType(final WDLType inner) {
-    Preconditions.checkNotNull(inner);
-    this.innerType = inner;
-  }
-
-  public int hashCode() { return hashAdd("?".hashCode(), innerType.hashCode()); }
-
-  public boolean equals(Object o) {
-    if(!(o instanceof OptionalType)) { return false; }
-    OptionalType t = (OptionalType)o;
-    return innerType.equals(t.innerType);
-  }
-
-  public String toString() { return innerType.toString() + "?"; }
-}
-
-
-class PrimitiveType extends WDLType {
-
-  public final String typeName;
-
-
-  public PrimitiveType(final String name) {
-    Preconditions.checkNotNull(name);
-    Preconditions.checkArgument(WDLType.PRIMITIVE_NAMES.contains(name));
-    this.typeName = name;
-  }
-
-  public String toString() { return typeName; }
-
-  public int hashCode() { return hash(typeName); }
-
-  public boolean equals(Object o) {
-    if(!(o instanceof PrimitiveType)) { return false; }
-    PrimitiveType t = (PrimitiveType)o;
-    return t.typeName.equals(typeName);
-  }
-}
-
-class MapType extends WDLType {
-
-  public final WDLType keyType, valueType;
-
-  public MapType(final WDLType keyType, final WDLType valueType) {
-    Preconditions.checkNotNull(keyType);
-    Preconditions.checkNotNull(valueType);
-
-    this.keyType = keyType;
-    this.valueType = valueType;
-  }
-
-  public int hashCode() {
-    return hashAdd("Map".hashCode(), hash(keyType, valueType));
-  }
-
-  public boolean equals(Object o) {
-    if(!(o instanceof MapType)) { return false; }
-    MapType t = (MapType)o;
-    return eq(of(keyType, valueType), to(t.keyType, t.valueType));
-  }
-
-  public String toString() { return String.format("Map[%s,%s]", keyType.toString(), valueType.toString()); }
-}
-
-class ObjectType extends WDLType {
-
-  public ObjectType() {
-  }
-
-  public int hashCode() { return "Object".hashCode(); }
-
-  public boolean equals(Object o) {
-    return o instanceof ObjectType;
-  }
-
-  public String toString() { return "Object"; }
-}
-
-class ArrayType extends WDLType {
-
-  public final WDLType innerType;
-
-  public ArrayType(final WDLType innerType)  {
-    Preconditions.checkNotNull(innerType);
-    this.innerType = innerType;
-  }
-
-  public String toString() { return String.format("Array[%s]", innerType.toString()); }
-
-  public int hashCode() { return hashAdd("Array".hashCode(), hash(innerType)); }
-
-  public boolean equals(Object o) {
-    if(!(o instanceof ArrayType)) { return false; }
-    ArrayType t = (ArrayType)o;
-    return eq(of(innerType), to(t.innerType));
-  }
-}

@@ -2,7 +2,10 @@ package org.bdgenomics.wdl.evaluation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
-import java.util.Optional;
+import org.bdgenomics.wdl.evaluation.types.ArrayType;
+import org.bdgenomics.wdl.evaluation.types.MapType;
+import org.bdgenomics.wdl.evaluation.types.ObjectType;
+import org.bdgenomics.wdl.evaluation.types.PrimitiveType;
 import org.junit.Test;
 
 public class WDLTypeTest {
@@ -37,8 +40,8 @@ public class WDLTypeTest {
     WDLType type = WDLEvaluator.parse(new WDLType.Builder(), "Map[String:String]");
     assertThat(type).isNotNull();
     assertThat(type).isInstanceOf(MapType.class);
-    assertThat(((MapType)type).keyType).isNotNull().isEqualTo(new PrimitiveType("String"));
-    assertThat(((MapType)type).valueType).isNotNull().isEqualTo(new PrimitiveType("String"));
+    assertThat(((MapType)type).keyType).isNotNull().isEqualTo(WDLType.STRING);
+    assertThat(((MapType)type).valueType).isNotNull().isEqualTo(WDLType.STRING);
   }
 
 }
