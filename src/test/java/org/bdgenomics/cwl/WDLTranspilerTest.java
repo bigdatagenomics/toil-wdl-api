@@ -80,9 +80,10 @@ public class WDLTranspilerTest extends BaseTest {
     CWLObjectMapper cwlMapper = new CWLObjectMapper();
 
     String outputWorkflowCWL = cwlMapper.writeValueAsString(transpiled.workflow);
-    assertThat(outputWorkflowCWL).isEqualTo("foo");
+    assertThat(outputWorkflowCWL).isEqualTo(fixture("broad_test.cwl"));
 
     String outputToolCWL = cwlMapper.writeValueAsString(transpiled.tools.get(0));
+    System.out.println(outputToolCWL);
     assertThat(outputToolCWL).isEqualTo("foo");
   }
 

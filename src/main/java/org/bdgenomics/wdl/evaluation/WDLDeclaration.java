@@ -6,9 +6,9 @@ import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
 import java.util.Optional;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 import com.google.common.base.Preconditions;
 
 /**
@@ -49,11 +49,11 @@ public class WDLDeclaration implements WDLComponent<WDLDeclaration> {
   }
 
   @Override
-  public WDLVisitor<WDLDeclaration> visitor() {
+  public WDLParserVisitor<WDLDeclaration> visitor() {
     return new Builder();
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLDeclaration> implements WDLBuilder<WDLDeclaration> {
+  public static class Builder extends WDLParserBaseVisitor<WDLDeclaration> implements WDLBuilder<WDLDeclaration> {
 
     @Override
     public WDLDeclaration visitDeclaration(WDLParser.DeclarationContext ctx) {

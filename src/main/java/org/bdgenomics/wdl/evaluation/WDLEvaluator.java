@@ -5,8 +5,8 @@ import java.io.StringReader;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-
-import org.bdgenomics.wdl.parsing.*;
+import org.bdgenomics.wdl.parsing.WDLLexer;
+import org.bdgenomics.wdl.parsing.WDLParser;
 
 public class WDLEvaluator {
 

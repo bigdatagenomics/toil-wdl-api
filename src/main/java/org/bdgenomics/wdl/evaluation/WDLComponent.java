@@ -1,8 +1,8 @@
 package org.bdgenomics.wdl.evaluation;
 
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 
 public interface WDLComponent<T extends WDLComponent> {
 
-  WDLVisitor<T> visitor();
+  WDLParserVisitor<T> visitor();
 }

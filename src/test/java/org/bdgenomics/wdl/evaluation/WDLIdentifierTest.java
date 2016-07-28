@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.junit.Test;
 
 public class WDLIdentifierTest {
@@ -25,7 +25,7 @@ public class WDLIdentifierTest {
     assertThat(id.value).isEqualTo("x");
   }
 
-  public static class Builder extends WDLBaseVisitor<ExprIdentifier> implements WDLBuilder<ExprIdentifier> {
+  public static class Builder extends WDLParserBaseVisitor<ExprIdentifier> implements WDLBuilder<ExprIdentifier> {
 
     @Override
     public ExprIdentifier visitVariable_mapping_key(WDLParser.Variable_mapping_keyContext ctx) {

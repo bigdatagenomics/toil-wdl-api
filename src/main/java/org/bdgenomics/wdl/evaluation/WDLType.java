@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.evaluation.types.*;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 
 /**
  primitive_type : 'Boolean' | 'Int' | 'Float' | 'File' | 'String' ;
@@ -41,11 +41,11 @@ public abstract class WDLType implements WDLComponent<WDLType> {
   }
 
   @Override
-  public WDLVisitor<WDLType> visitor() {
+  public WDLParserVisitor<WDLType> visitor() {
     return new Builder();
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLType> implements WDLBuilder<WDLType> {
+  public static class Builder extends WDLParserBaseVisitor<WDLType> implements WDLBuilder<WDLType> {
 
     public WDLType visitType(WDLParser.TypeContext ctx) {
       ParseTree pctx = ctx.type_postfix_quantifier();

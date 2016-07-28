@@ -1,4 +1,4 @@
-// Generated from WDL.g4 by ANTLR 4.5.2
+// Generated from WDLParser.g4 by ANTLR 4.5.2
 package org.bdgenomics.wdl.parsing;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * This interface defines a complete listener for a parse tree produced by
  * {@link WDLParser}.
  */
-public interface WDLListener extends ParseTreeListener {
+public interface WDLParserListener extends ParseTreeListener {
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#document}.
 	 * @param ctx the parse tree

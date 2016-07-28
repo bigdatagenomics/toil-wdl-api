@@ -11,9 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -69,11 +69,11 @@ public class WDLTask implements WDLComponent<WDLTask> {
   }
 
   @Override
-  public WDLVisitor<WDLTask> visitor() {
+  public WDLParserVisitor<WDLTask> visitor() {
     return new Builder();
   }
 
-  private static class TaskComponentBuilder extends WDLBaseVisitor<Object> {
+  private static class TaskComponentBuilder extends WDLParserBaseVisitor<Object> {
 
     @Override
     public Object visitCommand(WDLParser.CommandContext ctx) {
@@ -91,7 +91,7 @@ public class WDLTask implements WDLComponent<WDLTask> {
     }
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLTask> implements WDLBuilder<WDLTask> {
+  public static class Builder extends WDLParserBaseVisitor<WDLTask> implements WDLBuilder<WDLTask> {
 
     @Override
     public WDLTask visitTask(WDLParser.TaskContext ctx) {
@@ -131,35 +131,39 @@ public class WDLTask implements WDLComponent<WDLTask> {
     public final String[] contents;
     public final String all;
 
-    public Command(String... parts) {
-      this.contents = parts.clone();
-      this.all = Stream.of(this.contents).collect(joining(" "));
+    public Command(String all) {
+      this.all = all;
+      this.contents = new String[] { all };
     }
 
     public int hashCode() {
-      return hash(contents);
+      return hash(all);
     }
 
     public boolean equals(Object o) {
       if(!( o instanceof Command)) { return false; }
       Command c = (Command)o;
-      return eq(of(contents), to(c.contents));
+      return eq(of(all), to(c.all));
     }
 
     @Override
-    public WDLVisitor<Command> visitor() {
+    public WDLParserVisitor<Command> visitor() {
       return new Builder();
     }
 
-    public static class Builder extends WDLBaseVisitor<Command> implements WDLBuilder<Command> {
+    public static class Builder extends WDLParserBaseVisitor<Command> implements WDLBuilder<Command> {
 
       @Override
       public Command visitCommand(WDLParser.CommandContext ctx) {
         ArrayList<String> parts = new ArrayList<>();
+        /*
         for(WDLParser.Command_partContext part_ctx : ctx.command_part()) {
           parts.add(part_ctx.getText());
         }
         return new Command(parts.toArray(new String[parts.size()]));
+        */
+
+        return new Command(ctx.getText());
       }
 
       @Override
@@ -189,11 +193,11 @@ public class WDLTask implements WDLComponent<WDLTask> {
     }
 
     @Override
-    public WDLVisitor<Output> visitor() {
+    public WDLParserVisitor<Output> visitor() {
       return new Builder();
     }
 
-    public static class Builder extends WDLBaseVisitor<Output> implements WDLBuilder<Output> {
+    public static class Builder extends WDLParserBaseVisitor<Output> implements WDLBuilder<Output> {
 
       @Override
       public Output visitTask_output(WDLParser.Task_outputContext ctx) {
@@ -260,11 +264,11 @@ public class WDLTask implements WDLComponent<WDLTask> {
     }
 
     @Override
-    public WDLVisitor<Runtime> visitor() {
+    public WDLParserVisitor<Runtime> visitor() {
       return new Builder();
     }
 
-    public static class Builder extends WDLBaseVisitor<Runtime> implements WDLBuilder<Runtime> {
+    public static class Builder extends WDLParserBaseVisitor<Runtime> implements WDLBuilder<Runtime> {
       @Override
       public ParseTree parse(WDLParser parser) {
         return parser.runtime();

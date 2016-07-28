@@ -16,7 +16,7 @@ public class WDLTaskTest extends BaseTest {
 
     WDLTask target = new WDLTask("echo",
       list(new WDLDeclaration(WDLType.STRING, "voice", Optional.empty())),
-      list(new WDLTask.Command("echo", "${voice}", ">echo_output.txt")),
+      list(new WDLTask.Command("echo ${voice} > echo_output.txt")),
       list(),
       list(new WDLTask.Output(new WDLTask.OutputAssignment("File", "output", expression("\"echo_output.txt\""))))
     );
@@ -58,7 +58,7 @@ public class WDLTaskTest extends BaseTest {
     WDLTask.Command command = WDLEvaluator.parse(new WDLTask.Command.Builder(), "command { }");
     assertThat(command).isNotNull().withFailMessage("command was null");
     assertThat(command.all).isNotNull().withFailMessage("command.all was null");
-    assertThat(command.all).isEqualTo("");
+    assertThat(command.all).isEqualTo("command{}");
 
     command = WDLEvaluator.parse(new WDLTask.Command.Builder(), "command { ps ${flag} }");
     assertThat(command).isNotNull().withFailMessage("command was null");

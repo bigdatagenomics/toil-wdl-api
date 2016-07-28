@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 import com.google.common.base.Preconditions;
 
 /**
@@ -53,7 +53,7 @@ public class WDLCall implements WDLComponent<WDLCall> {
   }
 
   @Override
-  public WDLVisitor<WDLCall> visitor() {
+  public WDLParserVisitor<WDLCall> visitor() {
     return new Builder();
   }
 
@@ -80,7 +80,7 @@ public class WDLCall implements WDLComponent<WDLCall> {
     public String toString() { return String.format("%s=%s", key, value.toString()); }
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLCall> implements WDLBuilder<WDLCall> {
+  public static class Builder extends WDLParserBaseVisitor<WDLCall> implements WDLBuilder<WDLCall> {
 
     @Override
     public WDLCall visitCall(WDLParser.CallContext ctx) {

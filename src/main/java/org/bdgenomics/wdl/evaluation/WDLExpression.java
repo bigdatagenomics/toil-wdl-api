@@ -36,9 +36,9 @@ import org.bdgenomics.wdl.evaluation.expressions.ExprNot;
 import org.bdgenomics.wdl.evaluation.expressions.ExprPositive;
 import org.bdgenomics.wdl.evaluation.expressions.ExprString;
 import org.bdgenomics.wdl.evaluation.expressions.ExprSubtraction;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 
 /**
  expression
@@ -95,11 +95,11 @@ public abstract class WDLExpression implements WDLComponent<WDLExpression> {
   public abstract Object evaluate(final Environment env);
 
   @Override
-  public WDLVisitor<WDLExpression> visitor() {
+  public WDLParserVisitor<WDLExpression> visitor() {
     return new Builder();
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLExpression> implements WDLBuilder<WDLExpression> {
+  public static class Builder extends WDLParserBaseVisitor<WDLExpression> implements WDLBuilder<WDLExpression> {
 
     @Override
     public ParseTree parse(WDLParser parser) {

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 import com.google.common.base.Preconditions;
 
 public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
@@ -41,11 +41,11 @@ public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
   }
 
   @Override
-  public WDLVisitor<WDLWorkflow> visitor() {
+  public WDLParserVisitor<WDLWorkflow> visitor() {
     return new Builder();
   }
 
-  private static class WorkflowElementBuilder extends WDLBaseVisitor<WDLComponent> implements WDLBuilder<WDLComponent> {
+  private static class WorkflowElementBuilder extends WDLParserBaseVisitor<WDLComponent> implements WDLBuilder<WDLComponent> {
 
     @Override
     public WDLComponent visitCall(WDLParser.CallContext ctx) {
@@ -63,7 +63,7 @@ public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
     }
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLWorkflow> implements WDLBuilder<WDLWorkflow> {
+  public static class Builder extends WDLParserBaseVisitor<WDLWorkflow> implements WDLBuilder<WDLWorkflow> {
 
     @Override
     public WDLWorkflow visitWorkflow(WDLParser.WorkflowContext ctx) {

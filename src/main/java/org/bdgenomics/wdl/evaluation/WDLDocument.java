@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.bdgenomics.wdl.parsing.WDLBaseVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
-import org.bdgenomics.wdl.parsing.WDLVisitor;
+import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 
 public class WDLDocument implements WDLComponent<WDLDocument> {
 
@@ -34,11 +34,11 @@ public class WDLDocument implements WDLComponent<WDLDocument> {
   }
 
   @Override
-  public WDLVisitor<WDLDocument> visitor() {
+  public WDLParserVisitor<WDLDocument> visitor() {
     return new Builder();
   }
 
-  public static class Builder extends WDLBaseVisitor<WDLDocument> implements WDLBuilder<WDLDocument> {
+  public static class Builder extends WDLParserBaseVisitor<WDLDocument> implements WDLBuilder<WDLDocument> {
 
     @Override
     public WDLDocument visitDocument(WDLParser.DocumentContext ctx) {

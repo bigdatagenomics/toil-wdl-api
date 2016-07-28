@@ -1,4 +1,4 @@
-// Generated from WDL.g4 by ANTLR 4.5.2
+// Generated from WDLParser.g4 by ANTLR 4.5.2
 package org.bdgenomics.wdl.parsing;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.tree.ParseTreeVisitor;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
-public interface WDLVisitor<T> extends ParseTreeVisitor<T> {
+public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#document}.
 	 * @param ctx the parse tree
