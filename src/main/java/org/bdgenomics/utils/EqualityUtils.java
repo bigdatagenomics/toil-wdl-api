@@ -32,7 +32,8 @@ public class EqualityUtils {
         // (rather than throw an exception)
         if(v1s == null || v2s == null) { return false; }
 
-        if(v1s.length != v2s.length) { throw new IllegalArgumentException("Equality arrays must have same length"); }
+        if(v1s.length != v2s.length) { return false; }
+
         for(int i = 0; i < v1s.length; i++) {
             if(!eq(v1s[i], v2s[i])) {
                 return false;

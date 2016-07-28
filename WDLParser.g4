@@ -23,15 +23,8 @@ task_section
   ;
 
 // task.command
-command
-  : COMMAND LEFT_BRACE command_part* RIGHT_BRACE
-  | COMMAND LEFT_BLOCK NEWLINE* command_part* RIGHT_BLOCK ; 
-
-command_part
-  :  command_part_string  // commandPart
-  | command_part_var ;    // commandVar
-command_part_string : (~( VAR_START | RIGHT_BRACE))+;
-command_part_var: VAR_START var_option? expression RIGHT_BRACE ;
+command : COMMAND command_body ;
+command_body: COMMAND_BLOCK (ANYTHING | RIGHT_ARROW)* COMMAND_CLOSE;
 
 var_option: var_option_key EQUALS var_option_value ;
 var_option_key: SEP | TRUE | FALSE | DEFAULT | QUOTE ;

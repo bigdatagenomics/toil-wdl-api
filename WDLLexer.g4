@@ -1,6 +1,7 @@
 lexer grammar WDLLexer;
 
-NEWLINE: [\n\r] -> skip ; 
+
+NEWLINE: [\n\r] -> skip ;
 WS: [ \t]+ -> skip ;
 
 TASK: 'task' ;
@@ -16,8 +17,10 @@ LOOP: 'loop' ;
 SCATTER: 'scatter' ;
 DEFAULT: 'default' ;
 QUOTE: 'quote' ;
-COMMAND: 'command' ; 
-INPUT: 'input' ; 
+COMMAND: 'command' ;
+INPUT: 'input' ;
+
+COMMAND_BLOCK: '<<<' -> mode(COMMAND_MODE);
 
 STRING_TYPE : 'String' ;
 FILE_TYPE: 'File' ;
@@ -80,5 +83,9 @@ BANGEQ: '!=';
 DOUBLEAMP: '&&';
 DOUBLEBAR: '||' ;
 
+mode COMMAND_MODE;
 
+COMMAND_CLOSE: '>>>' -> mode(DEFAULT_MODE);
+ANYTHING: ~'>'+;
+RIGHT_ARROW: '>';
 

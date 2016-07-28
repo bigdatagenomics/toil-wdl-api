@@ -20,7 +20,7 @@ task CollectWgsMetrics {
   File ref_fasta_index
   Int disk_size
 
-  command {
+  command <<<
   java -Xmx2000m -jar /usr/gitc/picard.jar \
   CollectWgsMetrics \
   INPUT=${input_bam} \
@@ -28,7 +28,8 @@ task CollectWgsMetrics {
   REFERENCE_SEQUENCE=${ref_fasta} \
   ${"INTERVALS=" + wgs_interval_list} \
   OUTPUT=${metrics_filename}
-  }
+  >>>
+
   runtime {
   docker: "broadinstitute/genomes-in-the-cloud:1.1044_with_gatk4"
   memory: "3 GB"

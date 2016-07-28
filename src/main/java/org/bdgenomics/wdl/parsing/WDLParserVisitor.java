@@ -65,23 +65,11 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCommand(WDLParser.CommandContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link WDLParser#command_part}.
+	 * Visit a parse tree produced by {@link WDLParser#command_body}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitCommand_part(WDLParser.Command_partContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WDLParser#command_part_string}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCommand_part_string(WDLParser.Command_part_stringContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link WDLParser#command_part_var}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCommand_part_var(WDLParser.Command_part_varContext ctx);
+	T visitCommand_body(WDLParser.Command_bodyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link WDLParser#var_option}.
 	 * @param ctx the parse tree

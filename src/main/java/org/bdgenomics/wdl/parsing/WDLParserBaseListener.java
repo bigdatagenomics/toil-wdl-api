@@ -124,37 +124,13 @@ public class WDLParserBaseListener implements WDLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCommand_part(WDLParser.Command_partContext ctx) { }
+	@Override public void enterCommand_body(WDLParser.Command_bodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCommand_part(WDLParser.Command_partContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCommand_part_string(WDLParser.Command_part_stringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCommand_part_string(WDLParser.Command_part_stringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCommand_part_var(WDLParser.Command_part_varContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCommand_part_var(WDLParser.Command_part_varContext ctx) { }
+	@Override public void exitCommand_body(WDLParser.Command_bodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

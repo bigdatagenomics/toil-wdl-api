@@ -6,9 +6,12 @@ import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
@@ -51,9 +54,9 @@ public class WDLTask implements WDLComponent<WDLTask> {
   public boolean equals(Object o) {
     if(!(o instanceof WDLTask)) { return false; }
     WDLTask t = (WDLTask)o;
+    if(!eq(of(commands), to(t.commands))) { return false; }
     if(!eq(of(taskName), to(t.taskName))) { return false; }
     if(!eq(of(declarations.toArray()), to(t.declarations.toArray()))) { return false; }
-    if(!eq(of(commands.toArray()), to(t.commands.toArray()))) { return false; }
     if(!eq(of(runtimes.toArray()), to(t.runtimes.toArray()))) { return false; }
     if(!eq(of(outputs.toArray()), to(t.outputs.toArray()))) { return false; }
     return true;
@@ -126,14 +129,54 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
   public static class Command implements WDLComponent<Command> {
 
+    public static final Pattern commandPattern = Pattern.compile("^\\<\\<\\<(.*)\\>\\>\\>$");
+
+    public static final String varRegex = "\\$\\{([^}]+)\\}";
+    public static final Pattern varPattern = Pattern.compile(varRegex);
+    public static final Pattern redirectPattern = Pattern.compile("\\s*\\>\\s*(.*[^\\s])\\s*");
+
+    public static String extractCommandContent(String block) {
+      block = block.replaceAll("\\\\\n+", "\n").replaceAll("\n", " ");
+      Matcher m = commandPattern.matcher(block);
+      if(!m.matches()) { throw new IllegalArgumentException(String.format("Block \"%s\" doesn't match command pattern", block)); }
+      return m.group(1).trim();
+    }
+
+    public static boolean isRedirect(String arg) {
+      return redirectPattern.matcher(arg).matches();
+    }
+
+    public static String redirectTarget(String arg) {
+      Matcher m = redirectPattern.matcher(arg);
+      if(!m.matches()) { throw new IllegalArgumentException(arg); }
+      return m.group(1);
+    }
+
+    public static String[] splitCommand(String command) {
+      LinkedList<String> nonvars = new LinkedList<>(Arrays.asList(command.split(varRegex)));
+      LinkedList<String> vars = new LinkedList<>();
+
+      Matcher m = varPattern.matcher(command);
+      while(m.find()) { vars.add(m.group(0)); }
+
+      ArrayList<String> total = new ArrayList<>();
+      while(!vars.isEmpty() || !nonvars.isEmpty()) {
+        if(!nonvars.isEmpty()) { total.add(nonvars.removeFirst()); }
+        if(!vars.isEmpty()) { total.add(vars.removeFirst()); }
+      }
+      return total.toArray(new String[total.size()]);
+    }
+
     public static final Logger LOG = LoggerFactory.getLogger(Command.class);
 
     public final String[] contents;
     public final String all;
 
     public Command(String all) {
-      this.all = all;
-      this.contents = new String[] { all };
+      this.all = extractCommandContent(all);
+      System.out.println(String.format("********* COMMAND: \"%s\"", this.all));
+      this.contents = splitCommand(this.all);
+      System.out.println(String.format("********* ARGS: [%s]", Stream.of(contents).map(s -> String.format("\"%s\"", s)).collect(joining(", "))));
     }
 
     public int hashCode() {
@@ -155,15 +198,7 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
       @Override
       public Command visitCommand(WDLParser.CommandContext ctx) {
-        ArrayList<String> parts = new ArrayList<>();
-        /*
-        for(WDLParser.Command_partContext part_ctx : ctx.command_part()) {
-          parts.add(part_ctx.getText());
-        }
-        return new Command(parts.toArray(new String[parts.size()]));
-        */
-
-        return new Command(ctx.getText());
+        return new Command(ctx.command_body().getText());
       }
 
       @Override

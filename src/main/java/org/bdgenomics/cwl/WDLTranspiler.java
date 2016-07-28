@@ -114,7 +114,7 @@ public class WDLTranspiler {
     List<CommandInputParameter> inputs = new ArrayList<>();
     List<CommandOutputParameter> outputs = new ArrayList<>();
     List<CommandLineBinding> arguments = new ArrayList<>();
-    String baseCommand = command.contents[0];
+    String baseCommand = command.contents[0].trim();
     String stdout = null;
 
     int argIndex = 1;
@@ -125,10 +125,10 @@ public class WDLTranspiler {
         String var = part.substring(2, part.length() - 1);
         inputs.add(new CommandInputParameter(var, "string", new CommandInputBinding(argIndex++)));
 
-      } else if(part.startsWith(">")) {
-        stdout = part.substring(1);
+      } else if(WDLTask.Command.isRedirect(part)) {
+        stdout = WDLTask.Command.redirectTarget(part);
 
-      } else {
+      } else if(!part.matches("\\s*")) {
         arguments.add(new CommandLineBinding(argIndex++).withValueFrom(part));
       }
     }

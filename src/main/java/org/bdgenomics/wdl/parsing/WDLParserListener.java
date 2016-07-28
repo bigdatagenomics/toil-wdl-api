@@ -98,35 +98,15 @@ public interface WDLParserListener extends ParseTreeListener {
 	 */
 	void exitCommand(WDLParser.CommandContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#command_part}.
+	 * Enter a parse tree produced by {@link WDLParser#command_body}.
 	 * @param ctx the parse tree
 	 */
-	void enterCommand_part(WDLParser.Command_partContext ctx);
+	void enterCommand_body(WDLParser.Command_bodyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#command_part}.
+	 * Exit a parse tree produced by {@link WDLParser#command_body}.
 	 * @param ctx the parse tree
 	 */
-	void exitCommand_part(WDLParser.Command_partContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link WDLParser#command_part_string}.
-	 * @param ctx the parse tree
-	 */
-	void enterCommand_part_string(WDLParser.Command_part_stringContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link WDLParser#command_part_string}.
-	 * @param ctx the parse tree
-	 */
-	void exitCommand_part_string(WDLParser.Command_part_stringContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link WDLParser#command_part_var}.
-	 * @param ctx the parse tree
-	 */
-	void enterCommand_part_var(WDLParser.Command_part_varContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link WDLParser#command_part_var}.
-	 * @param ctx the parse tree
-	 */
-	void exitCommand_part_var(WDLParser.Command_part_varContext ctx);
+	void exitCommand_body(WDLParser.Command_bodyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#var_option}.
 	 * @param ctx the parse tree
