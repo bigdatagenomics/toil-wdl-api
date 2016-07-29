@@ -112,25 +112,25 @@ public class WDLParserBaseListener implements WDLParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCommand(WDLParser.CommandContext ctx) { }
+	@Override public void enterCommandBrace(WDLParser.CommandBraceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCommand(WDLParser.CommandContext ctx) { }
+	@Override public void exitCommandBrace(WDLParser.CommandBraceContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCommand_body(WDLParser.Command_bodyContext ctx) { }
+	@Override public void enterCommandBracket(WDLParser.CommandBracketContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCommand_body(WDLParser.Command_bodyContext ctx) { }
+	@Override public void exitCommandBracket(WDLParser.CommandBracketContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -17,10 +17,10 @@ LOOP: 'loop' ;
 SCATTER: 'scatter' ;
 DEFAULT: 'default' ;
 QUOTE: 'quote' ;
-COMMAND: 'command' ;
 INPUT: 'input' ;
 
-COMMAND_BLOCK: '<<<' -> mode(COMMAND_MODE);
+COMMAND_BRACKET_BLOCK: 'command' [ \t]* '<<<' -> mode(BRACKET_BLOCK_MODE);
+COMMAND_BRACE_BLOCK: 'command' [ \t]* '{' -> mode(BRACE_BLOCK_MODE);
 
 STRING_TYPE : 'String' ;
 FILE_TYPE: 'File' ;
@@ -83,9 +83,15 @@ BANGEQ: '!=';
 DOUBLEAMP: '&&';
 DOUBLEBAR: '||' ;
 
-mode COMMAND_MODE;
+mode BRACKET_BLOCK_MODE;
 
-COMMAND_CLOSE: '>>>' -> mode(DEFAULT_MODE);
-ANYTHING: ~'>'+;
+BRACKET_BLOCK_CLOSE: '>>>' -> mode(DEFAULT_MODE);
+BRACKET_ANYTHING: ~'>'+;
 RIGHT_ARROW: '>';
+
+mode BRACE_BLOCK_MODE;
+
+BRACE_BLOCK_CLOSE: '}' -> mode(DEFAULT_MODE);
+BRACE_ANYTHING: ~'}'+;
+
 

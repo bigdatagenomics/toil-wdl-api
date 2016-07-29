@@ -16,7 +16,7 @@ public class WDLTaskTest extends BaseTest {
 
     WDLTask target = new WDLTask("echo",
       list(new WDLDeclaration(WDLType.STRING, "voice", Optional.empty())),
-      list(new WDLTask.Command("<<< echo ${voice} > echo_output.txt >>>")),
+      list(new WDLTask.Command("command <<< echo ${voice} > echo_output.txt >>>")),
       list(),
       list(new WDLTask.Output(new WDLTask.OutputAssignment("File", "output", expression("\"echo_output.txt\""))))
     );
@@ -43,6 +43,21 @@ public class WDLTaskTest extends BaseTest {
     assertThat(task).isNotNull().withFailMessage("task was null");
     assertThat(task.taskName).isEqualTo("foo");
     assertThat(task.commands).isEmpty();
+    assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
+    assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
+
+    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { command { echo Hello } output { String temp = \"x\"} }");
+    assertThat(task).isNotNull().withFailMessage("task was null");
+    assertThat(task.taskName).isEqualTo("foo");
+    assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
+    assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
+    assertThat(task.commands).isNotEmpty();
+    assertThat(task.commands.get(0)).isEqualTo(new WDLTask.Command("command { echo Hello }"));
+    assertThat(task.commands.get(0).all).isEqualTo("echo Hello");
+
+    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { command <<< echo Hello >>> output { String temp = \"x\"} }");
+    assertThat(task).isNotNull().withFailMessage("task was null");
+    assertThat(task.taskName).isEqualTo("foo");
     assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
     assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
   }

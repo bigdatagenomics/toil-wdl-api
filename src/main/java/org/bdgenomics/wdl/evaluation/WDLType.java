@@ -2,9 +2,11 @@ package org.bdgenomics.wdl.evaluation;
 
 import static org.bdgenomics.utils.EqualityUtils.eq;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
 import org.bdgenomics.wdl.evaluation.types.*;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -39,6 +41,8 @@ public abstract class WDLType implements WDLComponent<WDLType> {
     if(name.equals("File")) { return FILE; }
     throw new IllegalArgumentException(name);
   }
+
+  public abstract void findIdentifiers(List<ExprIdentifier> identifies);
 
   @Override
   public WDLParserVisitor<WDLType> visitor() {

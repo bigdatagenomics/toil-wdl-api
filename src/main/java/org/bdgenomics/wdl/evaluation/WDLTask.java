@@ -79,8 +79,13 @@ public class WDLTask implements WDLComponent<WDLTask> {
   private static class TaskComponentBuilder extends WDLParserBaseVisitor<Object> {
 
     @Override
-    public Object visitCommand(WDLParser.CommandContext ctx) {
-      return new Command.Builder().visitCommand(ctx);
+    public Object visitCommandBracket(WDLParser.CommandBracketContext ctx) {
+      return new Command.Builder().visitCommandBracket(ctx);
+    }
+
+    @Override
+    public Object visitCommandBrace(WDLParser.CommandBraceContext ctx) {
+      return new Command.Builder().visitCommandBrace(ctx);
     }
 
     @Override
@@ -129,7 +134,8 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
   public static class Command implements WDLComponent<Command> {
 
-    public static final Pattern commandPattern = Pattern.compile("^\\<\\<\\<(.*)\\>\\>\\>$");
+    public static final Pattern commandBracketPattern = Pattern.compile("^command\\s*\\<\\<\\<(.*)\\>\\>\\>$");
+    public static final Pattern commandBracePattern = Pattern.compile("^command\\s*\\{(.*)\\}$");
 
     public static final String varRegex = "\\$\\{([^}]+)\\}";
     public static final Pattern varPattern = Pattern.compile(varRegex);
@@ -137,9 +143,15 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
     public static String extractCommandContent(String block) {
       block = block.replaceAll("\\\\\n+", "\n").replaceAll("\n", " ");
-      Matcher m = commandPattern.matcher(block);
-      if(!m.matches()) { throw new IllegalArgumentException(String.format("Block \"%s\" doesn't match command pattern", block)); }
-      return m.group(1).trim();
+      Matcher m = commandBracketPattern.matcher(block);
+      if(m.matches()) {
+        return m.group(1).trim();
+      }
+      m = commandBracePattern.matcher(block);
+      if(m.matches()) {
+        return m.group(1).trim();
+      }
+      throw new IllegalArgumentException(String.format("Block \"%s\" doesn't match command pattern", block));
     }
 
     public static boolean isRedirect(String arg) {
@@ -197,8 +209,13 @@ public class WDLTask implements WDLComponent<WDLTask> {
     public static class Builder extends WDLParserBaseVisitor<Command> implements WDLBuilder<Command> {
 
       @Override
-      public Command visitCommand(WDLParser.CommandContext ctx) {
-        return new Command(ctx.command_body().getText());
+      public Command visitCommandBrace(WDLParser.CommandBraceContext ctx) {
+        return new Command(ctx.getText());
+      }
+
+      @Override
+      public Command visitCommandBracket(WDLParser.CommandBracketContext ctx) {
+        return new Command(ctx.getText());
       }
 
       @Override

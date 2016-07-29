@@ -23,8 +23,10 @@ task_section
   ;
 
 // task.command
-command : COMMAND command_body ;
-command_body: COMMAND_BLOCK (ANYTHING | RIGHT_ARROW)* COMMAND_CLOSE;
+command
+  : COMMAND_BRACE_BLOCK BRACE_ANYTHING? BRACE_BLOCK_CLOSE                        # commandBrace
+  | COMMAND_BRACKET_BLOCK (BRACKET_ANYTHING | RIGHT_ARROW)* BRACKET_BLOCK_CLOSE  # commandBracket
+  ;
 
 var_option: var_option_key EQUALS var_option_value ;
 var_option_key: SEP | TRUE | FALSE | DEFAULT | QUOTE ;

@@ -88,25 +88,29 @@ public interface WDLParserListener extends ParseTreeListener {
 	 */
 	void exitTask_section(WDLParser.Task_sectionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#command}.
+	 * Enter a parse tree produced by the {@code commandBrace}
+	 * labeled alternative in {@link WDLParser#command}.
 	 * @param ctx the parse tree
 	 */
-	void enterCommand(WDLParser.CommandContext ctx);
+	void enterCommandBrace(WDLParser.CommandBraceContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#command}.
+	 * Exit a parse tree produced by the {@code commandBrace}
+	 * labeled alternative in {@link WDLParser#command}.
 	 * @param ctx the parse tree
 	 */
-	void exitCommand(WDLParser.CommandContext ctx);
+	void exitCommandBrace(WDLParser.CommandBraceContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link WDLParser#command_body}.
+	 * Enter a parse tree produced by the {@code commandBracket}
+	 * labeled alternative in {@link WDLParser#command}.
 	 * @param ctx the parse tree
 	 */
-	void enterCommand_body(WDLParser.Command_bodyContext ctx);
+	void enterCommandBracket(WDLParser.CommandBracketContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link WDLParser#command_body}.
+	 * Exit a parse tree produced by the {@code commandBracket}
+	 * labeled alternative in {@link WDLParser#command}.
 	 * @param ctx the parse tree
 	 */
-	void exitCommand_body(WDLParser.Command_bodyContext ctx);
+	void exitCommandBracket(WDLParser.CommandBracketContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link WDLParser#var_option}.
 	 * @param ctx the parse tree

@@ -73,14 +73,14 @@ public class WDLParserBaseVisitor<T> extends AbstractParseTreeVisitor<T> impleme
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCommand(WDLParser.CommandContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCommandBrace(WDLParser.CommandBraceContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitCommand_body(WDLParser.Command_bodyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitCommandBracket(WDLParser.CommandBracketContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
