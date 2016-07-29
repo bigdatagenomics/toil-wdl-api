@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -12,6 +13,11 @@ public class ExprPositive extends WDLExpression {
   }
   public String toString() {
     return String.format("+%s", inner.toString());
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    inner.findIdentifiers(identifies);
   }
 
   @Override

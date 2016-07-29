@@ -3,6 +3,7 @@ package org.bdgenomics.wdl.evaluation.expressions;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
@@ -23,5 +24,12 @@ public class ExprList extends WDLExpression {
   @Override
   public Object evaluate(Environment env) {
     return Stream.of(arguments).map(arg -> arg.evaluate(env)).collect(toList());
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    for(WDLExpression arg : arguments) {
+      arg.findIdentifiers(identifies);
+    }
   }
 }

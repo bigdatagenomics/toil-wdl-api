@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bdgenomics.wdl.evaluation.Environment;
@@ -31,5 +32,9 @@ public class ExprString extends WDLExpression {
   @Override
   public Object evaluate(Environment env) {
     return value;
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
   }
 }

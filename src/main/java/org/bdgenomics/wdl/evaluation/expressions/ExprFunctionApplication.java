@@ -1,6 +1,7 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
 import static java.util.stream.Collectors.joining;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 import org.bdgenomics.wdl.evaluation.Environment;
@@ -30,5 +31,13 @@ public class ExprFunctionApplication extends WDLExpression {
       args[i] = arguments[i].evaluate(env);
     }
     return f.apply(args);
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    function.findIdentifiers(identifies);
+    for(WDLExpression arg : arguments) {
+      arg.findIdentifiers(identifies);
+    }
   }
 }

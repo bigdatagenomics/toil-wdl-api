@@ -5,7 +5,9 @@ import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
 import static org.bdgenomics.utils.HashUtils.hashAdd;
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.WDLType;
+import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
 import com.google.common.base.Preconditions;
 
 public class ArrayType extends WDLType {
@@ -26,4 +28,5 @@ public class ArrayType extends WDLType {
     ArrayType t = (ArrayType)o;
     return eq(of(innerType), to(t.innerType));
   }
+
 }

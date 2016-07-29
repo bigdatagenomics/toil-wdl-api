@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -26,4 +27,11 @@ public class ExprLessThan extends WDLExpression {
       return leftd < rightd;
     }
   }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    left.findIdentifiers(identifies);
+    right.findIdentifiers(identifies);
+  }
+
 }

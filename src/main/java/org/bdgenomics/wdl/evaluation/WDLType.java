@@ -42,8 +42,6 @@ public abstract class WDLType implements WDLComponent<WDLType> {
     throw new IllegalArgumentException(name);
   }
 
-  public abstract void findIdentifiers(List<ExprIdentifier> identifies);
-
   @Override
   public WDLParserVisitor<WDLType> visitor() {
     return new Builder();

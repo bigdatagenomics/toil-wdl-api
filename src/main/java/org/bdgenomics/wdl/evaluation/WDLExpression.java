@@ -94,6 +94,8 @@ public abstract class WDLExpression implements WDLComponent<WDLExpression> {
 
   public abstract Object evaluate(final Environment env);
 
+  public abstract void findIdentifiers(List<ExprIdentifier> identifies);
+
   @Override
   public WDLParserVisitor<WDLExpression> visitor() {
     return new Builder();

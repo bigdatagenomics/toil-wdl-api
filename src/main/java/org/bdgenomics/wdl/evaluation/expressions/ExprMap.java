@@ -2,6 +2,7 @@ package org.bdgenomics.wdl.evaluation.expressions;
 
 import static java.util.stream.Collectors.joining;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.IntStream;
@@ -42,5 +43,15 @@ public class ExprMap extends WDLExpression {
       vals.put(key, value);
     }
     return vals;
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    for(WDLExpression arg : keys) {
+      arg.findIdentifiers(identifies);
+    }
+    for(WDLExpression arg : values) {
+      arg.findIdentifiers(identifies);
+    }
   }
 }

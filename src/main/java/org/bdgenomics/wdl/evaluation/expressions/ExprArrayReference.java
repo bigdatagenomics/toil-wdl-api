@@ -21,4 +21,10 @@ public class ExprArrayReference extends WDLExpression {
     Integer i = (Integer)index.evaluate(env);
     return list.get(i);
   }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    arrayExpr.findIdentifiers(identifies);
+    index.findIdentifiers(identifies);
+  }
 }

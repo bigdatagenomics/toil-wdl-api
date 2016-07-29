@@ -62,7 +62,7 @@ public class WDLTranspilerTest extends BaseTest {
     assertThat(outputCWL).isEqualTo(echoCWL);
   }
 
-  @Test
+  //@Test
   public void testBroadExampleWDL() throws IOException {
     String inputWDL = fixture("broad_test.wdl");
     System.out.println("Input WDL:\n" + inputWDL);

@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -13,6 +14,12 @@ public class ExprSubtraction extends WDLExpression {
   }
   public String toString() {
     return String.format("%s-%s", left.toString(), right.toString());
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    left.findIdentifiers(identifies);
+    right.findIdentifiers(identifies);
   }
 
   @Override

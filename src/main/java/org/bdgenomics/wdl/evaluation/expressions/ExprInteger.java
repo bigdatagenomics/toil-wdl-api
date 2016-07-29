@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -14,5 +15,9 @@ public class ExprInteger extends WDLExpression {
   @Override
   public Object evaluate(Environment env) {
     return value;
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
   }
 }

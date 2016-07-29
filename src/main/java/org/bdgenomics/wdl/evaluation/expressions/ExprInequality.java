@@ -1,5 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
+import java.util.List;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -23,5 +24,11 @@ public class ExprInequality extends WDLExpression {
     } else {
       return !lv.equals(rv);
     }
+  }
+
+  @Override
+  public void findIdentifiers(List<ExprIdentifier> identifies) {
+    left.findIdentifiers(identifies);
+    right.findIdentifiers(identifies);
   }
 }
