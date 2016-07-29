@@ -13,6 +13,9 @@ import org.bdgenomics.wdl.evaluation.WDLDocument;
 import org.bdgenomics.wdl.evaluation.WDLEvaluator;
 import org.bdgenomics.wdl.evaluation.WDLTask;
 import org.bdgenomics.wdl.evaluation.WDLWorkflow;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -23,10 +26,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 @Path("/api/workflows/v1")
-@Produces(MediaType.APPLICATION_JSON)
 public class WorkflowsResource {
+
+  public static final Logger LOG = LoggerFactory.getLogger(WorkflowsResource.class);
 
   private ToilService service;
 
@@ -34,6 +39,7 @@ public class WorkflowsResource {
     this.service = service;
   }
 
+  /*
   @POST
   @Consumes("text/plain")
   public Response convert(String wdlSource) {
@@ -53,30 +59,34 @@ public class WorkflowsResource {
 
       throw new BadRequestException(String.format("Couldn't parse wdl document\n%s", wdlSource), e);
     }
-
   }
+  */
 
   @POST
-  @Consumes("multipart/form-data")
-  public Response create(@FormParam("wdlSource") String wdlSource,
-                         @FormParam("workflowInputs") String workflowInputs,
-                         @FormParam("workflowOptions") String workflowOptions) {
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces("text/plain")
+  public Response create(@FormDataParam("wdlSource") String wdlSource,
+                         @FormDataParam("workflowInputs") String workflowInputs,
+                         @FormDataParam("workflowOptions") String workflowOptions) {
 
     try {
+      LOG.info("wdlSource: {}", wdlSource);
+
       WDLDocument wdlDocument = WDLEvaluator.parse(new WDLDocument.Builder(), wdlSource);
 
       CWLPackage cwlDocument = new WDLTranspiler().convertDocument(wdlDocument);
 
-      ObjectMapper mapper = new ObjectMapper();
+      ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
       Map<String, Object> inputs = mapper.readValue(workflowInputs, Map.class);
 
-      String response = service.workflowService().create(cwlDocument.workflow, inputs);
+      String response = service.workflowService().create(cwlDocument, inputs);
 
       return Response.accepted().entity(response).build();
 
     } catch (IOException e) {
 
+      LOG.error("Couldn't parse wdlSource", e);
       throw new BadRequestException("Couldn't parse wdlSource", e);
     }
   }

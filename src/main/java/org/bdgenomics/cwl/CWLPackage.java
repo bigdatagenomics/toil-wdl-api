@@ -3,7 +3,9 @@ package org.bdgenomics.cwl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -16,11 +18,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 public class CWLPackage {
 
   public final Workflow workflow;
-  public final List<CommandLineTool> tools;
+  public final Map<String, CommandLineTool> tools;
 
-  public CWLPackage(Workflow workflow, CommandLineTool ... tools) {
+  public CWLPackage(Workflow workflow, Map<String, CommandLineTool> tools) {
     this.workflow = workflow;
-    this.tools = new ArrayList<>(Arrays.asList(tools));
+    this.tools = new LinkedHashMap<>(tools);
   }
 
   public static class Serializer extends JsonSerializer<CWLPackage> {
@@ -30,7 +32,7 @@ public class CWLPackage {
       throws IOException {
 
       jsonGenerator.writeObject(cwlPackage.workflow);
-      for(CommandLineTool tool : cwlPackage.tools) {
+      for(CommandLineTool tool : cwlPackage.tools.values()) {
         jsonGenerator.writeObject(tool);
       }
     }

@@ -1,6 +1,7 @@
 package org.bdgenomics;
 
 import io.dropwizard.Application;
+import io.dropwizard.forms.MultiPartBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.bdgenomics.api.ToilService;
@@ -21,7 +22,7 @@ public class ToilWdlApiApplication extends Application<ToilWdlApiConfiguration> 
 
     @Override
     public void initialize(final Bootstrap<ToilWdlApiConfiguration> bootstrap) {
-        // TODO: application initialization
+        bootstrap.addBundle(new MultiPartBundle());
     }
 
     @Override

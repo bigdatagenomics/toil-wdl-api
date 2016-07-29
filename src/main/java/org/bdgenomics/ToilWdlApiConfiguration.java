@@ -1,6 +1,7 @@
 package org.bdgenomics;
 
 import io.dropwizard.Configuration;
+import org.bdgenomics.api.CommandLineWorkflowService;
 import org.bdgenomics.api.ToilService;
 import org.bdgenomics.api.WorkflowService;
 
@@ -10,7 +11,7 @@ public class ToilWdlApiConfiguration extends Configuration {
         return new ToilService() {
             @Override
             public WorkflowService workflowService() {
-                return null;
+                return new CommandLineWorkflowService();
             }
         };
     }

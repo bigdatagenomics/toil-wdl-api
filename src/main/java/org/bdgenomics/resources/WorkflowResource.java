@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.Arrays;
+import java.util.Map;
 
 @Path("/api/workflows/v1/{id}")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,7 +35,7 @@ public class WorkflowResource {
     @GET
     @Path("metadata")
     public WorkflowMetadata metadata(@PathParam("id") UUIDParam workflowUUID) {
-        return null;
+        return new WorkflowMetadata();
     }
 
     @GET
@@ -46,17 +47,16 @@ public class WorkflowResource {
 
     @GET
     @Path("outputs")
-    public Status outputs(@PathParam("id") UUIDParam workflowUUID) {
+    public Map<String, Object> outputs(@PathParam("id") UUIDParam workflowUUID) {
         String workflowId = workflowUUID.toString();
-        return new Status(workflowId, service.workflowService().status(workflowId));
+        return service.workflowService().outputs(workflowId);
     }
 
     @GET
     @Path("logs")
     public Logs logs(@PathParam("id") UUIDParam workflowUUID) {
         String workflowId = workflowUUID.toString();
-        Logs logs = new Logs(workflowId);
-        return logs;
+        return service.workflowService().logs(workflowId);
     }
 
 }

@@ -263,12 +263,13 @@ public class WDLTranspiler {
    * @return The collection of CWL components that are converted from the document.
    */
   public CWLPackage convertDocument(WDLDocument wdlDocument) {
-    CommandLineTool[] tools = Stream.of(wdlDocument.tasks).map(t -> convertTask(t))
-      .collect(toList()).toArray(new CommandLineTool[0]);
+
+    Map<String, CommandLineTool> toolMap = new LinkedHashMap<>();
+    Stream.of(wdlDocument.tasks).forEach(t -> toolMap.put(t.taskName + ".cwl", convertTask(t)));
 
     Workflow workflow = convertWorkflow(wdlDocument.taskMap(), wdlDocument.workflow);
 
-    return new CWLPackage(workflow, tools);
+    return new CWLPackage(workflow, toolMap);
   }
 
   private static final Pattern singleQuoted = Pattern.compile("'(.*)'");
