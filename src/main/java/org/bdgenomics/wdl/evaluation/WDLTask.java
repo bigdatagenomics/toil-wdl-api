@@ -1,6 +1,5 @@
 package org.bdgenomics.wdl.evaluation;
 
-import static java.util.stream.Collectors.joining;
 import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
@@ -12,7 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -188,7 +186,6 @@ public class WDLTask implements WDLComponent<WDLTask> {
       this.all = extractCommandContent(all);
       System.out.println(String.format("********* COMMAND: \"%s\"", this.all));
       this.contents = splitCommand(this.all);
-      System.out.println(String.format("********* ARGS: [%s]", Stream.of(contents).map(s -> String.format("\"%s\"", s)).collect(joining(", "))));
     }
 
     public int hashCode() {

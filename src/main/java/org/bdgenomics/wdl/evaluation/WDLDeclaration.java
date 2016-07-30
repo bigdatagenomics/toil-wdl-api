@@ -4,7 +4,6 @@ import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
-import java.util.Optional;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -21,12 +20,11 @@ public class WDLDeclaration implements WDLComponent<WDLDeclaration> {
 
   public final WDLType type;
   public final String identifier;
-  public final Optional<WDLExpression> initializer;
+  public final WDLExpression initializer;
 
-  public WDLDeclaration(final WDLType type, final String identifier, final Optional<WDLExpression> initializer) {
+  public WDLDeclaration(final WDLType type, final String identifier, final WDLExpression initializer) {
     Preconditions.checkNotNull(type);
     Preconditions.checkNotNull(identifier);
-    Preconditions.checkNotNull(initializer);
 
     this.type = type;
     this.identifier = identifier;
@@ -45,7 +43,7 @@ public class WDLDeclaration implements WDLComponent<WDLDeclaration> {
 
   public String toString() {
     return String.format("%s %s%s", type, identifier,
-      initializer.map(v -> String.format(" = %s", v.toString())).orElse(""));
+      initializer != null ? String.format(" = %s", initializer.toString()) : "");
   }
 
   @Override
@@ -70,7 +68,7 @@ public class WDLDeclaration implements WDLComponent<WDLDeclaration> {
         init = new WDLExpression.Builder().visit(ctx.expression());
       }
 
-      return new WDLDeclaration(type, name, Optional.ofNullable(init));
+      return new WDLDeclaration(type, name, init);
     }
 
     @Override

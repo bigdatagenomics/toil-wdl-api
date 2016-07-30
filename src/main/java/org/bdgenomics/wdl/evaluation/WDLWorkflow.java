@@ -1,12 +1,10 @@
 package org.bdgenomics.wdl.evaluation;
 
-import static java.util.stream.Collectors.toList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -33,11 +31,23 @@ public class WDLWorkflow implements WDLComponent<WDLWorkflow> {
   }
 
   public List<WDLDeclaration> declarations() {
-    return Stream.of(workflowSteps).filter(i -> i instanceof WDLDeclaration).map(i -> (WDLDeclaration)i).collect(toList());
+    ArrayList<WDLDeclaration> filtered = new ArrayList<>();
+    for(WDLComponent comp : workflowSteps) {
+      if(comp instanceof WDLDeclaration) {
+        filtered.add((WDLDeclaration)comp);
+      }
+    }
+    return filtered;
   }
 
   public List<WDLCall> calls() {
-    return Stream.of(workflowSteps).filter(i -> i instanceof WDLCall).map(i -> (WDLCall) i).collect(toList());
+    ArrayList<WDLCall> filtered = new ArrayList<>();
+    for(WDLComponent comp : workflowSteps) {
+      if(comp instanceof WDLCall) {
+        filtered.add((WDLCall)comp);
+      }
+    }
+    return filtered;
   }
 
   @Override

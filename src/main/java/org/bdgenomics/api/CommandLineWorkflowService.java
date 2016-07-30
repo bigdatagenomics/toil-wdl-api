@@ -134,7 +134,13 @@ class SubmittedWorkflow {
   }
 
   public boolean isRunning() {
-    return process.isAlive();
+    try {
+      int exit = process.exitValue();
+      return false;
+
+    } catch(IllegalThreadStateException e) {
+      return true;
+    }
   }
 
   public void waitForProcess() {
@@ -160,7 +166,7 @@ class SubmittedWorkflow {
   }
 
   public void abort() {
-    if(process.isAlive()) {
+    if(isRunning()) {
       process.destroy();
     }
   }

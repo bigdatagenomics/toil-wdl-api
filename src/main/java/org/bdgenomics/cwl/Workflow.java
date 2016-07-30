@@ -22,7 +22,7 @@ public class Workflow extends CWLTool {
   public List<WorkflowStep> steps;
 
   public Workflow() {
-    this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    this(new ArrayList<InputParameter>(), new ArrayList<WorkflowOutputParameter>(), new ArrayList<WorkflowStep>());
   }
 
   public Workflow(final List<InputParameter> inputs,

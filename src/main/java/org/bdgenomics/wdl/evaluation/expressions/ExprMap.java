@@ -1,11 +1,9 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
-import static java.util.stream.Collectors.joining;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.IntStream;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
 
@@ -28,10 +26,14 @@ public class ExprMap extends WDLExpression {
   }
 
   public String toString() {
-    return String.format("{%s}",
-      IntStream.range(0, keys.length)
-        .mapToObj(i -> String.format("%s : %s", keys[i].toString(), values[i].toString()))
-        .collect(joining(", ")));
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    for(int i = 0; i < keys.length; i++) {
+      sb.append(String.format("%s:%s", keys[i], values[i]));
+      if(i < keys.length-1) { sb.append(", "); }
+    }
+    sb.append("}");
+    return sb.toString();
   }
 
   @Override

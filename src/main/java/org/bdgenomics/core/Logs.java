@@ -17,7 +17,7 @@ public class Logs {
 
     public void addLogLocation(String call, LogLocations locs) {
         if(logs == null) { logs = new HashMap<>(); }
-        if(!logs.containsKey(call)) { logs.put(call, new ArrayList<>()); }
+        if(!logs.containsKey(call)) { logs.put(call, new ArrayList<LogLocations>()); }
         logs.get(call).add(locs);
     }
 

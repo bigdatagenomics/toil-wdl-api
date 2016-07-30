@@ -1,9 +1,6 @@
 package org.bdgenomics.wdl.evaluation.expressions;
 
-import static java.util.stream.Collectors.joining;
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.FunctionValue;
 import org.bdgenomics.wdl.evaluation.WDLExpression;
@@ -19,8 +16,14 @@ public class ExprFunctionApplication extends WDLExpression {
   }
 
   public String toString() {
-    return String.format("%s(%s)", function.toString(),
-      Stream.of(arguments).map(WDLExpression::toString).collect(joining(",")));
+    StringBuilder sb = new StringBuilder();
+    for(WDLExpression expr : arguments) {
+      if(sb.length() > 0) {
+        sb.append(", ");
+      }
+      sb.append(expr.toString());
+    }
+    return String.format("%s(%s)", function.toString(), sb.toString());
   }
 
   @Override

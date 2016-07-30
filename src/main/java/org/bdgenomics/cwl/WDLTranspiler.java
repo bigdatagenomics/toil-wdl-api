@@ -1,6 +1,5 @@
 package org.bdgenomics.cwl;
 
-import static java.util.stream.Collectors.toList;
 import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
@@ -14,7 +13,6 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 import org.bdgenomics.wdl.evaluation.Environment;
 import org.bdgenomics.wdl.evaluation.expressions.ExprIdentifier;
 import org.bdgenomics.wdl.evaluation.WDLCall;
@@ -265,7 +263,9 @@ public class WDLTranspiler {
   public CWLPackage convertDocument(WDLDocument wdlDocument) {
 
     Map<String, CommandLineTool> toolMap = new LinkedHashMap<>();
-    Stream.of(wdlDocument.tasks).forEach(t -> toolMap.put(t.taskName + ".cwl", convertTask(t)));
+    for(WDLTask task : wdlDocument.tasks) {
+      toolMap.put(task.taskName + ".cwl", convertTask(task));
+    }
 
     Workflow workflow = convertWorkflow(wdlDocument.taskMap(), wdlDocument.workflow);
 

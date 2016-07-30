@@ -1,13 +1,10 @@
 package org.bdgenomics.wdl.evaluation;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static org.bdgenomics.utils.EqualityUtils.*;
 import static org.bdgenomics.utils.HashUtils.hash;
 import static org.bdgenomics.utils.HashUtils.hashAdd;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -47,9 +44,16 @@ public class WDLCall implements WDLComponent<WDLCall> {
   }
 
   public String toString() {
+    StringBuilder sb = new StringBuilder();
+    for(CallInput input : inputs) {
+      if(sb.length() > 0) {
+        sb.append(", ");
+      }
+      sb.append(input.toString());
+    }
     return String.format("call %s { input: %s }",
       callName,
-      Stream.of(inputs).map(CallInput::toString).collect(joining(", ")));
+      sb.toString());
   }
 
   @Override
@@ -100,7 +104,12 @@ public class WDLCall implements WDLComponent<WDLCall> {
 
     private List<CallInput> parseMapping(WDLParser.Variable_mappingsContext ctx) {
       System.out.println(String.format("Variable_Mappings: \"%s\"", ctx.getText()));
-      return ctx.variable_mapping_kv().stream().map(this::parseKV).collect(toList());
+
+      ArrayList<CallInput> inputs = new ArrayList<>();
+      for(WDLParser.Variable_mapping_kvContext kvctx : ctx.variable_mapping_kv()) {
+        inputs.add(parseKV(kvctx));
+      }
+      return inputs;
     }
 
     private CallInput parseKV(WDLParser.Variable_mapping_kvContext ctx) {

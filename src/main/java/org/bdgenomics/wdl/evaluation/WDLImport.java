@@ -4,7 +4,6 @@ import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
 import static org.bdgenomics.utils.HashUtils.hash;
-import java.util.Optional;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.bdgenomics.wdl.parsing.WDLParserBaseVisitor;
 import org.bdgenomics.wdl.parsing.WDLParser;
@@ -13,9 +12,9 @@ import org.bdgenomics.wdl.parsing.WDLParserVisitor;
 public class WDLImport implements WDLComponent<WDLImport> {
 
   public final String location;
-  public final Optional<String> name;
+  public final String name;
 
-  public WDLImport(String location, Optional<String> name) {
+  public WDLImport(String location, String name) {
     this.location = location;
     this.name = name;
   }
@@ -41,7 +40,7 @@ public class WDLImport implements WDLComponent<WDLImport> {
       final WDLParser.Import_nameContext nameCtx = ctx.import_name();
       final String name = nameCtx != null ? nameCtx.getText() : null;
 
-      return new WDLImport(location, Optional.of(name));
+      return new WDLImport(location, name);
     }
 
     @Override

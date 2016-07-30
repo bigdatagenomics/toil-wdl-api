@@ -36,7 +36,7 @@ public class WorkflowStep {
   }
 
   public WorkflowStep(String id, String run) {
-    this(id, run, new ArrayList<>(), new ArrayList<>());
+    this(id, run, new ArrayList<WorkflowStepInput>(), new ArrayList<WorkflowStepOutput>());
   }
 
   public WorkflowStep withRequirements(String... reqs) {

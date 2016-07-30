@@ -18,7 +18,7 @@ class CWLYAMLFactory extends YAMLFactory {
 
   public CWLYAMLFactory() {
     this.configure(YAMLGenerator.Feature.WRITE_DOC_START_MARKER, false);
-    this.configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true);
+    //this.configure(YAMLGenerator.Feature.MINIMIZE_QUOTES, true);
     this.configure(YAMLGenerator.Feature.SPLIT_LINES, false);
   }
 }

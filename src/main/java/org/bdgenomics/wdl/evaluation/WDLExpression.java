@@ -1,7 +1,5 @@
 package org.bdgenomics.wdl.evaluation;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.toList;
 import static org.bdgenomics.utils.EqualityUtils.eq;
 import static org.bdgenomics.utils.EqualityUtils.of;
 import static org.bdgenomics.utils.EqualityUtils.to;
@@ -134,13 +132,19 @@ public abstract class WDLExpression implements WDLComponent<WDLExpression> {
 
     @Override
     public WDLExpression visitMap(WDLParser.MapContext ctx) {
-      List<WDLExpression> exprs = ctx.expression().stream().map(this::visit).collect(toList());
+      ArrayList<WDLExpression> exprs = new ArrayList<>();
+      for(WDLParser.ExpressionContext ec : ctx.expression()) {
+        exprs.add(visit(ec));
+      }
       return new ExprMap(exprs);
     }
 
     @Override
     public WDLExpression visitList(WDLParser.ListContext ctx) {
-      List<WDLExpression> exprs = ctx.expression().stream().map(this::visit).collect(toList());
+      ArrayList<WDLExpression> exprs = new ArrayList<>();
+      for(WDLParser.ExpressionContext ec : ctx.expression()) {
+        exprs.add(visit(ec));
+      }
       return new ExprList(exprs);
     }
 
