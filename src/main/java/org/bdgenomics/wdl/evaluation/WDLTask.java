@@ -74,6 +74,26 @@ public class WDLTask implements WDLComponent<WDLTask> {
     return new Builder();
   }
 
+  public boolean hasDeclaration(String name) {
+    for(WDLDeclaration decl : declarations) {
+      if(decl.identifier.equals(name)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  public WDLDeclaration getDeclaration(String name) {
+    for(WDLDeclaration decl : declarations) {
+      if(decl.identifier.equals(name)) {
+        return decl;
+      }
+    }
+    throw new IllegalArgumentException(String.format("No declaration \"%s\" in task %s",
+      name, this.taskName));
+  }
+
   private static class TaskComponentBuilder extends WDLParserBaseVisitor<Object> {
 
     @Override

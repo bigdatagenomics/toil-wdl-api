@@ -22,6 +22,7 @@ import org.bdgenomics.wdl.evaluation.WDLExpression;
 import org.bdgenomics.wdl.evaluation.WDLTask;
 import org.bdgenomics.wdl.evaluation.WDLType;
 import org.bdgenomics.wdl.evaluation.WDLWorkflow;
+import org.bdgenomics.wdl.evaluation.types.FileType;
 import com.google.common.base.Preconditions;
 
 /**
@@ -161,6 +162,7 @@ public class WDLTranspiler {
     Map<String, UniqueOutput> outputMap = outputMap(findUniqueOutputs(taskMap.values()));
 
     WDLCall call = wdlWorkflow.calls().get(0);
+    WDLTask task = taskMap.get(call.callName);
 
     for(WDLCall.CallInput input : call.inputs) {
       String name = input.key;
@@ -184,11 +186,20 @@ public class WDLTranspiler {
         type = inferType(value);
       }
 
-      String inputName = input.value.toString();
+      if(type.equals("string")) {
+        if(task.hasDeclaration(name)) {
+          WDLDeclaration decl = task.getDeclaration(name);
+          if(decl.type instanceof FileType) {
+            type = "File";
+          }
+        }
+      }
 
-      workflow = workflow.withInput(new InputParameter(inputName, type, null));
+      workflow = workflow.withInput(new InputParameter(name, type, null));
     }
 
+    System.out.println(String.format("TASKS: %s", taskMap.values()));
+    System.out.println(String.format("UNIQUE_OUTPUTS: %s", findUniqueOutputs(taskMap.values())));
     for(UniqueOutput output : outputMap.values()) {
       workflow = workflow.withOutput(new WorkflowOutputParameter(output.name, output.type, null).withSource(output.toString()));
     }
@@ -300,9 +311,13 @@ public class WDLTranspiler {
 
   private List<UniqueOutput> findUniqueOutputs(Collection<WDLTask> tasks) {
     ArrayList<UniqueOutput> outputs = new ArrayList<>();
+    System.out.println("Finding unique outputs...");
     for(WDLTask task : tasks) {
+      System.out.println(String.format("\tFinding outputs for task %s", task.taskName));
       for(WDLTask.Output outputBlock : task.outputs) {
+        System.out.println(String.format("\t\tOutput block"));
         for(WDLTask.OutputAssignment assignment : outputBlock.assignments) {
+          System.out.println(String.format("\t\t\tFinding unique outputs for assignment %s/%s", assignment.identifier, assignment.type));
           outputs.add(new UniqueOutput(task.taskName, assignment.identifier, assignment.type));
         }
       }

@@ -265,82 +265,12 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBool(WDLParser.BoolContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Add}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAdd(WDLParser.AddContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Or}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOr(WDLParser.OrContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code FunctionApplication}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFunctionApplication(WDLParser.FunctionApplicationContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code String}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitString(WDLParser.StringContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Divide}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDivide(WDLParser.DivideContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code LessThan}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitLessThan(WDLParser.LessThanContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Identifier}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentifier(WDLParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Negative}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNegative(WDLParser.NegativeContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code GreaterThan}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitGreaterThan(WDLParser.GreaterThanContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Multiply}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMultiply(WDLParser.MultiplyContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code List}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitList(WDLParser.ListContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code GreaterThanOrEquals}
 	 * labeled alternative in {@link WDLParser#expression}.
@@ -349,26 +279,19 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitGreaterThanOrEquals(WDLParser.GreaterThanOrEqualsContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Equality}
+	 * Visit a parse tree produced by the {@code Subtract}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEquality(WDLParser.EqualityContext ctx);
+	T visitSubtract(WDLParser.SubtractContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Boolean}
+	 * Visit a parse tree produced by the {@code Multiply}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBoolean(WDLParser.BooleanContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code ArrayReference}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitArrayReference(WDLParser.ArrayReferenceContext ctx);
+	T visitMultiply(WDLParser.MultiplyContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Modulo}
 	 * labeled alternative in {@link WDLParser#expression}.
@@ -377,40 +300,33 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitModulo(WDLParser.ModuloContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code LessThanOrEquals}
+	 * Visit a parse tree produced by the {@code ArrayReference}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLessThanOrEquals(WDLParser.LessThanOrEqualsContext ctx);
+	T visitArrayReference(WDLParser.ArrayReferenceContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Grouping}
+	 * Visit a parse tree produced by the {@code Add}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitGrouping(WDLParser.GroupingContext ctx);
+	T visitAdd(WDLParser.AddContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Integer}
+	 * Visit a parse tree produced by the {@code GreaterThan}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInteger(WDLParser.IntegerContext ctx);
+	T visitGreaterThan(WDLParser.GreaterThanContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Float}
+	 * Visit a parse tree produced by the {@code Inequality}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFloat(WDLParser.FloatContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Not}
-	 * labeled alternative in {@link WDLParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitNot(WDLParser.NotContext ctx);
+	T visitInequality(WDLParser.InequalityContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Positive}
 	 * labeled alternative in {@link WDLParser#expression}.
@@ -419,19 +335,40 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPositive(WDLParser.PositiveContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code And}
+	 * Visit a parse tree produced by the {@code FunctionApplication}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAnd(WDLParser.AndContext ctx);
+	T visitFunctionApplication(WDLParser.FunctionApplicationContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Subtract}
+	 * Visit a parse tree produced by the {@code Divide}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitSubtract(WDLParser.SubtractContext ctx);
+	T visitDivide(WDLParser.DivideContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code List}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitList(WDLParser.ListContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Identifier}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(WDLParser.IdentifierContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Float}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloat(WDLParser.FloatContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Map}
 	 * labeled alternative in {@link WDLParser#expression}.
@@ -440,10 +377,73 @@ public interface WDLParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMap(WDLParser.MapContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Inequality}
+	 * Visit a parse tree produced by the {@code Boolean}
 	 * labeled alternative in {@link WDLParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitInequality(WDLParser.InequalityContext ctx);
+	T visitBoolean(WDLParser.BooleanContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Grouping}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGrouping(WDLParser.GroupingContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Negative}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNegative(WDLParser.NegativeContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Not}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNot(WDLParser.NotContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LessThanOrEquals}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLessThanOrEquals(WDLParser.LessThanOrEqualsContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitString(WDLParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Or}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOr(WDLParser.OrContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Integer}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInteger(WDLParser.IntegerContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code And}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnd(WDLParser.AndContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Equality}
+	 * labeled alternative in {@link WDLParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEquality(WDLParser.EqualityContext ctx);
 }

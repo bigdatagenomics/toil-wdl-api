@@ -1,6 +1,7 @@
-#!/bin/bash 
+#!/bin/bash -x
 
-INPUT_FILENAME=$1
+
+INPUT_FILENAME=$(basename "$1")
 OUTPUT_FILENAME="${INPUT_FILENAME%.*}.adam"
 
 echo "INPUT: ${INPUT_FILENAME}" 

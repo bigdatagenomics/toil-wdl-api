@@ -91,7 +91,8 @@ RIGHT_ARROW: '>';
 
 mode BRACE_BLOCK_MODE;
 
-BRACE_BLOCK_CLOSE: '}' -> mode(DEFAULT_MODE);
+BRACE_BLOCK_CLOSE: '\n' [ \t]* '}' -> mode(DEFAULT_MODE);
 BRACE_ANYTHING: ~'}'+;
+BLOCK_BRACE: '}' ;
 
 

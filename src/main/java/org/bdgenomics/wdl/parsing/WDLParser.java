@@ -28,7 +28,7 @@ public class WDLParser extends Parser {
 		MINUS=49, QUESTION=50, BANG=51, ASTERISK=52, FSLASH=53, PERCENT=54, GTEQ=55, 
 		LTEQ=56, GT=57, LT=58, EQEQ=59, EQUALS=60, BANGEQ=61, DOUBLEAMP=62, DOUBLEBAR=63, 
 		BRACKET_BLOCK_CLOSE=64, BRACKET_ANYTHING=65, RIGHT_ARROW=66, BRACE_BLOCK_CLOSE=67, 
-		BRACE_ANYTHING=68;
+		BRACE_ANYTHING=68, BLOCK_BRACE=69;
 	public static final int
 		RULE_document = 0, RULE_wdlimport = 1, RULE_import_location = 2, RULE_import_name = 3, 
 		RULE_task = 4, RULE_task_name = 5, RULE_declaration = 6, RULE_task_section = 7, 
@@ -75,7 +75,7 @@ public class WDLParser extends Parser {
 		"LEFT_PAREN", "RIGHT_PAREN", "PLUS", "MINUS", "QUESTION", "BANG", "ASTERISK", 
 		"FSLASH", "PERCENT", "GTEQ", "LTEQ", "GT", "LT", "EQEQ", "EQUALS", "BANGEQ", 
 		"DOUBLEAMP", "DOUBLEBAR", "BRACKET_BLOCK_CLOSE", "BRACKET_ANYTHING", "RIGHT_ARROW", 
-		"BRACE_BLOCK_CLOSE", "BRACE_ANYTHING"
+		"BRACE_BLOCK_CLOSE", "BRACE_ANYTHING", "BLOCK_BRACE"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -2618,423 +2618,6 @@ public class WDLParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	public static class AddContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode PLUS() { return getToken(WDLParser.PLUS, 0); }
-		public AddContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterAdd(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitAdd(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitAdd(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class OrContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode DOUBLEBAR() { return getToken(WDLParser.DOUBLEBAR, 0); }
-		public OrContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterOr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitOr(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitOr(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class FunctionApplicationContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode LEFT_PAREN() { return getToken(WDLParser.LEFT_PAREN, 0); }
-		public TerminalNode RIGHT_PAREN() { return getToken(WDLParser.RIGHT_PAREN, 0); }
-		public List<TerminalNode> COMMA() { return getTokens(WDLParser.COMMA); }
-		public TerminalNode COMMA(int i) {
-			return getToken(WDLParser.COMMA, i);
-		}
-		public FunctionApplicationContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterFunctionApplication(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitFunctionApplication(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitFunctionApplication(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class StringContext extends ExpressionContext {
-		public TerminalNode STRING() { return getToken(WDLParser.STRING, 0); }
-		public StringContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterString(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitString(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitString(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class DivideContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode FSLASH() { return getToken(WDLParser.FSLASH, 0); }
-		public DivideContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterDivide(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitDivide(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitDivide(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LessThanContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode LT() { return getToken(WDLParser.LT, 0); }
-		public LessThanContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterLessThan(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitLessThan(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitLessThan(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IdentifierContext extends ExpressionContext {
-		public TerminalNode IDENTIFIER() { return getToken(WDLParser.IDENTIFIER, 0); }
-		public IdentifierContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterIdentifier(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitIdentifier(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitIdentifier(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NegativeContext extends ExpressionContext {
-		public TerminalNode MINUS() { return getToken(WDLParser.MINUS, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public NegativeContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterNegative(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitNegative(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitNegative(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class GreaterThanContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode GT() { return getToken(WDLParser.GT, 0); }
-		public GreaterThanContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGreaterThan(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGreaterThan(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGreaterThan(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class MultiplyContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode ASTERISK() { return getToken(WDLParser.ASTERISK, 0); }
-		public MultiplyContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterMultiply(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitMultiply(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitMultiply(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ListContext extends ExpressionContext {
-		public TerminalNode LEFT_BRACKET() { return getToken(WDLParser.LEFT_BRACKET, 0); }
-		public TerminalNode RIGHT_BRACKET() { return getToken(WDLParser.RIGHT_BRACKET, 0); }
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public ListContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterList(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitList(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitList(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class GreaterThanOrEqualsContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode GTEQ() { return getToken(WDLParser.GTEQ, 0); }
-		public GreaterThanOrEqualsContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGreaterThanOrEquals(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGreaterThanOrEquals(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGreaterThanOrEquals(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class EqualityContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode EQEQ() { return getToken(WDLParser.EQEQ, 0); }
-		public EqualityContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterEquality(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitEquality(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitEquality(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class BooleanContext extends ExpressionContext {
-		public BoolContext bool() {
-			return getRuleContext(BoolContext.class,0);
-		}
-		public BooleanContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterBoolean(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitBoolean(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitBoolean(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ArrayReferenceContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode LEFT_BRACKET() { return getToken(WDLParser.LEFT_BRACKET, 0); }
-		public TerminalNode RIGHT_BRACKET() { return getToken(WDLParser.RIGHT_BRACKET, 0); }
-		public ArrayReferenceContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterArrayReference(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitArrayReference(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitArrayReference(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class ModuloContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode PERCENT() { return getToken(WDLParser.PERCENT, 0); }
-		public ModuloContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterModulo(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitModulo(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitModulo(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class LessThanOrEqualsContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode LTEQ() { return getToken(WDLParser.LTEQ, 0); }
-		public LessThanOrEqualsContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterLessThanOrEquals(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitLessThanOrEquals(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitLessThanOrEquals(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class GroupingContext extends ExpressionContext {
-		public TerminalNode LEFT_PAREN() { return getToken(WDLParser.LEFT_PAREN, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public TerminalNode RIGHT_PAREN() { return getToken(WDLParser.RIGHT_PAREN, 0); }
-		public GroupingContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGrouping(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGrouping(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGrouping(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class IntegerContext extends ExpressionContext {
-		public TerminalNode INTEGER() { return getToken(WDLParser.INTEGER, 0); }
-		public IntegerContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterInteger(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitInteger(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitInteger(this);
-			else return visitor.visitChildren(this);
-		}
-	}
 	public static class FloatContext extends ExpressionContext {
 		public TerminalNode FLOAT() { return getToken(WDLParser.FLOAT, 0); }
 		public FloatContext(ExpressionContext ctx) { copyFrom(ctx); }
@@ -3049,92 +2632,6 @@ public class WDLParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitFloat(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class NotContext extends ExpressionContext {
-		public TerminalNode BANG() { return getToken(WDLParser.BANG, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public NotContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterNot(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitNot(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitNot(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class PositiveContext extends ExpressionContext {
-		public TerminalNode PLUS() { return getToken(WDLParser.PLUS, 0); }
-		public ExpressionContext expression() {
-			return getRuleContext(ExpressionContext.class,0);
-		}
-		public PositiveContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterPositive(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitPositive(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitPositive(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class AndContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode DOUBLEAMP() { return getToken(WDLParser.DOUBLEAMP, 0); }
-		public AndContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterAnd(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitAnd(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitAnd(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class SubtractContext extends ExpressionContext {
-		public List<ExpressionContext> expression() {
-			return getRuleContexts(ExpressionContext.class);
-		}
-		public ExpressionContext expression(int i) {
-			return getRuleContext(ExpressionContext.class,i);
-		}
-		public TerminalNode MINUS() { return getToken(WDLParser.MINUS, 0); }
-		public SubtractContext(ExpressionContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterSubtract(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitSubtract(this);
-		}
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitSubtract(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3166,6 +2663,334 @@ public class WDLParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class LessThanContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode LT() { return getToken(WDLParser.LT, 0); }
+		public LessThanContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterLessThan(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitLessThan(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitLessThan(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GreaterThanOrEqualsContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode GTEQ() { return getToken(WDLParser.GTEQ, 0); }
+		public GreaterThanOrEqualsContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGreaterThanOrEquals(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGreaterThanOrEquals(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGreaterThanOrEquals(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class SubtractContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode MINUS() { return getToken(WDLParser.MINUS, 0); }
+		public SubtractContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterSubtract(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitSubtract(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitSubtract(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class BooleanContext extends ExpressionContext {
+		public BoolContext bool() {
+			return getRuleContext(BoolContext.class,0);
+		}
+		public BooleanContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterBoolean(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitBoolean(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitBoolean(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GroupingContext extends ExpressionContext {
+		public TerminalNode LEFT_PAREN() { return getToken(WDLParser.LEFT_PAREN, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public TerminalNode RIGHT_PAREN() { return getToken(WDLParser.RIGHT_PAREN, 0); }
+		public GroupingContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGrouping(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGrouping(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGrouping(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NotContext extends ExpressionContext {
+		public TerminalNode BANG() { return getToken(WDLParser.BANG, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public NotContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterNot(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitNot(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitNot(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class NegativeContext extends ExpressionContext {
+		public TerminalNode MINUS() { return getToken(WDLParser.MINUS, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public NegativeContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterNegative(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitNegative(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitNegative(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class MultiplyContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode ASTERISK() { return getToken(WDLParser.ASTERISK, 0); }
+		public MultiplyContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterMultiply(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitMultiply(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitMultiply(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class LessThanOrEqualsContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode LTEQ() { return getToken(WDLParser.LTEQ, 0); }
+		public LessThanOrEqualsContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterLessThanOrEquals(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitLessThanOrEquals(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitLessThanOrEquals(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class StringContext extends ExpressionContext {
+		public TerminalNode STRING() { return getToken(WDLParser.STRING, 0); }
+		public StringContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterString(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitString(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitString(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ModuloContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode PERCENT() { return getToken(WDLParser.PERCENT, 0); }
+		public ModuloContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterModulo(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitModulo(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitModulo(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class OrContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode DOUBLEBAR() { return getToken(WDLParser.DOUBLEBAR, 0); }
+		public OrContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterOr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitOr(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitOr(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ArrayReferenceContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode LEFT_BRACKET() { return getToken(WDLParser.LEFT_BRACKET, 0); }
+		public TerminalNode RIGHT_BRACKET() { return getToken(WDLParser.RIGHT_BRACKET, 0); }
+		public ArrayReferenceContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterArrayReference(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitArrayReference(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitArrayReference(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AddContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode PLUS() { return getToken(WDLParser.PLUS, 0); }
+		public AddContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterAdd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitAdd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitAdd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class GreaterThanContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode GT() { return getToken(WDLParser.GT, 0); }
+		public GreaterThanContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterGreaterThan(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitGreaterThan(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitGreaterThan(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class InequalityContext extends ExpressionContext {
 		public List<ExpressionContext> expression() {
 			return getRuleContexts(ExpressionContext.class);
@@ -3186,6 +3011,181 @@ public class WDLParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitInequality(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class PositiveContext extends ExpressionContext {
+		public TerminalNode PLUS() { return getToken(WDLParser.PLUS, 0); }
+		public ExpressionContext expression() {
+			return getRuleContext(ExpressionContext.class,0);
+		}
+		public PositiveContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterPositive(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitPositive(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitPositive(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class FunctionApplicationContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode LEFT_PAREN() { return getToken(WDLParser.LEFT_PAREN, 0); }
+		public TerminalNode RIGHT_PAREN() { return getToken(WDLParser.RIGHT_PAREN, 0); }
+		public List<TerminalNode> COMMA() { return getTokens(WDLParser.COMMA); }
+		public TerminalNode COMMA(int i) {
+			return getToken(WDLParser.COMMA, i);
+		}
+		public FunctionApplicationContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterFunctionApplication(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitFunctionApplication(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitFunctionApplication(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class DivideContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode FSLASH() { return getToken(WDLParser.FSLASH, 0); }
+		public DivideContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterDivide(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitDivide(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitDivide(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IntegerContext extends ExpressionContext {
+		public TerminalNode INTEGER() { return getToken(WDLParser.INTEGER, 0); }
+		public IntegerContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterInteger(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitInteger(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitInteger(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class IdentifierContext extends ExpressionContext {
+		public TerminalNode IDENTIFIER() { return getToken(WDLParser.IDENTIFIER, 0); }
+		public IdentifierContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterIdentifier(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitIdentifier(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitIdentifier(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class ListContext extends ExpressionContext {
+		public TerminalNode LEFT_BRACKET() { return getToken(WDLParser.LEFT_BRACKET, 0); }
+		public TerminalNode RIGHT_BRACKET() { return getToken(WDLParser.RIGHT_BRACKET, 0); }
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public ListContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterList(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitList(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitList(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class AndContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode DOUBLEAMP() { return getToken(WDLParser.DOUBLEAMP, 0); }
+		public AndContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterAnd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitAnd(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitAnd(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+	public static class EqualityContext extends ExpressionContext {
+		public List<ExpressionContext> expression() {
+			return getRuleContexts(ExpressionContext.class);
+		}
+		public ExpressionContext expression(int i) {
+			return getRuleContext(ExpressionContext.class,i);
+		}
+		public TerminalNode EQEQ() { return getToken(WDLParser.EQEQ, 0); }
+		public EqualityContext(ExpressionContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).enterEquality(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof WDLParserListener ) ((WDLParserListener)listener).exitEquality(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof WDLParserVisitor ) return ((WDLParserVisitor<? extends T>)visitor).visitEquality(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -3641,7 +3641,7 @@ public class WDLParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3F\u0196\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3G\u0196\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+

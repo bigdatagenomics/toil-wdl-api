@@ -1,0 +1,4 @@
+inputBam: 
+  class: "File"
+  path: "/opt/shim/data/small.sam"
+outputBamFilename: "small.adam"

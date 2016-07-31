@@ -62,9 +62,9 @@ public class WDLTranspilerTest extends BaseTest {
     assertThat(outputCWL).isEqualTo(echoCWL);
   }
 
-  //@Test
+  @Test
   public void testBroadExampleWDL() throws IOException {
-    String inputWDL = fixture("broad_test.wdl");
+    String inputWDL = fixture("adam_test.wdl");
     System.out.println("Input WDL:\n" + inputWDL);
 
     WDLDocument wdlDocument = WDLEvaluator.parse(new WDLDocument.Builder(), inputWDL);
@@ -80,11 +80,13 @@ public class WDLTranspilerTest extends BaseTest {
     CWLObjectMapper cwlMapper = new CWLObjectMapper();
 
     String outputWorkflowCWL = cwlMapper.writeValueAsString(transpiled.workflow);
-    assertThat(outputWorkflowCWL).isEqualTo(fixture("broad_test.cwl"));
-
     String outputToolCWL = cwlMapper.writeValueAsString(transpiled.tools.get(0));
-    System.out.println(outputToolCWL);
-    assertThat(outputToolCWL).isEqualTo("foo");
+
+    System.out.println("WORKFLOW_CWL:\n" + outputWorkflowCWL);
+    assertThat(outputWorkflowCWL).isEqualTo(fixture("adam_test.cwl"));
+
+    System.out.println("TOOL_CWL:\n" + outputToolCWL);
+    assertThat(outputToolCWL).isEqualTo("adamPipeline.cwl");
   }
 
 }
