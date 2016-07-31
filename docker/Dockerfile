@@ -1,11 +1,11 @@
 FROM quay.io/ucsc_cgl/adam-pipeline
 #FROM java:8-jre
 
-#RUN apt-get update && apt-get install -y python-setuptools python-dev build-essential
+RUN apt-get update && apt-get install -y python-setuptools python-dev build-essential
 #RUN easy_install pip
-#RUN pip install --upgrade setuptools==25.1.1 
-#RUN pip install --upgrade cwlref-runner 
-#RUN pip install --upgrade "toil[cwl]"
+RUN pip install --upgrade setuptools==25.1.1 
+RUN pip install --upgrade cwlref-runner 
+RUN pip install --upgrade "toil[cwl]"
 
 WORKDIR /work
 EXPOSE 8080
