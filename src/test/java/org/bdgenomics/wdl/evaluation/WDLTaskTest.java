@@ -44,10 +44,10 @@ public class WDLTaskTest extends BaseTest {
     assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
     assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
 
-    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { command { echo Hello } output { String temp = \"x\"} }");
+    task = WDLEvaluator.parse(new WDLTask.Builder(), "task foo { command <<< echo Hello >>>\n output { String temp = \"x\"} }");
     assertThat(task).isNotNull();
     assertThat(task.taskName).isEqualTo("foo");
-    assertThat(task.outputs).hasAtLeastOneElementOfType(WDLTask.Output.class);
+    assertThat(task.outputs).isNotEmpty();
     assertThat(task.outputs.get(0).assignments).containsExactly(new WDLTask.OutputAssignment("String", "temp", expression("\"x\"")));
     assertThat(task.commands).isNotEmpty();
     assertThat(task.commands.get(0)).isEqualTo(new WDLTask.Command("command { echo Hello }"));

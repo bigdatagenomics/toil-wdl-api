@@ -176,6 +176,12 @@ public class WDLTranspiler {
     WDLCall call = wdlWorkflow.calls().get(0);
     WDLTask task = taskMap.get(call.callName);
 
+    for(WDLDeclaration decl : wdlWorkflow.declarations()) {
+      String type = transpileType(decl.type);
+      workflow = workflow.withInput(new InputParameter(decl.identifier, type, null));
+    }
+
+    /*
     for(WDLCall.CallInput input : call.inputs) {
       String name = input.key;
       String value = null;
@@ -209,6 +215,7 @@ public class WDLTranspiler {
 
       workflow = workflow.withInput(new InputParameter(name, type, null));
     }
+    */
 
     System.out.println(String.format("TASKS: %s", taskMap.values()));
     System.out.println(String.format("UNIQUE_OUTPUTS: %s", findUniqueOutputs(taskMap.values())));

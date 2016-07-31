@@ -161,7 +161,9 @@ class SubmittedWorkflow {
         rawResult = readCompletely(r);
         parsedResult = jsonMapper.readValue(rawResult, Map.class);
         Map<String, Object> output = (Map<String, Object>)parsedResult.get("output");
-        resultPath = (String)output.get("path");
+        if(output != null) {
+          resultPath = (String) output.get("path");
+        }
 
       } catch (IOException e) {
         LOG.warn(

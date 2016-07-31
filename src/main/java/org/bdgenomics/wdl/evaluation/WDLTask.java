@@ -206,9 +206,14 @@ public class WDLTask implements WDLComponent<WDLTask> {
       while(!vars.isEmpty() || !nonvars.isEmpty()) {
         if(!nonvars.isEmpty()) {
           String nonvar = nonvars.removeFirst();
-          String[] nonvarArray = nonvar.split("\\s+");
-          for(String nv : nonvarArray) {
-            total.add(nv);
+          if(!isRedirect(nonvar)) {
+            String[] nonvarArray = nonvar.split("\\s+");
+            for (String nv : nonvarArray) {
+              total.add(nv);
+            }
+
+          } else {
+            total.add(nonvar);
           }
         }
         if(!vars.isEmpty()) { total.add(vars.removeFirst()); }
@@ -230,7 +235,7 @@ public class WDLTask implements WDLComponent<WDLTask> {
     public String[] nonVariablePrefix() {
       ArrayList<String> prefix = new ArrayList<>();
       for(String content : contents) {
-        if (!isVariable(content)) {
+        if (!isVariable(content) && !isRedirect(content)) {
           prefix.add(content);
         }
       }

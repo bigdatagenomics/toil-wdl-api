@@ -57,8 +57,9 @@ public class WDLTranspilerTest extends BaseTest {
 
     String echoCWL = fixture("workflow.cwl");
 
-    //System.out.println("Transpiled:\n" + outputCWL);
-    //System.out.println("\n\nTarget:\n" + echoCWL);
+    System.out.println("WDL:\n" + echoWDL);
+    System.out.println("Transpiled:\n" + outputCWL);
+    System.out.println("\n\nTarget:\n" + echoCWL);
 
     assertThat(outputCWL).isEqualTo(echoCWL);
   }
