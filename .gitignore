@@ -5,6 +5,10 @@ gen/
 dependency-reduced-pom.xml
 .vagrant/
 echo_output*.txt
+*.crc
+*.tgz
 
+small.vcf
+small.sam
 test-cwl/
 broad_test.wdl
