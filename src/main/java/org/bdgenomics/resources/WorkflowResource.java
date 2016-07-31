@@ -27,34 +27,34 @@ public class WorkflowResource {
 
     @POST
     @Path("abort")
-    public Status abort(@PathParam("id") UUIDParam workflowUUID) {
+    public Status abort(@PathParam("id") String workflowUUID) {
         String workflowId = workflowUUID.toString();
         return new Status(workflowId, service.workflowService().status(workflowId));
     }
 
     @GET
     @Path("metadata")
-    public WorkflowMetadata metadata(@PathParam("id") UUIDParam workflowUUID) {
+    public WorkflowMetadata metadata(@PathParam("id") String workflowUUID) {
         return new WorkflowMetadata();
     }
 
     @GET
     @Path("status")
-    public Status status(@PathParam("id") UUIDParam workflowUUID) {
+    public Status status(@PathParam("id") String workflowUUID) {
         String workflowId = workflowUUID.toString();
         return new Status(workflowId, service.workflowService().status(workflowId));
     }
 
     @GET
     @Path("outputs")
-    public Map<String, Object> outputs(@PathParam("id") UUIDParam workflowUUID) {
+    public Map<String, Object> outputs(@PathParam("id") String workflowUUID) {
         String workflowId = workflowUUID.toString();
         return service.workflowService().outputs(workflowId);
     }
 
     @GET
     @Path("logs")
-    public Logs logs(@PathParam("id") UUIDParam workflowUUID) {
+    public Logs logs(@PathParam("id") String workflowUUID) {
         String workflowId = workflowUUID.toString();
         return service.workflowService().logs(workflowId);
     }

@@ -27,33 +27,35 @@ public class CommandLineWorkflowService implements WorkflowService {
 
   public static final Logger LOG = LoggerFactory.getLogger(CommandLineWorkflowService.class);
 
+  public static int NEXT_ID = 0;
+
   private static Map<String, SubmittedWorkflow> runningProcesses = new TreeMap<>();
 
   @Override
   public String create(CWLPackage components, Map<String, Object> inputs) throws IOException {
 
-    String uuid = UUID.randomUUID().toString();
-    LOG.info(String.format("Workflow UUID: %s", uuid));
+    String id = String.valueOf(NEXT_ID++);
+    LOG.info(String.format("Workflow UUID: %s", id));
 
     String tempDirFilename = System.getProperty("java.io.tmpdir");
     File tmp = new File(tempDirFilename);
 
-    File basedir = new File(tmp, "toil-" + uuid);
+    File basedir = new File(tmp, "toil-" + id);
     basedir.mkdir();
 
     File outputdir = new File(basedir, "output");
     outputdir.mkdir();
 
     LOG.info(String.format("Base dir: %s", basedir.getAbsolutePath()));
-    File logFile = new File(basedir, "log-" + uuid + ".txt");
+    File logFile = new File(basedir, "log-" + id + ".txt");
 
     ObjectMapper jsonMapper = new ObjectMapper();
     CWLObjectMapper mapper = new CWLObjectMapper();
 
-    File workflowFile = new File(basedir, "workflow-" + uuid + ".cwl");
+    File workflowFile = new File(basedir, "workflow-" + id + ".cwl");
     mapper.writeValue(workflowFile, components.workflow);
 
-    File inputFile = new File(basedir, "inputs-" + uuid + ".yml");
+    File inputFile = new File(basedir, "inputs-" + id + ".yml");
     mapper.writeValue(inputFile, inputs);
 
     for(String toolName : components.tools.keySet()) {
@@ -70,9 +72,9 @@ public class CommandLineWorkflowService implements WorkflowService {
 
     try {
       Process p = pb.start();
-      runningProcesses.put(uuid, new SubmittedWorkflow(uuid, p));
+      runningProcesses.put(id, new SubmittedWorkflow(id, p));
 
-      return uuid;
+      return id;
 
     } catch (IOException e) {
       e.printStackTrace(System.err);
@@ -107,7 +109,11 @@ public class CommandLineWorkflowService implements WorkflowService {
     SubmittedWorkflow workflow = runningProcesses.get(workflowId);
     if(!workflow.isRunning()) {
       workflow.waitForProcess();
-      outputMap.putAll(workflow.result);
+      if(workflow.parsedResult != null) {
+        outputMap.putAll(workflow.parsedResult);
+      } else {
+        outputMap.put("error_message", workflow.rawResult);
+      }
     }
     return outputMap;
   }
@@ -125,7 +131,8 @@ class SubmittedWorkflow {
   public final String workflowID;
   public Process process;
 
-  public Map<String, Object> result;
+  public String rawResult;
+  public Map<String, Object> parsedResult;
   public String resultPath;
 
   public SubmittedWorkflow(String workflowId, Process p) {
@@ -151,12 +158,14 @@ class SubmittedWorkflow {
 
       try(InputStream is = process.getInputStream()) {
         Reader r = new InputStreamReader(is, "UTF-8");
-        result = jsonMapper.readValue(r, Map.class);
-        Map<String, Object> output = (Map<String, Object>)result.get("output");
+        rawResult = readCompletely(r);
+        parsedResult = jsonMapper.readValue(rawResult, Map.class);
+        Map<String, Object> output = (Map<String, Object>)parsedResult.get("output");
         resultPath = (String)output.get("path");
 
       } catch (IOException e) {
-        LOG.error(String.format("Couldn't retrieve response for workflow %s", workflowID),
+        LOG.warn(
+          String.format("Couldn't retrieve response for workflow %s, raw result \"%s\"", workflowID, rawResult),
           e);
       }
 
@@ -169,5 +178,16 @@ class SubmittedWorkflow {
     if(isRunning()) {
       process.destroy();
     }
+  }
+
+  private String readCompletely(Reader r) throws IOException {
+    char[] buffer = new char[1024];
+    int length = -1;
+    StringBuilder sb = new StringBuilder();
+    while((length = r.read(buffer)) != -1) {
+      sb.append(buffer, 0, length);
+    }
+
+    return sb.toString();
   }
 }
