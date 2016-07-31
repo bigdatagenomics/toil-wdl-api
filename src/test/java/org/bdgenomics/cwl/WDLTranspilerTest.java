@@ -2,6 +2,7 @@ package org.bdgenomics.cwl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
+import java.util.LinkedList;
 import org.bdgenomics.BaseTest;
 import org.bdgenomics.wdl.evaluation.WDLDocument;
 import org.bdgenomics.wdl.evaluation.WDLEvaluator;
@@ -79,14 +80,16 @@ public class WDLTranspilerTest extends BaseTest {
 
     CWLObjectMapper cwlMapper = new CWLObjectMapper();
 
+    LinkedList<String> taskKeys = new LinkedList<>(transpiled.tools.keySet());
+
     String outputWorkflowCWL = cwlMapper.writeValueAsString(transpiled.workflow);
-    String outputToolCWL = cwlMapper.writeValueAsString(transpiled.tools.get(0));
+    String outputToolCWL = cwlMapper.writeValueAsString(transpiled.tools.get(taskKeys.getFirst()));
 
     System.out.println("WORKFLOW_CWL:\n" + outputWorkflowCWL);
     assertThat(outputWorkflowCWL).isEqualTo(fixture("adam_test.cwl"));
 
     System.out.println("TOOL_CWL:\n" + outputToolCWL);
-    assertThat(outputToolCWL).isEqualTo("adamPipeline.cwl");
+    assertThat(outputToolCWL).isEqualTo(fixture("adamPipeline.cwl"));
   }
 
 }

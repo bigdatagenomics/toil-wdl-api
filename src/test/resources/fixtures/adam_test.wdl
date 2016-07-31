@@ -15,7 +15,7 @@ task adamPipeline {
   String outputBamFilename
 
   command {
-    /work/convert_adam.sh ${inputBam} ${outputBamFilename}
+    /bin/bash /work/convert_adam.sh ${inputBam} ${outputBamFilename}
   }
 
   output {

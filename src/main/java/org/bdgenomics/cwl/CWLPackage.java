@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.google.common.base.Preconditions;
 
 @JsonInclude(Include.NON_NULL)
 @JsonSerialize(using=CWLPackage.Serializer.class)
@@ -21,6 +22,14 @@ public class CWLPackage {
   public final Map<String, CommandLineTool> tools;
 
   public CWLPackage(Workflow workflow, Map<String, CommandLineTool> tools) {
+
+    Preconditions.checkNotNull(tools);
+    Preconditions.checkNotNull(workflow);
+
+    for(String key : tools.keySet()) {
+      Preconditions.checkNotNull(tools.get(key));
+    }
+
     this.workflow = workflow;
     this.tools = new LinkedHashMap<>(tools);
   }

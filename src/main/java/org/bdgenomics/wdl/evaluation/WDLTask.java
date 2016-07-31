@@ -172,6 +172,19 @@ public class WDLTask implements WDLComponent<WDLTask> {
       throw new IllegalArgumentException(String.format("Block \"%s\" doesn't match command pattern", block));
     }
 
+    public static boolean isVariable(String arg) {
+      return varPattern.matcher(arg).matches();
+    }
+
+    public static String variableContents(String arg) {
+      Matcher m = varPattern.matcher(arg);
+      if(m.matches()) {
+        return m.group(1);
+      } else {
+        throw new IllegalArgumentException(String.format("Not variable: \"%s\"", arg));
+      }
+    }
+
     public static boolean isRedirect(String arg) {
       return redirectPattern.matcher(arg).matches();
     }
@@ -191,7 +204,13 @@ public class WDLTask implements WDLComponent<WDLTask> {
 
       ArrayList<String> total = new ArrayList<>();
       while(!vars.isEmpty() || !nonvars.isEmpty()) {
-        if(!nonvars.isEmpty()) { total.add(nonvars.removeFirst()); }
+        if(!nonvars.isEmpty()) {
+          String nonvar = nonvars.removeFirst();
+          String[] nonvarArray = nonvar.split("\\s+");
+          for(String nv : nonvarArray) {
+            total.add(nv);
+          }
+        }
         if(!vars.isEmpty()) { total.add(vars.removeFirst()); }
       }
       return total.toArray(new String[total.size()]);
@@ -206,6 +225,16 @@ public class WDLTask implements WDLComponent<WDLTask> {
       this.all = extractCommandContent(all);
       System.out.println(String.format("********* COMMAND: \"%s\"", this.all));
       this.contents = splitCommand(this.all);
+    }
+
+    public String[] nonVariablePrefix() {
+      ArrayList<String> prefix = new ArrayList<>();
+      for(String content : contents) {
+        if (!isVariable(content)) {
+          prefix.add(content);
+        }
+      }
+      return prefix.toArray(new String[prefix.size()]);
     }
 
     public int hashCode() {

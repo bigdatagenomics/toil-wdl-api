@@ -113,16 +113,23 @@ public class WDLTranspiler {
     List<CommandInputParameter> inputs = new ArrayList<>();
     List<CommandOutputParameter> outputs = new ArrayList<>();
     List<CommandLineBinding> arguments = new ArrayList<>();
-    String baseCommand = command.contents[0].trim();
+    String[] baseCommand = command.nonVariablePrefix();
     String stdout = null;
 
-    int argIndex = 1;
+    int argIndex = baseCommand.length;
 
-    for(int i = 1; i < command.contents.length; i++) {
+    for(int i = baseCommand.length; i < command.contents.length; i++) {
       String part = command.contents[i];
       if(part.startsWith("${")) {
         String var = part.substring(2, part.length() - 1);
-        inputs.add(new CommandInputParameter(var, "string", new CommandInputBinding(argIndex++)));
+        String type = "string";
+
+        if(task.hasDeclaration(var)) {
+          WDLDeclaration decl = task.getDeclaration(var);
+          type = transpileType(decl.type);
+        }
+
+        inputs.add(new CommandInputParameter(var, type, new CommandInputBinding(argIndex++)));
 
       } else if(WDLTask.Command.isRedirect(part)) {
         stdout = WDLTask.Command.redirectTarget(part);
@@ -138,6 +145,11 @@ public class WDLTranspiler {
         CommandOutputBinding binding = null;
         if(expr != null) {
           String glob = stripQuotes(String.valueOf(expr.evaluate(new Environment())));
+          for(WDLDeclaration decl : task.declarations) {
+            glob = glob.replaceAll(decl.identifier, "inputs." + decl.identifier);
+          }
+          glob = glob.replaceAll("\\$\\{", "\\$\\(").replaceAll("\\}", "\\)");
+          System.out.println(String.format("GLOB: \"%s\"", glob));
           binding = new CommandOutputBinding(glob);
         }
         outputs.add(new CommandOutputParameter(assign.identifier, assign.type, binding));
