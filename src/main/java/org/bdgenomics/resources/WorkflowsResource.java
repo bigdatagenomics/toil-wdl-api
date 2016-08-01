@@ -74,7 +74,7 @@ public class WorkflowsResource {
 
       WDLDocument wdlDocument = WDLEvaluator.parse(new WDLDocument.Builder(), wdlSource);
 
-      CWLPackage cwlDocument = new WDLTranspiler().convertDocument(wdlDocument);
+      CWLPackage cwlDocument = new WDLTranspiler().convertDocument(wdlDocument, true);
 
       ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 

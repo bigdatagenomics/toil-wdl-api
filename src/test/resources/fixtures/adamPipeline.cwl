@@ -3,6 +3,13 @@ class: "CommandLineTool"
 baseCommand:
 - "/bin/bash"
 - "/work/convert_adam.sh"
+requirements:
+- class: "ResourceRequirement"
+  ramMin: 1024
+- class: "EnvVarRequirement"
+  envDef:
+  - envName: "SPARK_HOME"
+    envValue: "/opt/cgl-docker-lib/apache-spark"
 inputs:
 - id: "inputBam"
   type: "File"

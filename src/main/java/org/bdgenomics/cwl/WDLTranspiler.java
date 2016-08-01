@@ -99,6 +99,10 @@ public class WDLTranspiler {
     }
   }
 
+  public CommandLineTool convertTask(final WDLTask task) {
+    return convertTask(task, false);
+  }
+
   /**
    * Converts a WDL {@code task} into a CWL {@code CommandLineTool}.
    *
@@ -106,7 +110,7 @@ public class WDLTranspiler {
    * @return A {@code CommandLineTool} value whose command, inputs, and outputs reflect the corresponding
    * command, inputs and outputs of the WDL {@code task}.
    */
-  public CommandLineTool convertTask(final WDLTask task) {
+  public CommandLineTool convertTask(final WDLTask task, boolean isSpark) {
     WDLTask.Command command = task.commands.get(0);
     String id = task.taskName;
 
@@ -158,7 +162,17 @@ public class WDLTranspiler {
 
     CommandLineTool tool = new CommandLineTool(baseCommand, inputs, outputs, arguments).withStdout(stdout);
 
+    if(isSpark) {
+      tool = tool
+        .withRequirement(new ResourceRequirement(1024))
+        .withRequirement(new EnvVarRequirement(new EnvVarRequirement.EnvDef("SPARK_HOME", "/opt/cgl-docker-lib/apache-spark")));
+    }
+
     return tool;
+  }
+
+  public Workflow convertWorkflow(Map<String, WDLTask> taskMap, WDLWorkflow wdlWorkflow) {
+    return convertWorkflow(taskMap, wdlWorkflow, false);
   }
 
   /**
@@ -167,7 +181,7 @@ public class WDLTranspiler {
    * @param wdlWorkflow The WDL worfkow to convert.
    * @return The compiled CWL Workflow.
    */
-  public Workflow convertWorkflow(Map<String, WDLTask> taskMap, WDLWorkflow wdlWorkflow) {
+  public Workflow convertWorkflow(Map<String, WDLTask> taskMap, WDLWorkflow wdlWorkflow, boolean isSpark) {
     Workflow workflow = new Workflow().withId(wdlWorkflow.name);
 
     Map<String, WDLDeclaration> decls = wdlWorkflow.declarationMap();
@@ -228,6 +242,10 @@ public class WDLTranspiler {
     return workflow;
   }
 
+  public WorkflowStep convertCall(Map<String, WDLTask> taskMap, WDLCall call) {
+    return convertCall(taskMap, call, false);
+  }
+
   /**
    * Converts a WDL {@code call} block, part of a {@code workflow}, into a corresponding
    * CWL {@code WorkflowStep}.
@@ -237,7 +255,7 @@ public class WDLTranspiler {
    * @param call The particular WDL 'call' block to be transpiled.
    * @return The CWL WorkflowStep, to be embedded within a Workflow, that represents the call blockk.
    */
-  public WorkflowStep convertCall(Map<String, WDLTask> taskMap, WDLCall call) {
+  public WorkflowStep convertCall(Map<String, WDLTask> taskMap, WDLCall call, boolean isSpark) {
     if(!taskMap.containsKey(call.callName)) {
       throw new IllegalArgumentException(String.format("Unknown call name %s (tasks: %s)",
         call.callName, taskMap.keySet().toString()));
@@ -270,6 +288,10 @@ public class WDLTranspiler {
     return new WorkflowStep(call.callName, task.taskName + ".cwl", inputs, outputs);
   }
 
+  public CWLPackage convertDocument(WDLDocument wdlDocument) {
+    return convertDocument(wdlDocument, false);
+  }
+
   /**
    * Converts a WDL {@code document} into a collection of CWL components.
    *
@@ -290,11 +312,11 @@ public class WDLTranspiler {
    * @param wdlDocument The WDL document to transpile
    * @return The collection of CWL components that are converted from the document.
    */
-  public CWLPackage convertDocument(WDLDocument wdlDocument) {
+  public CWLPackage convertDocument(WDLDocument wdlDocument, boolean isSpark) {
 
     Map<String, CommandLineTool> toolMap = new LinkedHashMap<>();
     for(WDLTask task : wdlDocument.tasks) {
-      toolMap.put(task.taskName + ".cwl", convertTask(task));
+      toolMap.put(task.taskName + ".cwl", convertTask(task, isSpark));
     }
 
     Workflow workflow = convertWorkflow(wdlDocument.taskMap(), wdlDocument.workflow);

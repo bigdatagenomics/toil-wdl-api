@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  *
  */
 @JsonInclude(Include.NON_EMPTY)
-@JsonPropertyOrder({"cwlVersion", "class", "baseCommand", "stdout", "inputs", "outputs", "arguments"})
+@JsonPropertyOrder({"cwlVersion", "class", "baseCommand", "stdout", "requirements", "inputs", "outputs", "arguments"})
 public class CommandLineTool extends CWLTool {
 
   // You'd think: "Why are you using a special serializer here, you could just
@@ -48,6 +48,9 @@ public class CommandLineTool extends CWLTool {
 
   @JsonInclude(Include.NON_EMPTY)
   public List<CommandLineBinding> arguments;
+
+  @JsonInclude(Include.NON_EMPTY)
+  public List<Requirement> requirements;
 
   public String stdout;
 
@@ -72,10 +75,16 @@ public class CommandLineTool extends CWLTool {
     this.inputs = inputs;
     this.outputs = outputs;
     this.arguments = arguments;
+    this.requirements = new ArrayList<>();
   }
 
   public CommandLineTool withStdout(final String stdout) {
     this.stdout = stdout;
+    return this;
+  }
+
+  public CommandLineTool withRequirement(Requirement req) {
+    this.requirements.add(req);
     return this;
   }
 

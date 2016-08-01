@@ -75,7 +75,7 @@ public class WDLTranspilerTest extends BaseTest {
 
     WDLTranspiler transpiler = new WDLTranspiler();
 
-    CWLPackage transpiled = transpiler.convertDocument(wdlDocument);
+    CWLPackage transpiled = transpiler.convertDocument(wdlDocument, true);
     assertThat(transpiled.workflow).isNotNull();
     assertThat(transpiled.tools).hasSize(1);
 
